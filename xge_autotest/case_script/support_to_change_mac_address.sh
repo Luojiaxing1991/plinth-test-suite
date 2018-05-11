@@ -10,9 +10,9 @@ function ge_mac_address_random_generation()
     echo "Begin to run "${Test_Case_Title}
     ifconfig ${local_tp1} up; ifconfig ${local_tp1} ${local_tp1_ip}
     ssh root@${BACK_IP} "ifconfig ${remote_tp1} up; ifconfig ${remote_tp1} ${remote_tp1_ip}; sleep 5;"
-    
+
     MacAddress1=$(ifconfig ${local_tp1} | grep "HWaddr" | awk '{print $NF}' | tr -d ':')
-    
+
     ifconfig ${local_tp1} down;sleep 5
     MacAddress2=$(ifconfig ${local_tp1} | grep "HWaddr" | awk '{print $NF}' | tr -d ':')
     ifconfig ${local_tp1} up
@@ -22,7 +22,7 @@ function ge_mac_address_random_generation()
     else
         MESSAGE="FAIL\t MAC addresses cannot be generated randomly "
 	echo ${MESSAGE}
-    fi    
+    fi
 }
 
 function ge_mac_address_fault_tolerant()
@@ -39,16 +39,16 @@ function ge_mac_address_fault_tolerant()
     do
         NewMacAddress="c$i:a8:01:83:00:04"
         #ifconfig ${local_tp1} hw ether $NewMacAddress | grep "SIOCSIFHWADDR: Cannot assign requested address"
-        ifconfig ${local_tp1} hw ether $NewMacAddress 2>/dev/null 
+        ifconfig ${local_tp1} hw ether $NewMacAddress 2>/dev/null
         if [ $? -eq 0 ];then
             MESSAGE="FAIL\t The wrong MAC address has been configured  "
         fi
     done
-    
+
     for x in "00:00:00:00:00:00" "ff:ff:ff:ff:ff:ff" "c1:a8:01:83:00:0418"
     do
         #ifconfig ${local_tp1} hw ether $x | grep "SIOCSIFHWADDR: Cannot assign requested address"
-        ifconfig ${local_tp1} hw ether $x 2>/dev/null 
+        ifconfig ${local_tp1} hw ether $x 2>/dev/null
         if [ $? -eq 0 ];then
             MESSAGE="FAIL\t The wrong MAC address has been configured  "
         fi
@@ -58,7 +58,7 @@ function ge_mac_address_fault_tolerant()
     ifconfig ${local_tp1} hw ether ${OrgMacAddress1}
     OrgMacAddress1=$(ifconfig ${local_tp1} | grep "HWaddr" | awk '{print $NF}')
     echo "Recover mac as "${OrgMacAddress1}
-    
+
 }
 
 function ge_set_standard_mac_address()
@@ -77,13 +77,16 @@ function ge_set_standard_mac_address()
     #newMacAddress=$(echo $oldMacAddress |sed s/"${oldMacAddress:15:2}"/"00"/g)
     ifconfig ${local_tp1} hw ether ${newMacAddress}
     sleep $ARP_MAC_UPDATE_TIME
-    ssh root@${BACK_IP} "ping ${local_tp1_ip} -c 10;sleep 5;"
+    ssh root@${BACK_IP} "ping ${local_tp1_ip} -c 10 &> /dev/null;sleep 5;"
     newMacAddress1=$(ssh root@${BACK_IP} "arp -a | grep -w ${local_tp1_ip} | awk -F'at' '{print \$NF}' | awk '{print \$1}'")
     echo $newMacAddress1
     echo $newMacAddress
     if [ "$newMacAddress" != "$newMacAddress1" ];then
         #ifconfig ${local_tp1} hw ether ${oldMacAddress}
         MESSAGE="FAIL\t The wrong MAC address set fail "
+        echo ${MESSAGE}
+    else
+        echo "PASS"
     fi
     ifconfig ${local_tp1} hw ether ${oldMacAddress}
 
@@ -120,9 +123,9 @@ function xge_mac_address_random_generation()
     Test_Case_Title="xge_mac_address_random_generation"
     ifconfig ${local_fibre1} up; ifconfig ${local_fibre1} ${local_fibre1_ip}
     ssh root@${BACK_IP} "ifconfig ${remote_fibre1} up; ifconfig ${remote_fibre1} ${remote_fibre1_ip}; sleep 5;"
-    
+
     MacAddress1=$(ifconfig ${local_tp1} | grep "HWaddr" | awk '{print $NF}' | tr -d ':')
-    
+
     ifconfig ${local_fibre1} down;sleep 5
     MacAddress2=$(ifconfig ${local_tp1} | grep "HWaddr" | awk '{print $NF}' | tr -d ':')
     ifconfig ${local_fibre1} up
@@ -130,7 +133,7 @@ function xge_mac_address_random_generation()
         MESSAGE="PASS"
     else
         MESSAGE="FAIL\t MAC addresses cannot be generated randomly "
-    fi    
+    fi
 }
 
 function xge_mac_address_fault_tolerant()
@@ -144,16 +147,16 @@ function xge_mac_address_fault_tolerant()
     do
         NewMacAddress="c$i:a8:01:83:00:04"
         #ifconfig ${local_fibre1} hw ether $NewMacAddress  | grep "SIOCSIFHWADDR: Cannot assign requested address"
-        ifconfig ${local_fibre1} hw ether $NewMacAddress 2>/dev/null        
+        ifconfig ${local_fibre1} hw ether $NewMacAddress 2>/dev/null
         if [ $? -eq 0 ];then
             MESSAGE="FAIL\t The wrong MAC address has been configured  "
         fi
     done
-    
+
     for x in "00:00:00:00:00:00" "ff:ff:ff:ff:ff:ff" "c1:a8:01:83:00:0418"
     do
         #ifconfig ${local_fibre1} hw ether $x 2>/dev/null | grep "SIOCSIFHWADDR: Cannot assign requested address"
-        ifconfig ${local_fibre1} hw ether $x 2>/dev/null 
+        ifconfig ${local_fibre1} hw ether $x 2>/dev/null
         if [ $? -eq 0 ];then
             MESSAGE="FAIL\t The wrong MAC address has been configured  "
         fi
@@ -163,25 +166,29 @@ function xge_mac_address_fault_tolerant()
 function xge_set_standard_mac_address()
 {
     Test_Case_Title="xge_set_standard_mac_address"
-    ifconfig ${local_fibre1} up; ifconfig ${local_fibre1} ${local_fibre1_ip}
-    ssh root@${BACK_IP} "ifconfig ${remote_fibre1} up; ifconfig ${remote_fibre1} ${remote_fibre1_ip}; sleep 5"
+    ifconfig ${local_fibre2} up; ifconfig ${local_fibre2} ${local_fibre2_ip}
+    ssh root@${BACK_IP} "ifconfig ${remote_fibre2} up; ifconfig ${remote_fibre2} ${remote_fibre2_ip}; sleep 5"
     MESSAGE="PASS"
 
-    oldMacAddress=$(ifconfig ${local_fibre1} | grep "HWaddr" | awk '{print $NF}')
+    oldMacAddress=$(ifconfig ${local_fibre2} | grep "HWaddr" | awk '{print $NF}')
     if [ ${oldMacAddress:15:2} = "00" ];then
         newMacAddress=$(echo $oldMacAddress |sed s/"${oldMacAddress:15:2}"/"22"/g)
     else
         newMacAddress=$(echo $oldMacAddress |sed s/"${oldMacAddress:15:2}"/"00"/g)
     fi
     #newMacAddress=$(echo $oldMacAddress |sed s/"${oldMacAddress:15:2}"/"00"/g)
-    ifconfig ${local_fibre1} hw ether ${newMacAddress}
+    ifconfig ${local_fibre2} hw ether ${newMacAddress}
     sleep $ARP_MAC_UPDATE_TIME
-    ssh root@${BACK_IP} "ping ${local_fibre1_ip} -c 10;sleep 5"
-    newMacAddress1=$(ssh root@${BACK_IP} "arp -a | grep -w ${local_fibre1_ip} | awk -F'at' '{print \$NF}' | awk '{print \$1}'")
+    ssh root@${BACK_IP} "ping ${local_fibre2_ip} -c 10;sleep 5"
+    newMacAddress1=$(ssh root@${BACK_IP} "arp -a | grep -w ${local_fibre2_ip} | awk -F'at' '{print \$NF}' | awk '{print \$1}'")
 
     if [ "$newMacAddress" != "$newMacAddress1" ];then
-        ifconfig ${local_fibre1} hw ether ${oldMacAddress}
+        ifconfig ${local_fibre2} hw ether ${oldMacAddress}
         MESSAGE="FAIL\t The wrong MAC address set fail "
+        echo ${MESSAGE}
+    else
+        MESSAGE="PASS"
+        echo ${MESSAGE}
     fi
 }
 

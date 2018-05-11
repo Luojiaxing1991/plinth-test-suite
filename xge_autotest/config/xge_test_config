@@ -48,15 +48,15 @@ COMMON_TOOL_PATH="common_tool"
 TEST_CASE_PATH="xge_autotest/case_script"
 
 #ifconfig net export IP
-local_tp1_ip="192.168.1.10"
-local_fibre1_ip="192.168.11.110"
-local_fibre2_ip="192.168.12.210"
+local_tp1_ip="192.168.101.10"
+local_fibre1_ip="192.168.111.110"
+local_fibre2_ip="192.168.121.210"
 local_tp1_ipv6_ip="fe80::0db8:0:f101:1/64"
 local_fibre1_ipv6_ip="fe80::0db8:0:f101:2/64"
 
-remote_tp1_ip="192.168.1.20"
-remote_fibre1_ip="192.168.11.210"
-remote_fibre2_ip="192.168.12.220"
+remote_tp1_ip="192.168.101.20"
+remote_fibre1_ip="192.168.111.210"
+remote_fibre2_ip="192.168.121.220"
 
 vlan_local1_ip="192.168.13.10"
 vlan_local2_ip="192.168.12.10"

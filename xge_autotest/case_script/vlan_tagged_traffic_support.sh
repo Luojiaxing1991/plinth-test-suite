@@ -62,6 +62,7 @@ function ge_set_vlan()
     ip link add link ${local_tp1} name ${local_tp1}.401 type vlan id 401
     ifconfig ${local_tp1}.401 192.168.11.10
     sleep 5
+    echo ${local_tp1}
     ssh root@$BACK_IP "ifconfig ${remote_tp1} up;\
     ip link add link ${remote_tp1} name ${remote_tp1}.401 type vlan id 401;\
     ifconfig ${remote_tp1}.401 192.168.11.20;\

@@ -152,9 +152,9 @@ function ge_flow_continued_enable_and_disable_interface()
 function xge_enable_and_disable_interface()
 {
     Test_Case_Title="xge_enable_and_disable_interface"
-    ifconfig ${local_fibre1} up; ifconfig ${local_fibre1} ${local_fibre1_ip}
-    ssh root@${BACK_IP} "ifconfig ${remote_fibre1} up;ifconfig ${remote_fibre1} ${remote_fibre1_ip}; sleep 5"
-    ping ${remote_fibre1_ip} -c 5 > ${HNS_TOP_DIR}/data/log/enable_and_disable_interface.txt &
+    ifconfig ${local_fibre2} up; ifconfig ${local_fibre2} ${local_fibre2_ip}
+    ssh root@${BACK_IP} "ifconfig ${remote_fibre2} up;ifconfig ${remote_fibre2} ${remote_fibre2_ip}; sleep 5"
+    ping ${remote_fibre2_ip} -c 5 > ${HNS_TOP_DIR}/data/log/enable_and_disable_interface.txt &
     sleep 10
     enableok=0
     disableok=0
@@ -163,8 +163,8 @@ function xge_enable_and_disable_interface()
     if [ $? -eq 0 ];then
        enableok=1
     fi
-    ssh root@$BACK_IP "ifconfig ${remote_fibre1} down"
-    ping ${remote_fibre1_ip} -c 5 > ${HNS_TOP_DIR}/data/log/enable_and_disable_interface.txt &
+    ssh root@$BACK_IP "ifconfig ${remote_fibre2} down"
+    ping ${remote_fibre2_ip} -c 5 > ${HNS_TOP_DIR}/data/log/enable_and_disable_interface.txt &
     sleep 10
     cat ${HNS_TOP_DIR}/data/log/enable_and_disable_interface.txt | grep "received, 0% packet loss" >/dev/null
     if [ $? -eq 1 ];then
@@ -172,6 +172,7 @@ function xge_enable_and_disable_interface()
     fi
     if [ $enableok -eq 1 -a $disableok -eq 1 ];then
         MESSAGE="PASS"
+        echo $MESSAGE
     else
         MESSAGE="FAIL\tNet export up/down , Ping packet failure"
     fi

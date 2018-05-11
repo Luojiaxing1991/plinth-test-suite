@@ -18,7 +18,7 @@ HNS_TOP_DIR=$(cd "`dirname $0`" ; pwd)
 function main()
 {
     echo "Begin to Run XGE Test"
-    
+
     if [ x"${BACK_IP}" = x"192.168.3.229" ]
     then
 	return 1
@@ -36,7 +36,7 @@ function main()
         TEST_CASE_TITLE=`echo "${line}" | awk -F '\t' '{print $3}'`
         TEST_CASE_NUM=`echo "${line}" | awk -F '\t' '{print $3}'`
 
-        echo "CaseInfo "${TEST_CASE_TITLE}" "$exec_script" "$TEST_CASE_FUNCTION_NAME" "$TEST_CASE_FUNCTION_SWITCH 
+        echo "CaseInfo "${TEST_CASE_TITLE}" "$exec_script" "$TEST_CASE_FUNCTION_NAME" "$TEST_CASE_FUNCTION_SWITCH
 
         if [ x"${exec_script}" == x"" ]
         then
@@ -49,7 +49,7 @@ function main()
 		echo ${MESSAGE}
             else
 		if [ x"${TEST_CASE_FUNCTION_SWITCH}" == x"on" ]
-		then 
+		then
 			echo "Begin to run script: "${exec_script}
                         source ${HNS_TOP_DIR}/case_script/${exec_script}
 		else
@@ -68,41 +68,19 @@ writeLogHeader
 
 #Xge test is only excute in 159 dash board
 #Find the local MAC
-tmpMAC=`ifconfig eth0 | grep "HWaddr" | awk '{print $NF}'`
-if [ x"${tmpMAC}" = x"${BOARD_159_MAC_ADDR}" ]
-then
-	echo "Xge test can be excute in this board!"
-else
-	echo "Xge test can not be excute in this board,exit!"
-	exit 0
-fi
 
 #ifconfig IP
-initLocalIP 
-LOCAL_IP=${COMMON_LOCAL_IP}
+#initLocalIP
+LOCAL_IP="192.168.1.19"
 echo ${LOCAL_IP}
 
 #init_client_ip
 
-getIPofClientServer ${DHCP_SERVER_MAC_ADDR} ${CLIENT_SERVER_MAC_ADDR} ${DHCP_SERVER_USER} ${DHCP_SERVER_PASS}
-
-if [ x"${COMMON_CLIENT_IP}" = x"" ] || [ x"${COMMON_CLIENT_IP}" = x"0.0.0.0" ]
-then
-	echo "No found client IP,try ping default DHCP ip to update arp list!"
-        ping ${COMMON_DEFAULT_DHCP_IP} -c 5
-        getIPofClientServer ${DHCP_SERVER_MAC_ADDR} ${CLIENT_SERVER_MAC_ADDR} ${DHCP_SERVER_USER} ${DHCP_SERVER_PASS}
-        if [ x"${COMMON_CLIENT_IP}" = x"" ]
-        then
-		echo "Can not find the client IP, exit hns test!"
-                exit 0
-        fi
-fi
-
-BACK_IP=${COMMON_CLIENT_IP}
+BACK_IP="192.168.1.130"
 echo "The client ip is "${BACK_IP}
 
 #set passwd
-setTrustRelation
+#setTrustRelation
 
 #ifconfig net export
 init_net_export
