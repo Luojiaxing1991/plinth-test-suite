@@ -49,7 +49,7 @@ function main()
     done
     echo "Finish to Run SAS Test"
 }
-global_prepare_env
+# global_prepare_env
 # close /dev/sda
 
 #Output log file header
