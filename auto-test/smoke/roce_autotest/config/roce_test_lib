@@ -124,6 +124,8 @@ function build_roce_drv() {
     cd ${ROCE_DRV}
     tar -zxvf plinth-roce.tar.gz
     cd ${ROCE_DRV}/lib
+    sudo apt-get update
+    sudo apt-get install perftest
     # cp -a libhns-rdmav* /lib
     # cp -a libibverbs.so* /lib
     # cp -a libibumad.so* /lib
