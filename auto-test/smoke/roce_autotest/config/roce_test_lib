@@ -123,7 +123,7 @@ function build_roce_drv() {
 
     cd ${ROCE_DRV}
     tar -zxvf plinth-roce.tar.gz
-    cd ${ROCE_DRV}/plinth-roce
+    cd ${ROCE_DRV}/lib
     # cp -a libhns-rdmav* /lib
     # cp -a libibverbs.so* /lib
     # cp -a libibumad.so* /lib
