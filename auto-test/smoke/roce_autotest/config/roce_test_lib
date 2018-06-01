@@ -106,6 +106,7 @@ function build_roce_drv() {
     command_list=("build-essential" "cmake" "gcc" "libnl-3-dev" "libnl-route-3-dev" "ninja-build" "pkg-config" "valgrind" "perftest")
     sudo rm /var/lib/dpkg/updates/*
     sudo apt-get update
+    wait
     for i in ${command_list[*]}
     do
        which ${i}
