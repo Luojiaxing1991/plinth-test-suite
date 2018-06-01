@@ -3,6 +3,7 @@
 ROCE_LIB_TOP_DIR=$( cd "`dirname $0`" ; pwd )
 #ROCE_CASE_DIR=${ROCE_TOP_DIR}/case_script
 . ${ROCE_LIB_TOP_DIR}/config/roce_test_config
+ROCE_DRV=${ROCE_LIB_TOP_DIR}/config/package
 
 # ----start------->chenjing
 #######################
@@ -54,18 +55,19 @@ function check_roce_drv() {
 }
 
 function build_roce_drv() {
-    mkdir -p /root/chenjing; cd /root/chenjing
-    if [ ! -d "/root/chenjing/${tmp}" ];then
-        expect -c '
-		    set timeout -1
-		    set gitaddr "https://github.com/hisilicon/plinth-roce.git"
-            spawn git clone ${gitaddr}
-		    expect {
-			    "Username" { send "Luojiaxing1991\r";exp_continue }
-			    "Password" { send "ljxfyjh1321\r";exp_continue}
-			       }
-		'
-    fi
+    # mkdir -p /root/chenjing; cd /root/chenjing
+    # if [ ! -d "/root/chenjing/${tmp}" ];then
+        # expect -c '
+			# set timeout -1
+			# set gitaddr "https://github.com/hisilicon/plinth-roce.git"
+            # spawn git clone ${gitaddr}
+			# expect {
+				# "Username" { send "Luojiaxing1991\r";exp_continue }
+				# "Password" { send "ljxfyjh1321\r";exp_continue}
+				   # }
+		# '
+    # fi
+
     #get the git repo name
   #  name=echo ${ROCE_USERDRV_GITADDR##*/}
   #  echo $name
@@ -76,48 +78,52 @@ function build_roce_drv() {
   #  if [ x"${tmp_url}" == x"${ROCE_USERDRV_GITADDR}" ];then
   #      sed -i 's/github.com/Luojiaxing1991:ljxfyjh1321@github.com/g' .git/config
   #  fi
-    cd /root/chenjing/${tmp}
-    # cd /root/chenjing
-    # tar -zxvf plinth-roce.tar.gz
     # cd /root/chenjing/${tmp}
+    # cd ${ROCE_DRV}
+    # tar -zxvf plinth-roce.tar.gz
+    # cd ${ROCE_DRV}/plinth-roce
 
-    #checkout specified branch and build keinel
-    git branch -a | grep ${ROCE_USERDRV_BRANCH}
+    # #checkout specified branch and build keinel
+    # git branch -a | grep ${ROCE_USERDRV_BRANCH}
 
-    if [ $? -eq 0 ];then
-       #The same name of branch is exit
-       git checkout -b roce_drv origin/${ROCE_USERDRV_BRANCH}
-    else
-       Error="The branch is not found"
-       exit 1
-    fi
-   # expect -c '
-#		    set timeout -1
- #                   spawn git pull
-#		    expect {
-#			    "Username" { send "Luojiaxing1991\r";exp_continue }
-#			    "Password" { send "ljxfyjh1321\r";exp_continue}
-#			       }
-#		'
+    # if [ $? -eq 0 ];then
+       # #The same name of branch is exit
+       # git checkout -b roce_drv origin/${ROCE_USERDRV_BRANCH}
+    # else
+       # Error="The branch is not found"
+       # exit 1
+    # fi
+   # # expect -c '
+# #		    set timeout -1
+ # #                   spawn git pull
+# #		    expect {
+# #			    "Username" { send "Luojiaxing1991\r";exp_continue }
+# #			    "Password" { send "ljxfyjh1321\r";exp_continue}
+# #			       }
+# #		'
 
-    #git pull
+    # #git pull
 
-    echo "Begin to build the roce user driver!"
-    command_list=("build-essential" "cmake" "gcc" "libnl-3-dev" "libnl-route-3-dev" "ninja-build" "pkg-config" "valgrind" "perftest")
-    sudo rm /var/lib/dpkg/updates/*
-    sudo apt-get update
-    wait
-    for i in ${command_list[*]}
-    do
-       which ${i}
-       [ $? -ne 0 ] && apt-get install ${i} -y; wait || echo "command exist" ${i}
-    done
+    # echo "Begin to build the roce user driver!"
+    # command_list=("build-essential" "cmake" "gcc" "libnl-3-dev" "libnl-route-3-dev" "ninja-build" "pkg-config" "valgrind" "perftest")
+    # sudo rm /var/lib/dpkg/updates/*
+    # sudo apt-get update
+    # wait
+    # for i in ${command_list[*]}
+    # do
+       # which ${i}
+       # [ $? -ne 0 ] && apt-get install ${i} -y; wait || echo "command exist" ${i}
+    # done
 
-    bash build.sh
+    # bash build.sh
 
-    echo "Finish the roce user driver build!"
-    #cp the so to /lib document
-    cd build/lib/
+    # echo "Finish the roce user driver build!"
+    # #cp the so to /lib document
+    # cd build/lib/
+
+    cd ${ROCE_DRV}
+    tar -zxvf plinth-roce.tar.gz
+    cd ${ROCE_DRV}/plinth-roce
     # cp -a libhns-rdmav* /lib
     # cp -a libibverbs.so* /lib
     # cp -a libibumad.so* /lib
