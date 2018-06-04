@@ -125,7 +125,7 @@ function build_roce_drv() {
     tar -zxvf plinth-roce.tar.gz
     cd ${ROCE_DRV}/${tmp}/build/lib
     sudo apt-get update
-    which perftest
+    which ib_send_bw
     [ $? -ne 0 ] && sudo apt-get install perftest -y; wait
     cp -a libhns-rdmav* /lib
     cp -a libibverbs.so* /lib
@@ -152,6 +152,8 @@ function build_roce_drv() {
             echo ${hns_tal} > /etc/${file}/hns.driver
         fi
     fi
+    mkdir -p /root/chenjing/plinth-roce/build/etc/libibverbs.d
+    cp /etc/libibverbs.d/hns.driver /root/chenjing/plinth-roce/build/etc/libibverbs.d
     echo "Finish to configure roce user driver"
 }
 
