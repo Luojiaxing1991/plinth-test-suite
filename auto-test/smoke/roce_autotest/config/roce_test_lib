@@ -127,6 +127,7 @@ function build_roce_drv() {
     sudo apt-get update
     which ib_send_bw
     [ $? -ne 0 ] && sudo apt-get install perftest -y; wait
+    apt-get install libnl-route-3-dev
     cp -a libhns-rdmav* /lib
     cp -a libibverbs.so* /lib
     cp -a libibumad.so* /lib
