@@ -1,7 +1,7 @@
 PV-1588	R.SAS.F002.A	ST.FUNC.001	The driver must support SMP	SAS盘，expander，混合命令测试	driver_must_support.sh	driver_supports	on
 PV-1604	R.SAS.F007.A	ST.FUNC.003	Support 12Gbit/s physical data rate	SAS盘，expander，速率协商测试(1.5Gbit/s, 3Gbit/s, 6Gbit/s, 12Gbits)	phy_control_through_sysfs.sh	set_rate_link	on
 PV-1603	R.SAS.F017.A	ST.FUNC.005	PHY control through sysfs	SAS/SATA盘，expander，支持速率设置	physical_data_rate.sh	disk_negotiated_link_rate_query	on
-PV-1725	R.SAS.N004.A	ST.FUNC.006	SAS 3.0	SAS/SATA盘，expander，IO读写（512B/4k/512K/4M）	support_available_sas_cores.sh	FIO_IO_read_write	on
+PV-1725	R.SAS.N004.A	ST.FUNC.006	SAS 3.0	SAS/SATA盘，expander，IO读写（512B/4k/512K/4M）	support_available_sas_cores.sh	FIO_IO_read_write	off
 PV-1601	R.SAS.F010.A	ST.FUNC.008	Support full SAS function on all available PHYs	SAS/SATA盘，expander，开关enable	support_full_sas_function_all_available_phys.sh	cycle_enable_phy	off
 PV-1601	R.SAS.F010.A	ST.FUNC.009	Support full SAS function on all available PHYs	SAS/SATA盘，expander，hard_reset	support_full_sas_function_all_available_phys.sh	cycle_hard_reset_phy	on
 PV-1601	R.SAS.F010.A	ST.FUNC.010	Support full SAS function on all available PHYs	SAS/SATA盘，expander，link_reset	support_full_sas_function_all_available_phys.sh	cycle_link_reset_phy	off
