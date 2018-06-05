@@ -58,11 +58,34 @@ function main()
 	done
     echo "Finish to Run ROCE Test"
 }
-global_prepare_env
+
+function roce_init() {
+    if [ "${USER_DRV_VERSION}"x != ""x ]
+    then
+        ROCE_USERDRV_BRANCH="plinth-"${USER_DRV_VERSION}
+    else
+	USER_DRV_VERSION="it18"
+    fi
+    res=$(env | grep "BOARD_TYPE")
+    if [ "${res}"x = ""x ]
+    then
+        ROCE_BOARD_TYPE="D06"
+    else
+        ROCE_BOARD_TYPE=${res}
+    fi
+}
+roce_init
 #insmod /home/kernel/output/hns-roce.ko
 #insmod /home/kernel/output/hns-roce-hw-v1.ko
 
 # LOCAL_ETHX=`cat /sys/class/infiniband/hns_0/ports/${ROCE_PORT}/gid_attrs/ndevs/0`
+
+##check the env_ok is ok
+check_ENV_OK_exists
+if [ $? -eq 1 ]
+then
+    . ${ROCE_TOP_DIR}/../pre_autotest/pre_main.sh
+fi
 
 # #checkout if roce user driver repo is exit or not!
 check_roce_drv

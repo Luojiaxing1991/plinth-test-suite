@@ -83,7 +83,15 @@ function main()
     done
     echo "Finish to run XGE test!"
 }
-global_prepare_env
+
+
+##check the env_ok is ok
+check_ENV_OK_exists
+if [ $? -eq 1 ]
+then
+    . ${HNS_TOP_DIR}/../pre_autotest/pre_main.sh
+fi
+
 #Output log file header
 writeLogHeader
 

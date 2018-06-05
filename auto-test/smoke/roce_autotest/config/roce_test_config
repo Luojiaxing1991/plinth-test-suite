@@ -12,7 +12,12 @@ TEST_CASE_FUNCTION_SWITCH=""
 TEST_CASE_FUNCTION_NAME=""
 #
 MESSAGE=""
-
+#
+BUILD_USER_DRV="FALSE"
+#
+USER_DRV_VERSION=""
+#
+ROCE_BOARD_TYPE=""
 #User set
 #ip_map
 #key: the ip of current server eth0

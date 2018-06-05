@@ -5,3 +5,8 @@ Designed Requirement ID	Test Case ID	Test Item	Test Case Title	Automated scripts
 	R.ROCE.F004.A	ST.FUNC.014		使用roce v2进行rc read环回	Socket_back.sh	roce_v2_tp_read	on
 	R.ROCE.F005.A	ST.FUNC.015		使用roce v1进行rc write环回	Socket_back.sh	roce_v1_tp_write	on
 	R.ROCE.F005.A	ST.FUNC.016		使用roce v2进行rc write环回	Socket_back.sh	roce_v2_tp_write	on
+	R.ROCE.F003.A	ST.FUNC.011	socket环回	使用roce v1进行rc send环回	Socket_back.sh	roce_v1_tp_send	onPASS
+	R.ROCE.F003.A	ST.FUNC.012		使用roce v2进行rc send环回	Socket_back.sh	roce_v2_tp_send	onPASS
+	R.ROCE.F004.A	ST.FUNC.013		使用roce v1进行rc read环回	Socket_back.sh	roce_v1_tp_read	onPASS
+	R.ROCE.F004.A	ST.FUNC.014		使用roce v2进行rc read环回	Socket_back.sh	roce_v2_tp_read	onPASS
+	R.ROCE.F005.A	ST.FUNC.015		使用roce v1进行rc write环回	Socket_back.sh	roce_v1_tp_write	onPASS

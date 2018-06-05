@@ -72,11 +72,8 @@ function get_all_disk_part()
         assert=`echo ${mout_info} | grep ${name}`
         if [ x"${assert}" == x"" ]
         then
-            if [ x"${name}" == x"/dev/sdb1" ]
-            then
-                ALL_DISK_PART_NAME[${#ALL_DISK_PART_NAME[*]}]=$name
-                echo ${assert}
-            fi
+            ALL_DISK_PART_NAME[${#ALL_DISK_PART_NAME[*]}]=$name
+            echo ${assert}
         fi
         assert=""
     done
