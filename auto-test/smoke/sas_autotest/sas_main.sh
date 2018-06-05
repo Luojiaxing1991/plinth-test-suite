@@ -49,9 +49,15 @@ function main()
     done
     echo "Finish to Run SAS Test"
 }
-# global_prepare_env
+
 # close /dev/sda
 
+##check the env_ok is ok
+check_ENV_OK_exists
+if [ $? -eq 1 ]
+then
+    . ${SAS_TOP_DIR}/../pre_autotest/pre_main.sh
+fi
 #Output log file header
 writeLogHeader
 

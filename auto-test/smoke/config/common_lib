@@ -1,14 +1,3 @@
-function global_prepare_env()
-{
-    which expect
-
-    if [ $? != 0 ];then
-	apt-get update
-	apt-get -y install expect
-    fi
-}
-
-
 #############################################################################################################
 # function list
 # new function write at end
@@ -23,7 +12,7 @@ function global_prepare_env()
 #           pass:  the test is ok
 #           fail:  the test is fail
 #  OUT: N/A
- function lava_report()
+function lava_report()
  {
      #echo "The result of test "$1" is "$2
      #This cmd used to report pass result to lava server0
@@ -32,6 +21,18 @@ function global_prepare_env()
  }
 
 
+#  Output success test case log information
+#  IN :
+#  OUT: return 0 mean the env is ok
+#       return 1 mean the env is not ok
+#
+function check_ENV_OK_exists() {
+    res=$(env | grep "ENV_OK")
+    if [ "${res}"x = ""x ]
+    then
+        return 1
+    fi
+    }
 
 #  Output success test case log information
 #  IN : N/A
