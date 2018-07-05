@@ -228,6 +228,7 @@ else
 fi
 
 COM="true"
+PCIE_LOCAL="True"
 source ${TESTER_PCIE_TOP_DIR}/pcie_main.sh
 
 #COM="true"

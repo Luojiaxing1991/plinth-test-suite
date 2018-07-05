@@ -5,55 +5,61 @@
 # OUT: N/A
 function backward_compatibility_raid3008()
 {
-    Test_Case_Title="backward_compatibility_raid3008"
-
-    # device_3008_id=$(lspci -k | grep "${RAID3008_QUERY_KEYWORDS}" | awk -F ' ' '{print $1}' | sed -n '1p')
-    device_3008_id=$(ssh root@${BACK_IP} "lspci -k | grep ${RAID3008_QUERY_KEYWORDS}")
-    device_3008_id=$(echo ${device_3008_id} | awk -F ' ' '{print $1}' | sed -n '1p')
-    if [ x"${device_3008_id}" == x"" ]
+    if [ "${PCIE_LOCAL}"x != "True"x ]
     then
-        MESSAGE="FAIL\tFailed to query the raid3008. Please check the test environment."
-        return 1
-    fi
-    # speed_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:" | awk -F ' ' '{print $3}' | sed s/[,]//g")
-    # width_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:" | awk -F ' ' '{print $5}' | sed s/[,]//g")
-    speed_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:"")
-    speed_value=$(echo ${speed_value} | awk -F ' ' '{print $3}' | sed s/[,]//g)
-    width_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:"")
-    width_value=$(echo ${width_value} | awk -F ' ' '{print $5}' | sed s/[,]//g)
-    echo ${speed_value}
-    echo ${width_value}
+        Test_Case_Title="backward_compatibility_raid3008"
 
-    if [ x"${speed_value}" != x"${RAID3008_SPEED_VALUE}" -o x"${width_value}" != x"${RAID3008_WIDTH_VALUE}" ]
-    then
-        MESSAGE="FAIL\tRaid3008 speed or width does not match, Speed: ${speed_value}, Width: ${width_value}"
-        return 1
-    fi
-
-    # Get raid3008 connection disk list.
-    get_all_disk_list
-    # Generate the fio tool configuration file.
-    fio_config
-
-    tmp_path="/home/tmp_fio"
-    ssh root@${BACK_IP} "mkdir -p ${tmp_path}"
-    scp ${PCIE_TOP_DIR}/../${COMMON_TOOL_PATH}/fio root@${BACK_IP}:${tmp_path}
-    sed -i "{s/^runtime=.*/runtime=${RAID3008_FIO_TIME}/g;}" ${FIO_CONFG}
-    for rw in "${FIO_RW[@]}"
-    do
-        sed -i "{s/^rw=.*/rw=${rw}/g;}" ${FIO_CONFG}
-        scp ${FIO_CONFG} root@${BACK_IP}:${tmp_path}
-        ssh root@${BACK_IP} "${tmp_path}/fio ${tmp_path}/${FIO_CONFG}"
-        # ssh root@${BACK_IP} "${PCIE_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFG}"
-        if [ $? -ne 0 ]
+        # device_3008_id=$(lspci -k | grep "${RAID3008_QUERY_KEYWORDS}" | awk -F ' ' '{print $1}' | sed -n '1p')
+        device_3008_id=$(ssh root@${BACK_IP} "lspci -k | grep ${RAID3008_QUERY_KEYWORDS}")
+        device_3008_id=$(echo ${device_3008_id} | awk -F ' ' '{print $1}' | sed -n '1p')
+        if [ x"${device_3008_id}" == x"" ]
         then
-            MESSAGE="FAIL\tFIO tool in \"${rw}\" raid3008 disk operation, error."
+            MESSAGE="FAIL\tFailed to query the raid3008. Please check the test environment."
             return 1
         fi
-    done
+        # speed_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:" | awk -F ' ' '{print $3}' | sed s/[,]//g")
+        # width_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:" | awk -F ' ' '{print $5}' | sed s/[,]//g")
+        speed_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:"")
+        speed_value=$(echo ${speed_value} | awk -F ' ' '{print $3}' | sed s/[,]//g)
+        width_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:"")
+        width_value=$(echo ${width_value} | awk -F ' ' '{print $5}' | sed s/[,]//g)
+        echo ${speed_value}
+        echo ${width_value}
 
-    MESSAGE="PASS"
-    echo ${MESSAGE}
+        if [ x"${speed_value}" != x"${RAID3008_SPEED_VALUE}" -o x"${width_value}" != x"${RAID3008_WIDTH_VALUE}" ]
+        then
+            MESSAGE="FAIL\tRaid3008 speed or width does not match, Speed: ${speed_value}, Width: ${width_value}"
+            return 1
+        fi
+
+        # Get raid3008 connection disk list.
+        get_all_disk_list
+        # Generate the fio tool configuration file.
+        fio_config
+
+        tmp_path="/home/tmp_fio"
+        ssh root@${BACK_IP} "mkdir -p ${tmp_path}"
+        scp ${PCIE_TOP_DIR}/../${COMMON_TOOL_PATH}/fio root@${BACK_IP}:${tmp_path}
+        sed -i "{s/^runtime=.*/runtime=${RAID3008_FIO_TIME}/g;}" ${FIO_CONFG}
+        for rw in "${FIO_RW[@]}"
+        do
+            sed -i "{s/^rw=.*/rw=${rw}/g;}" ${FIO_CONFG}
+            scp ${FIO_CONFG} root@${BACK_IP}:${tmp_path}
+            ssh root@${BACK_IP} "${tmp_path}/fio ${tmp_path}/${FIO_CONFG}"
+            # ssh root@${BACK_IP} "${PCIE_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFG}"
+            if [ $? -ne 0 ]
+            then
+                MESSAGE="FAIL\tFIO tool in \"${rw}\" raid3008 disk operation, error."
+                return 1
+            fi
+        done
+
+        MESSAGE="PASS"
+        echo ${MESSAGE}
+    else
+        localTest_backward_compatibility_raid3008
+    fi
+
 }
 
 # PCIe 3.0 backward compatibility.
@@ -201,6 +207,61 @@ function backward_compatibility_82599()
     echo ${MESSAGE}
     return 0
 }
+
+function localTest_backward_compatibility_raid3008()
+{
+    Test_Case_Title="localTest_backward_compatibility_raid3008"
+
+    echo "local test ----------------------------------->"
+    # device_3008_id=$(lspci -k | grep "${RAID3008_QUERY_KEYWORDS}" | awk -F ' ' '{print $1}' | sed -n '1p')
+    device_3008_id=$(lspci -k | grep ${RAID3008_QUERY_KEYWORDS})
+    device_3008_id=$(echo ${device_3008_id} | awk -F ' ' '{print $1}' | sed -n '1p')
+    if [ x"${device_3008_id}" == x"" ]
+    then
+        MESSAGE="FAIL\tFailed to query the raid3008. Please check the test environment."
+        return 1
+    fi
+    # speed_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:" | awk -F ' ' '{print $3}' | sed s/[,]//g")
+    # width_value=$(ssh root@${BACK_IP} "lspci -s ${device_3008_id} -vvv | grep "LnkSta:" | awk -F ' ' '{print $5}' | sed s/[,]//g")
+    speed_value=$(lspci -s ${device_3008_id} -vvv | grep "LnkSta:")
+    speed_value=$(echo ${speed_value} | awk -F ' ' '{print $3}' | sed s/[,]//g)
+    width_value=$(lspci -s ${device_3008_id} -vvv | grep "LnkSta:")
+    width_value=$(echo ${width_value} | awk -F ' ' '{print $5}' | sed s/[,]//g)
+    echo ${speed_value}
+    echo ${width_value}
+
+    if [ x"${speed_value}" != x"${RAID3008_SPEED_VALUE}" -o x"${width_value}" != x"${RAID3008_WIDTH_VALUE}" ]
+    then
+        MESSAGE="FAIL\tRaid3008 speed or width does not match, Speed: ${speed_value}, Width: ${width_value}"
+        return 1
+    fi
+
+    # Get raid3008 connection disk list.
+    get_all_disk_list
+    # Generate the fio tool configuration file.
+    fio_config
+
+    tmp_path="/home/tmp_fio"
+    mkdir -p ${tmp_path}
+    scp ${PCIE_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${tmp_path}
+    sed -i "{s/^runtime=.*/runtime=${RAID3008_FIO_TIME}/g;}" ${FIO_CONFG}
+    for rw in "${FIO_RW[@]}"
+    do
+        sed -i "{s/^rw=.*/rw=${rw}/g;}" ${FIO_CONFG}
+        scp ${FIO_CONFG} ${tmp_path}
+        ${tmp_path}/fio ${tmp_path}/${FIO_CONFG}
+        # ssh root@${BACK_IP} "${PCIE_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFG}"
+        if [ $? -ne 0 ]
+        then
+            MESSAGE="FAIL\tFIO tool in \"${rw}\" raid3008 disk operation, error."
+            return 1
+        fi
+    done
+
+    MESSAGE="PASS"
+    echo ${MESSAGE}
+}
+
 
 setTrustRelation
 

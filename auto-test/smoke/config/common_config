@@ -161,14 +161,5 @@ COM=''
 ####################################################################################
 #add by chenjing
 ##################
-# PLINTH_TEST_WORKSPACE="/home/plinth-test-workspace"
-# Date=`date "+%G%m%d"`
-# NowTime=`date "+%H:%M:%S"`
-# hours=`echo ${NowTime} | awk -F "\:" '{print $1}'`
-# minute=`echo ${NowTime} | awk -F "\:" '{print $2}'`
-# second=`echo ${NowTime} | awk -F "\:" '{print $3}'`
-# NowTime="${hours}"h"${minute}"m"${second}"s
-# Module=$( cd "`dirname $0`" ; pwd )
-# Module=$(ls ${Module} | grep "main" | awk -F "_" '{print $1}')
-# BaseDir=${PLINTH_TEST_WORKSPACE}/${Module}/${Date}/${NowTime}
+PCIE_LOCAL="False"
 

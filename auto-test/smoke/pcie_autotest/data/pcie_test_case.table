@@ -1,3 +1,3 @@
 R.PCIE.F006.A|Check_Status_82599|pcie_smoke|liudongdong|weiyinsheng|pcie_backward_compatibility.sh|backward_compatibility_82599|on
-R.PCIE.F007.A|Check_Status_I350|pcie_smoke|liudongdong|weiyinsheng|pcie_backward_compatibility.sh|backward_compatibility_I350|on
-R.PCIE.F020.A|CheckStatus_FIO_Raid3008|pcie_smoke|liudongdong|weiyinsheng|pcie_backward_compatibility.sh|backward_compatibility_raid3008|on
+R.PCIE.F007.A|Check_Status_I350|pcie_smoke|liudongdong|weiyinsheng|pcie_backward_compatibility.sh|backward_compatibility_I350|off
+R.PCIE.F020.A|CheckStatus_FIO_Raid3008|pcie_smoke|liudongdong|weiyinsheng|pcie_backward_compatibility.sh|backward_compatibility_raid3008|off
