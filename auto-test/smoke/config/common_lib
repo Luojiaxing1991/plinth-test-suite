@@ -127,14 +127,18 @@ function MkdirPath(){
     mkdir -p ${BaseDir}/log
     tmp_num=$(ls ${PLINTH_TEST_WORKSPACE}/${Module} | wc -l )
     tmp=$(ls ${PLINTH_TEST_WORKSPACE}/${Module})
+    tmp=($tmp)
     flag=1
+    min=${tmp[0]}
     # keep the date
     while test ${tmp_num} -gt 5
     do
-        for i in ${tmp}
+        for i in $(seq 0 $[tmp_num-1])
         do
-            min=$i
-            break
+            if [ ${min} -gt ${tmp[i]} ]
+            then
+                min=${tmp[i]}
+            fi
         done
         rm -rf ${PLINTH_TEST_WORKSPACE}/${Module}/${min}
         let tmp_num--

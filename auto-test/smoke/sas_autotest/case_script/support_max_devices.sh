@@ -10,7 +10,10 @@ function support_max_devices()
     Test_Case_Title="support_max_devices"
 
     num=${#ALL_DISK_PART_NAME[@]}
-    [ ${num} -ne ${MAX_DEV_NUM} ] && MESSAGE="FAIL\texpander not fully loaded." && return 1
+    if [ ${num} -ne ${MAX_DEV_NUM} ] 
+    then
+        MESSAGE="FAIL\texpander not fully loaded." && echo ${MESSAGE} && return 1
+    fi
 
     count=0
     for disk_name in "${ALL_DISK_PART_NAME[@]}"
@@ -20,10 +23,17 @@ function support_max_devices()
         mount -t ext4 ${disk_name} /mnt/${count} 1>/dev/null
 
         info=`mount | grep -w "^${disk_name}"`
-        [ "${info}" = x"" ] && MESSAGE="FAIL\tMount "${disk_name}" disk failure." && return 1
+        if [ "${info}" = x"" ] 
+        then
+            MESSAGE="FAIL\tMount "${disk_name}" disk failure." && echo ${MESSAGE} && return 1
+        fi
 
         time dd if=${disk_name} of=/mnt/${count}/test.img bs=1M count=1000 conv=fsync 1>/dev/null &
-        [ $? -ne 0 ] && umount ${disk_name} && MESSAGE="FAIL\tdd tools read ${disk_name} error." && return 1
+        if [ $? -ne 0 ] 
+        then 
+            umount ${disk_name} 
+            MESSAGE="FAIL\tdd tools read ${disk_name} error." && echo ${MESSAGE} && return 1
+        fi
         let count+=1
     done
 
@@ -34,6 +44,7 @@ function support_max_devices()
         rm -rf /mnt/${dir}
     done
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 function main()

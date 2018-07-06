@@ -11,45 +11,45 @@ mn_event=("dvm_op_req" "dvm_sync_req" "ec_barrier_req" "eo_barrier_req" "read_re
 function perf_2P_support_function_test()
 {
   echo ${Test_Case_Title}
-  :> ${PERF_TOP_DIR}/data/log/2P_flag.txt
+  :> ${BaseDir}/log/2P_flag.txt
   msum=0
-  perf list | grep $1| awk -F'[ \t]+' '{print $2}' > ${PERF_TOP_DIR}/data/log/pmu_event.txt
-  cat ${PERF_TOP_DIR}/data/log/pmu_event.txt
+  perf list | grep $1| awk -F'[ \t]+' '{print $2}' > ${BaseDir}/log/pmu_event.txt
+  cat ${BaseDir}/log/pmu_event.txt
   echo $2
   case $2 in
     "l3c")
     for i in ${l3c_event[@]}; do
-      if [ `cat ${PERF_TOP_DIR}/data/log/pmu_event.txt | grep $i | wc -l` -eq 2 ];then
-        echo 1 >> ${PERF_TOP_DIR}/data/log/2P_flag.txt
+      if [ `cat ${BaseDir}/log/pmu_event.txt | grep $i | wc -l` -eq 2 ];then
+        echo 1 >> ${BaseDir}/log/2P_flag.txt
       else
-        echo 0 >> ${PERF_TOP_DIR}/data/log/2P_flag.txt
+        echo 0 >> ${BaseDir}/log/2P_flag.txt
         echo $i fail
       fi
     done
     ;;
     "ddrc")
     for j in ${ddrc_event[@]}; do
-      if [ `cat ${PERF_TOP_DIR}/data/log/pmu_event.txt | grep $j | wc -l` -eq 2 ];then
-        echo 1 >> ${PERF_TOP_DIR}/data/log/2P_flag.txt
+      if [ `cat ${BaseDir}/log/pmu_event.txt | grep $j | wc -l` -eq 2 ];then
+        echo 1 >> ${BaseDir}/log/2P_flag.txt
       else
-        echo 0 >> ${PERF_TOP_DIR}/data/log/2P_flag.txt
+        echo 0 >> ${BaseDir}/log/2P_flag.txt
         echo $j fail
       fi
     done
     ;;
     "mn")
     for k in ${mn_event[@]}; do
-      if [ `cat ${PERF_TOP_DIR}/data/log/pmu_event.txt | grep $k | wc -l` -eq 2 ];then
-        echo 1 >> ${PERF_TOP_DIR}/data/log/2P_flag.txt
+      if [ `cat ${BaseDir}/log/pmu_event.txt | grep $k | wc -l` -eq 2 ];then
+        echo 1 >> ${BaseDir}/log/2P_flag.txt
       else
-        echo 0 >> ${PERF_TOP_DIR}/data/log/2P_flag.txt
+        echo 0 >> ${BaseDir}/log/2P_flag.txt
         echo $k fail
       fi
     done
     ;;
   esac
-  if [ `cat ${PERF_TOP_DIR}/data/log/2P_flag.txt | grep "0" | wc -l` -le 0 ];then
-    MESSAGE="Pass"
+  if [ `cat ${BaseDir}/log/2P_flag.txt | grep "0" | wc -l` -le 0 ];then
+    MESSAGE="PASS"
     echo ${MESSAGE}
   else
     MESSAGE="Fail\t No $1 Perf 2P Support Event!"

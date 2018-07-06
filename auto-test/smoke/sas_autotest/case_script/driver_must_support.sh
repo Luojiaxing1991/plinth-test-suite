@@ -16,6 +16,7 @@ function driver_supports()
         then
             umount ${disk_name}
             MESSAGE="FAIL\tMount "${disk_name}" disk failure."
+            echo ${MESSAGE}
             return 1
         fi
 
@@ -24,12 +25,14 @@ function driver_supports()
         then
             umount ${disk_name}
             MESSAGE="FAIL\tdd tools read ${disk_name} error."
+            echo ${MESSAGE}
             return 1
         fi
         umount ${disk_name}
     done
 
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 function main()

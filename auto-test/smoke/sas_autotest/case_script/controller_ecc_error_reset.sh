@@ -12,6 +12,7 @@ function controller_2bit_ecc_reset()
     ${DEVMEM} ${CONTROLLER_ECC_RESET_ADDR} w 0x1
     ${DEVMEM} ${CONTROLLER_ECC_ERROR} w 0x11
 
+    sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
     ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
 
     sleep 5
@@ -22,9 +23,11 @@ function controller_2bit_ecc_reset()
     if [ x"${reset_value}" == x"0x1" -o x"${bit_value}" == x"0x11" ]
     then
         MESSAGE="FAIL\tcontoller reset for 2ecc error failed, ${CONTROLLER_ECC_RESET_ADDR}:${reset_value}, ${CONTROLLER_ECC_ERROR}:${bit_value}"
+        echo ${MESSAGE}
         return 1
     fi
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 # 1bit error injection controller reset.
@@ -42,25 +45,19 @@ function controller_1bit_ecc_reset()
     ${DEVMEM} ${CONTROLLER_ECC_RESET_ADDR} w 0x1
     ${DEVMEM} ${CONTROLLER_ECC_ERROR} w 0x1
 
-    sleep 10
-    key_count=`dmesg | grep "hgc_dqe_acc1b_intr" | wc -l`
+    sleep 35
+    key_count=`dmesg | grep "corrected" | wc -l`
     if [  ${key_count} -eq 0 ]
     then
         MESSAGE="FAIL\tcontoller reset for 1ecc error failed, no error message reported."
+        echo ${MESSAGE}
         return 1
     fi
 
     ${DEVMEM} ${CONTROLLER_ECC_RESET_ADDR} w 0x0
-    wait
-
-    end_count=`dmesg | grep "hgc_dqe_acc1b_intr" | wc -l`
-    if [ ${key_count} -eq ${end_count} ]
-    then
-        MESSAGE="FAIL\tafter the error interrupt was closed, the message did not stop."
-        return 1
-    fi
     ${DEVMEM} ${CONTROLLER_ECC_ERROR} w 0x0
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 function main()

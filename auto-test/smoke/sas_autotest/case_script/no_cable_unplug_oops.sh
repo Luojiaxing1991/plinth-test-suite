@@ -9,8 +9,10 @@ function disk_file_data_consistency_test()
     Test_Case_Title="disk_file_data_consistency_test"
 
     time dd if=/dev/zero of=/opt/test.img bs=10M count=200 conv=fsync 1>/dev/null
-    [ $? -ne 0 ] && MESSAGE="FAIL\tdd tools read data error." && return 1
-
+    if [ $? -ne 0 ]
+    then
+        MESSAGE="FAIL\tdd tools read data error." && ${MESSGAE} && return 1
+    fi
     md5_init_value=`md5sum /opt/test.img | awk -F ' ' '{print $1}'`
     for disk_name in "${ALL_DISK_PART_NAME[@]}"
     do
@@ -19,6 +21,7 @@ function disk_file_data_consistency_test()
         then
             umount ${disk_name}
             MESSAGE="FAIL\tMount "${disk_name}" disk failure."
+            echo ${MESSAGE}
             return 1
         fi
 
@@ -32,6 +35,7 @@ function disk_file_data_consistency_test()
                 rm -f /opt/test.img
                 umount ${disk_name}
                 MESSAGE="FAIL\tThe test.img(${init_value}) file is not equal to the MD5 value of the /mnt/test.img.${i}(${value}) file."
+                echo ${MESSAGE} 
                 return 1
             fi
             rm -f /mnt/test.img.$i
@@ -40,6 +44,7 @@ function disk_file_data_consistency_test()
         umount ${disk_name}
     done
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 # Long time read / write disk.
@@ -52,8 +57,12 @@ function loog_time_IO_read_write()
     sed -i "{s/^runtime=.*/runtime=${FIO_LONG_RUN_TIME}/g;}" fio.conf
     echo "Begin to IO rw with runtime: "${FIO_LONG_RUN_TIME}
     IO_read_write
-    [ $? -eq 1 ] && MESSAGE="FAIL\tFIO tool long read and write disk failure." && return 1
+    if [ $? -eq 1 ] 
+    then
+        MESSAGE="FAIL\tFIO tool long read and write disk failure." && echo ${MESSAGE} && return 1
+    fi
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 # Repeat read / write disk
@@ -67,9 +76,13 @@ function repeat_IO_read_write()
     for num in `seq ${REPEAT_RW_NUMBER}`
     do
         IO_read_write
-        [ $? -eq 1  ] && MESSAGE="FAIL\tFIO tool repeatedly read and write disk failure." && return 1
+        if [ $? -eq 1  ] 
+        then
+            MESSAGE="FAIL\tFIO tool repeatedly read and write disk failure." && echo ${MESSAGE} && return 1
+        fi    
     done
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 function main()

@@ -54,12 +54,11 @@ declare -a ALL_DISK_PART_NAME
 
 # FIO tools IO size
 FIO_BS=("4M" "512K" "4K" "512B")
-
 # FIO tools IO Read and write mode
 FIO_RW=("read" "write" "randrw" "randread" "randwrite" "rw" "readwrite" "randrw")
 # FIO tools mixed read and write ratio.
 IO_RATIO=("10" "50" "90")
-# FIO_RW=("read" "write")
+IO_RATIO_RW=("read" "write")
 
 #iodepth=128
 #runtime=300
@@ -72,15 +71,15 @@ ramp_time=1
 ioengine=psync
 iodepth=128
 numjobs=1
-bs=4k-4M
-;size=102400m 
+bs=4k
+;size=102400m
 ;zero_buffers=1
 group_reporting=1
 ;ioscheduler=noop
 ;gtod_reduce=1
 ;iodepth_batch=2
 ;iodepth_batch_complete=2
-runtime=20
+runtime=10
 ;thread
 loops=10
 "
@@ -113,24 +112,24 @@ SAS_PHY_VALUE_LIST=("12.0 Gbit" "6.0 Gbit" "3.0 Gbit")
 
 ## 3 - support full sas function on all available phys
 #  cycle the number of all proximal phy switches, Default value is 100.
-LOOP_PHY_COUNT=2
+LOOP_PHY_COUNT=3
 #  cycle reset distal phy number, Default value is 1000.
-RESET_PHY_COUNT=100
+RESET_PHY_COUNT=3
 #  fio tool business run time.
-LOOP_PHY_TIME=20
+LOOP_PHY_TIME=10
 ## 3 - stable_2GB_file_transfer
 #  Disk file data consistency test, File comparison times, Default Value is 500.
-COMPARISON_NUMBER=500
+COMPARISON_NUMBER=3
 
 ## 4 - No cable unplug OOPs
 #  Long time read / write disk, Default Value is 0.
 #IS_LONG_TIME_IO_READ_WRITE=0
 #  Long time read and write disk time, Default Value is 14400ms.
-FIO_LONG_RUN_TIME=14400
+FIO_LONG_RUN_TIME=360
 #  Repeat read / write disk, Default Value is 0.
 #IS_REPEAT_IO_READ_WRITE=0
 #  Repeat read and write disks. Default value is 100 second.
-REPEAT_RW_NUMBER=2
+REPEAT_RW_NUMBER=3
 #  FIO tool to read the cycle time.
 REPEAT_RM_TIME=10
 
@@ -147,7 +146,7 @@ REPEAT_RM_TIME=10
 #
 BSRANGE="4k-4M"
 #
-BSSPLIT="4k/30:8k/40:16k/30"
+BSSPLIT="4k\/30:8k\/40:16k\/30"
 
 ## 7 - support full sas function on all available phys
 #  cycle the number of all proximal phy switches, Default value is 100.
@@ -159,12 +158,15 @@ BSSPLIT="4k/30:8k/40:16k/30"
 
 ## 8 - Support SAS Narrow and Wide Ports.
 # fio tool business run time.
-FIO_RESET_TIME=300
+#FIO_RESET_TIME=300
+FIO_RESET_TIME=60
 #  Reset the number of Hart_rest or link_reset
-FIO_RESET_COUNT=5
+#FIO_RESET_COUNT=1000
+FIO_RESET_COUNT=2
 ## 9 - support hotplug
 # fio tool business run time.
-FIO_ENABLE_TIME=300
+#FIO_ENABLE_TIME=300
+FIO_ENABLE_TIME=30
 
 ## 10 - support smart
 # query enable smart keyword.
@@ -175,7 +177,7 @@ STATUS_SMART_KEYWORD="PASSED|OK"
 
 ## 12 - support Max devices
 # The number of disks.
-MAX_DEV_NUM=12
+MAX_DEV_NUM=4
 ## 13 - RAS support
 # 1bit error injection, injection CFG_ECCERR_INJECT0_EN register value.
 #ECC_1BIT_REG_INJECT0_VALUE=(
@@ -207,7 +209,8 @@ ECC_INFO_KEY_QUERIES="hgc_dqe_acc1b_intr"
 
 ## 14 - support module load and uninstall.
 # Need to load the ko file name, multiple ko file format "a.ko|b.ko", default is empty, that does not load.
-MODULE_KO_FILE=""
+MODULE_KO_FILE="hisi_sas_main.ko|hisi_sas_v1_hw.ko|hisi_sas_v3_hw.ko"
+MODULE_KO_PATH="config/ko"
 # load ko after the success of the test disk file, for example "/dev/sda1", default is empty.
 MODULE_DISK_FILE=""
 
@@ -226,6 +229,22 @@ CONTROLLER_ECC_RESET_ADDR="0xa2000200"
 CONTROLLER_ECC_ERROR="0xa20001F0"
 #
 CONTROLLER_ECC_IO_TIME=60
-## 17 check whether or not start with acpi
+## 17 check whether or not start with acpi.
 #
 ACPI_KEY_INFO="acpi"
+## 18 reset the number of backplane (smp_discover),Default value is 1000.
+#
+SMP_DISCOVER_COUNT=3
+
+## 19 the number of controller_ecc_error_reset,Default value is 1000.
+#
+BIT_ECC_COUNT=3
+
+## 20 linux pci device,the path of device.
+#
+DEVICE_PATH=/sys/bus/pci/devices/0000:74:02.0
+
+
+
+
+

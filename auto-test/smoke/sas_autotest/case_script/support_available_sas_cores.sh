@@ -13,8 +13,22 @@ function FIO_IO_read_write()
     echo "Begin to run FIO_IO_RW"
     IO_read_write
     [ $? -eq 1 ] && MESSAGE="FAIL\tFIO tool read and write disk failure." && echo "Fail fio tool rw" && return 1
+
+    sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
+    for rw in "${FIO_RW[@]}"
+    do
+        sed -i "{s/^rw=.*/rw=${rw}/g;}" fio.conf
+        ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
+        if [ $? -ne 0 ]
+        then
+            MESSAGE="FAIL\tFIO tool in \"${rw}\" disk operation, error."
+            echo ${MESSAGE}
+            return 1
+        fi
+     done
     echo "Success fio tool rw"
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 # fio tools mixed io read and write
@@ -28,19 +42,17 @@ function FIO_IO_RAIO_randrw()
     fio_config
 
     sed -i '/rw/a\rwmixread=' fio.conf
-    sed -i '/rwmixread/a\bsrange=' fio.conf
-    sed -i "{s/^bsrange=.*/bsrange=${BSRANGE}/g;}" fio.conf
+    sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
     sed -i "{s/^rw=.*/rw=randrw/g;}" fio.conf
 
-    for ratio in "${IO_RATIO[@]}"
-    do
-        echo "Begin FIO_IO_RAIO_randrw cycle: "${ratio}
-        sed -i "{s/^rwmixread=.*/rwmixread=${ratio}/g;}" fio.conf
-        fio fio.conf
-        [ $? -ne 0 ] && MESSAGE="FAIL\tfio tool ${ratio} raio mixed io read and write failed." && echo "Fail fio tool "${ratio} && return 1
-        echo "Success fio tool "${ratio}
-    done
+    ratio=$(echo ${TEST_CASE_TITLE} | awk -F "_" '{print $2}' | awk -F "read" '{print $NF}')
+    echo "Begin FIO_IO_RAIO_randrw cycle: "${ratio}
+    sed -i "{s/^rwmixread=.*/rwmixread=${ratio}/g;}" fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
+    [ $? -ne 0 ] && MESSAGE="FAIL\tfio tool ${ratio} raio mixed io read and write failed." && echo "Fail fio tool "${ratio} && return 1
+    echo "Success fio tool "${ratio}
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 # fio tools only io read-only write.
@@ -53,21 +65,22 @@ function FIO_IO_RAIO_read_write()
     # Generate FIO configuration file
     fio_config
 
-    sed -i '/rwmixread/a\bsrange=' fio.conf
+    sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
     sed -i '/bsrange/a\bssplit=' fio.conf
-    sed -i "{s/^bsrange=.*/bsrange=${BSRANGE}/g;}" fio.conf
     sed -i "{s/^bssplit=.*/bssplit=${BSSPLIT}/g;}" fio.conf
 
     for rw in read write
+#   for rw in "${IO_RATIO_RW[@]}"
     do
         echo "Begin FIO IO RAIO rw cycle: "${rw}
         sed -i "{s/^rw=.*/rw=${rw}/g;}" fio.conf
-        fio fio.conf
+        ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
         [ $? -ne 0 ] && MESSAGE="FAIL\tfio tool ${rw} io read and write failed." && echo "Fail fio tool "${rw} && return 1
         echo "Success fio tool "${rw}
     done
 
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 function main()

@@ -39,7 +39,7 @@ function test_case_function_run()
 # Output log file header
 # IN : N/A
 # OUT: N/A
-function writeLogHeader
+function writeLogHeader()
 {
     echo -e "Designed Requirement ID\tTest Case ID\tTest Item\tTest Case Title\tAutomated scripts\tRealize the function\tSwitch\tResult\tReason" > ${SAS_TOP_DIR}/${OUTPUT_TEST_DB_FILE}
     return 0

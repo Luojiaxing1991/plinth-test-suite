@@ -5,31 +5,30 @@
 
 function fun_perf_list()
 {
-    :> ${PERF_TOP_DIR}/data/log/pmu_event.txt
-    :> ${PERF_TOP_DIR}/data/log/irq_flag.txt
+    :> ${BaseDir}/log/pmu_event.txt
+    :> ${BaseDir}/log/irq_flag.txt
     acc="hisi_"
     end="_pmu_isr"
     irq_str=${acc}$1${end}
     echo $irq_str
-    perf list | grep $1| awk -F'[ \t]+' '{print $2}' > ${PERF_TOP_DIR}/data/log/pmu_event.txt
-    msum=$(cat ${PERF_TOP_DIR}/data/log/pmu_event.txt | grep $1 | wc -l)
-    if [[ $msum -le 0 ]];then
+    perf list | grep $1| awk -F'[ \t]+' '{print $2}' > ${BaseDir}/log/pmu_event.txt
+    msum=$(cat ${BaseDir}/log/pmu_event.txt | grep $1 | wc -l)
+    if [ $msum -le 0 ];then
         MESSAGE="Fail\t No $1 Perf Support Event!"
-        return
     else
-        cat  ${PERF_TOP_DIR}/data/log/pmu_event.txt | while read myline
+        cat  ${BaseDir}/log/pmu_event.txt | while read myline
         do
             output=`dmesg -c`
-            perf stat -a -e $myline -I 200 sleep 3s
-            dmesg > ${PERF_TOP_DIR}/data/log/irq_dmesg.txt
-            irq=`cat ${PERF_TOP_DIR}/data/log/irq_dmesg.txt | grep ${irq_str} | wc -l`
-            if [ $irq -ge 1 ];then 
-                echo 1 > ${PERF_TOP_DIR}/data/log/irq_flag.txt
+            perf stat -a -e $myline -I 200 sleep ${SLEEP_TIME}
+            dmesg > ${BaseDir}/log/irq_dmesg.txt
+            irq=`cat ${BaseDir}/log/irq_dmesg.txt | grep ${irq_str} | wc -l`
+            if [ $irq -ge 1 ];then
+                echo 1 > ${BaseDir}/log/irq_flag.txt
                 break
-            fi  
+            fi
         done
-        if [ `cat ${PERF_TOP_DIR}/data/log/irq_flag.txt | grep "1" | wc -l` -ge 1 ];then
-            MESSAGE="Pass"
+        if [ `cat ${BaseDir}/log/irq_flag.txt | grep "1" | wc -l` -ge 1 ];then
+            MESSAGE="PASS"
         else
             MESSAGE="Fail\t All $1 Event IRQ Function Test Fail!"
         fi
