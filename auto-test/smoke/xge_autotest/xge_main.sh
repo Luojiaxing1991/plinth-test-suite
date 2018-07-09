@@ -98,13 +98,6 @@ function main()
 }
 
 
-##check the env_ok is ok
-check_ENV_OK_exists
-if [ $? -eq 1 ]
-then
-    . ${HNS_TOP_DIR}/../pre_autotest/pre_main.sh
-fi
-
 #get the parameter of $1 $2
 #$1:  it mean the server ip set by CI env,actually sip is not using in test 
 #$2:  it mean the client ip set by CI env
@@ -122,8 +115,29 @@ else
     echo "Set client ip used $2 as $g_client_ip"
 fi
 
-#Output log file header
-#writeLogHeader
+if [ x"$3" = x"" ];then
+    echo "No $3 para pass to xge_main.sh"
+else
+    g_client_ip=$2
+    echo "Set jump_apt_get used $2 to jump the apt-get action"
+fi
+
+if [ x"$4" = x"" ];then
+    echo "No $4 para pass to xge_main.sh"
+else
+    g_client_ip=$4
+    echo "Set ctrl NIC used $4"
+fi
+
+
+check_ENV_OK_exists
+
+#check the env_ok is ok
+if [ $? -eq 1 ]
+then
+    . ${HNS_TOP_DIR}/../pre_autotest/pre_main.sh
+fi
+
 
 #mkdir the log path
 InitDirectoryName

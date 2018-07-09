@@ -29,8 +29,10 @@ do
 done
 
 # update filesystem
-apt-get update
-[ $? -ne 0 ]  && echo "apt-get is fail, try rm /var/lib/dpkg/lock, dpkg --configure -a  To fix it"
+if [ x"$jump_apt_get" = x"FALSE" ];then
+	apt-get update
+	[ $? -ne 0 ]  && echo "apt-get is fail, try rm /var/lib/dpkg/lock, dpkg --configure -a  To fix it"
+fi
 
 echo 0 > /sys/class/sas_phy/phy-1\:0\:5/enable
 

@@ -6,17 +6,17 @@ common_tool="${HNS_TOP_DIR}/../common_tool"
 
 declare -A eth_map
 eth_map=(
-["eth0"]="enp125s0f0"
-["eth1"]="enp125s0f1"
-["eth2"]="enp125s0f2"
+["eth0"]="eth0"
+["eth1"]="eth1"
+["eth2"]="eth2"
 ["eth3"]="eth3"
 )
 
 declare -A eth_map_r
 eth_map_r=(
-["eth0"]="enp125s0f0"
-["eth1"]="enp125s0f1"
-["eth2"]="enp125s0f2"
+["eth0"]="eth0"
+["eth1"]="eth1"
+["eth2"]="eth2"
 ["eth3"]="eth3"
 )
 
@@ -29,11 +29,19 @@ function install_iperf_netperf() {
         local_command=$(which ${i})
         remote_command=$(ssh -o StrictHostKeyChecking=no root@${BACK_IP} "which ${i}")
         if [ x"${local_command}" == x"" ];then
-		 apt-get install ${i} -y
+		if [ x"$jump_apt_get" = x"FALSE" ];then	
+	       		apt-get install ${i} -y
+		else
+			echo "can not install iperf!please install by hand..."
+		fi
 	 fi
 	 if [ x"${remote_command}" = x"" ];then
      		 #wait
-            ssh -o StrictHostKeyChecking=no root@${BACK_IP} "apt-get update; apt-get install ${i} -y; wait"
+		if [ x"$jump_apt_get" = x"FALSE" ];then
+	            ssh -o StrictHostKeyChecking=no root@${BACK_IP} "apt-get update; apt-get install ${i} -y; wait"
+	    	else
+		    	echo "can not install iperf remote! please install by hande ..."
+		fi
         fi
     done
 
@@ -118,7 +126,7 @@ function init_net_export()
 	 fi
 
     a=$[RANDOM%201]
-    main_eth="eth3"
+    main_eth=$g_ctrlNIC
     # if [ x"${eth_map[${main_eth}]}" = x"${eth_map[${i}]}" ]
     if [ x"${main_eth}" = x"${eth_map[${i}]}" ]
     then
