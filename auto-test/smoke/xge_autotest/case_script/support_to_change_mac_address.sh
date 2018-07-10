@@ -84,6 +84,8 @@ function ge_set_standard_mac_address()
     then
         Random_Mac1="0"${Random_Mac}
     fi
+    Random_Mac=26
+    Random_Mac1=14
     newMacAddress=$(echo $oldMacAddress |sed s/"${oldMacAddress:15:2}"/"${Random_Mac}"/g)
     remoteMacAddress=$(ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ifconfig ${local_tp1} | grep "HWaddr"")
     remoteMacAddress=$(echo ${remoteMacAddress} | awk '{print $NF}')
@@ -204,6 +206,9 @@ function xge_set_standard_mac_address()
     then
         Random_Mac1="0"${Random_Mac}
     fi
+    Random_Mac=26
+    Random_Mac1=14
+    
     newMacAddress=$(echo $oldMacAddress |sed s/"${oldMacAddress:15:2}"/"${Random_Mac}"/g)
     remoteMacAddress=$(ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ifconfig ${local_fibre1} | grep "HWaddr"")
     remoteMacAddress=$(echo ${remoteMacAddress} | awk '{print $NF}')
