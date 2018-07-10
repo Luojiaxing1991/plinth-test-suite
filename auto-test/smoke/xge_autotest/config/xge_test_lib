@@ -171,8 +171,12 @@ function init_net_export()
             echo "NIC is $nic"
             ethtool $nic | grep "TP"
             if [ $? -eq 0 ];then
+	       if [ x"$nic" = x"$main_eth" ];then
+		       continue
+	       fi
+               
                ifconfig $nic | grep 192
-               if [ $? -eq 0 ];then
+	       if [ $? -eq 0 ];then
                    continue
                else
                    local_tp_list=(${local_tp_list[*]} $nic)
@@ -207,6 +211,10 @@ function init_net_export()
             echo "NIC is $nic"
             ethtool $nic | grep "FIBRE"
             if [ $? -eq 0 ];then
+               if [ x"$nic" = x"$main_eth" ];then
+		       continue
+	       fi
+
                ifconfig $nic | grep 192
                if [ $? -eq 0 ];then
                    continue
@@ -304,6 +312,9 @@ function init_net_export()
         for nic in $tmplist
         do
             echo "remote NIC is $nic"
+	    if [ x"$nic" = x"$main_eth" ];then
+		    continue
+	    fi
             ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ethtool $nic | grep 'TP'"
             if [ $? -eq 0 ];then
                ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ifconfig $nic | grep 192"
@@ -341,6 +352,10 @@ function init_net_export()
         for nic in $tmplist
         do
             echo "NIC is $nic"
+		if [ x"$nic" = x"$main_eth" ];then
+		    continue
+	 	fi
+
             ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ethtool $nic | grep 'FIBRE'"
             if [ $? -eq 0 ];then
                ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ifconfig $nic | grep 192"

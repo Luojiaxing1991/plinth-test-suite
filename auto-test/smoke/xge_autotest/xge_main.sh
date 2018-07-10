@@ -118,14 +118,14 @@ fi
 if [ x"$3" = x"" ];then
     echo "No $3 para pass to xge_main.sh"
 else
-    g_client_ip=$2
+    jump_apt_get=$2
     echo "Set jump_apt_get used $2 to jump the apt-get action"
 fi
 
 if [ x"$4" = x"" ];then
     echo "No $4 para pass to xge_main.sh"
 else
-    g_client_ip=$4
+    g_ctrlNIC=$4
     echo "Set ctrl NIC used $4"
 fi
 
