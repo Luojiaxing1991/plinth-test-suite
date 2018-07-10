@@ -55,6 +55,10 @@ COM=true
 #new a file to save result for debug
 #if [ -d g ];then
         mkdir -p /home/plinth
+
+	if [ -f /home/plinth/result.txt ];then
+		rm /home/plinth/result.txt
+
         touch /home/plinth/result.txt
 	#echo "#Save the fail test suit result description here" > ${SAS_TOP_DIR}/../config/result.txt
 #fi
