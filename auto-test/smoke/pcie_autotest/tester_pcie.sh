@@ -106,7 +106,7 @@ echo -e "\033[33m Luojiaxing \033[0m  \033[32m Chenjing \033[0m "
 echo "  "
 echo ">---------------------------------------------------------<"
 echo "Thank you to ALL tester for providing high quality scripts!"
-echo -e "Tester: \033[34m hehui\033[0m \033[35m  weiyinsheng\033[0m "
+echo -e "Tester: \033[34m liudongdong\033[0m \033[35m  weiyinsheng\033[0m "
 echo ">---------------------------------------------------------< "
 echo "  "
 

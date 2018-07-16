@@ -6,6 +6,18 @@
 ## Utility function
 #
 
+######## Add by chenjing <-----------------------------
+#---------------------------< > ------------------------
+#  call the implementation of the automation use cases
+#  IN : N/A
+#  OUT: N/A
+function InstallTool(){
+    #cp devmem2 to the env
+    cp ${SAS_TOP_DIR}/../config/common_lib/devmem2 /usr/bin
+}
+
+######## End add by chenjing <-----------------------------
+#---------------------------< > ------------------------
 
 #  call the implementation of the automation use cases
 #  IN : N/A
