@@ -54,4 +54,4 @@ enTail=_pmu_enable_counter
 disTail=_pmu_disable_counter
 
 # perf stat sleep time
-SLEEP_TIME=10s
+SLEEP_TIME=3s
