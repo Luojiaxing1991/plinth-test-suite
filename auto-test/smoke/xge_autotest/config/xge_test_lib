@@ -6,17 +6,17 @@ common_tool="${HNS_TOP_DIR}/../common_tool"
 
 declare -A eth_map
 eth_map=(
-["eth0"]="enp125s0f0"
-["eth1"]="enp125s0f1"
-["eth2"]="enp125s0f2"
+["eth0"]="eth0"
+["eth1"]="eth1"
+["eth2"]="eth2"
 ["eth3"]="eth3"
 )
 
 declare -A eth_map_r
 eth_map_r=(
-["eth0"]="enp125s0f0"
-["eth1"]="enp125s0f1"
-["eth2"]="enp125s0f2"
+["eth0"]="eth0"
+["eth1"]="eth1"
+["eth2"]="eth2"
 ["eth3"]="eth3"
 )
 
@@ -137,7 +137,7 @@ function init_net_export()
 	 fi
 
     a=$[RANDOM%201]
-    main_eth="eth3"
+    main_eth=$g_ctrlNIC
     # if [ x"${eth_map[${main_eth}]}" = x"${eth_map[${i}]}" ]
     if [ x"${main_eth}" = x"${eth_map[${i}]}" ]
     then
@@ -182,8 +182,12 @@ function init_net_export()
             echo "NIC is $nic"
             ethtool $nic | grep "TP"
             if [ $? -eq 0 ];then
+	       if [ x"$nic" = x"$main_eth" ];then
+		       continue
+	       fi
+               
                ifconfig $nic | grep 192
-               if [ $? -eq 0 ];then
+	       if [ $? -eq 0 ];then
                    continue
                else
                    local_tp_list=(${local_tp_list[*]} $nic)
@@ -218,6 +222,10 @@ function init_net_export()
             echo "NIC is $nic"
             ethtool $nic | grep "FIBRE"
             if [ $? -eq 0 ];then
+               if [ x"$nic" = x"$main_eth" ];then
+		       continue
+	       fi
+
                ifconfig $nic | grep 192
                if [ $? -eq 0 ];then
                    continue
@@ -315,6 +323,9 @@ function init_net_export()
         for nic in $tmplist
         do
             echo "remote NIC is $nic"
+	    if [ x"$nic" = x"$main_eth" ];then
+		    continue
+	    fi
             ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ethtool $nic | grep 'TP'"
             if [ $? -eq 0 ];then
                ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ifconfig $nic | grep 192"
@@ -352,6 +363,10 @@ function init_net_export()
         for nic in $tmplist
         do
             echo "NIC is $nic"
+		if [ x"$nic" = x"$main_eth" ];then
+		    continue
+	 	fi
+
             ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ethtool $nic | grep 'FIBRE'"
             if [ $? -eq 0 ];then
                ssh -o StrictHostKeyChecking=no root@${BACK_IP} "ifconfig $nic | grep 192"

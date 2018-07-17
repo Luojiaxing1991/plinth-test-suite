@@ -29,8 +29,10 @@ do
 done
 
 # update filesystem
-apt-get update
-[ $? -ne 0 ]  && echo "apt-get is fail, try rm /var/lib/dpkg/lock, dpkg --configure -a  To fix it"
+if [ x"$jump_apt_get" = x"FALSE" ];then
+	apt-get update
+	[ $? -ne 0 ]  && echo "apt-get is fail, try rm /var/lib/dpkg/lock, dpkg --configure -a  To fix it"
+fi
 
 echo 0 > /sys/class/sas_phy/phy-1\:0\:5/enable
 
@@ -54,6 +56,10 @@ COM=true
 #new a file to save result for debug
 #if [ -d g ];then
         mkdir -p /home/plinth
+
+	if [ -f /home/plinth/result.txt ];then
+		rm /home/plinth/result.txt
+
         touch /home/plinth/result.txt
 	#echo "#Save the fail test suit result description here" > ${SAS_TOP_DIR}/../config/result.txt
 #fi
