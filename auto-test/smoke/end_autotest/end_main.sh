@@ -41,7 +41,7 @@ if [ -f /home/plinth/result.txt ];then
 	cp /home/plinth/result.txt ${lava_id}
 else
 	touch ${lava_id}/result.txt 
-	echo -e 'ST.FUNC.029\tyou\n' >> ${lava_id}/result.txt
+	#echo -e 'ST.FUNC.029\tyou\n' >> ${lava_id}/result.txt
 fi
 
 #####
