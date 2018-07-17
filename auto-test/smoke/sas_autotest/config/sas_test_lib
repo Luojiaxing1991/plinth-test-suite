@@ -6,6 +6,18 @@
 ## Utility function
 #
 
+######## Add by chenjing <-----------------------------
+#---------------------------< > ------------------------
+#  call the implementation of the automation use cases
+#  IN : N/A
+#  OUT: N/A
+function InstallTool(){
+    #cp devmem2 to the env
+    cp ${SAS_TOP_DIR}/../config/common_lib/devmem2 /usr/bin
+}
+
+######## End add by chenjing <-----------------------------
+#---------------------------< > ------------------------
 
 #  call the implementation of the automation use cases
 #  IN : N/A
@@ -39,7 +51,7 @@ function test_case_function_run()
 # Output log file header
 # IN : N/A
 # OUT: N/A
-function writeLogHeader
+function writeLogHeader()
 {
     echo -e "Designed Requirement ID\tTest Case ID\tTest Item\tTest Case Title\tAutomated scripts\tRealize the function\tSwitch\tResult\tReason" > ${SAS_TOP_DIR}/${OUTPUT_TEST_DB_FILE}
     return 0

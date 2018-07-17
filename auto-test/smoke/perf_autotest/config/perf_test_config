@@ -38,12 +38,20 @@ L3C_PERF_EVENT=("back_invalid/" "prefetch_drop/" "rd_cpipe/" "rd_hit_cpipe/" "rd
 	"retry_ring/" "victim_num/" "wr_cpipe/" "wr_hit_cpipe/" "wr_hit_spipe/" "wr_spipe/")
 L3C_EVENT_NUM=13
 
-# 2P CPU NUM
+# 2P CPU NUM, 0~47 is the master cpu, 48~96 is the slave cpu
 MASTER_CPU=36
 SLAVE_CPU=66
 
-# numa support cpu num
+# numa support cpu num, rand cpu can run the perf event
 NUMA_CPU=38
 
 # cpu custom event
 CPU_CUSTOM_EVENT=("r6000" "r6001" "r6002" "r6003" "r6004" "r6005" "r6006" "r6007" "r6008" "r6009")
+
+# enable or disable flag
+mHead=hisi_
+enTail=_pmu_enable_counter
+disTail=_pmu_disable_counter
+
+# perf stat sleep time
+SLEEP_TIME=10s

@@ -9,27 +9,29 @@ function fio_iops_controller()
 {
     Test_Case_Title="fio_iops_controller"
 
+    local max_value=0
     for iodepth in "${FIO_IODEPTH_LIST[@]}"
     do
-        sed -i "{s/^iodepth=.*/iodepth=${FIO_IOPS_IODEPTH}/g;}" fio.conf
+        sed -i "{s/^iodepth=.*/iodepth=${iodepth}/g;}" fio.conf
         info=`${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf | grep "iops="`
         iops=`echo ${info} | awk -F ',' '{print $3}' | awk -F '=' '{print $2}'`
-
         let iops=${iops}/1024
+        if [ ${iops} -gt ${max_value} ]
+        then
+            max_value=${iops}
+        fi
         echo "iodepth: ${iodepth},iops :${iops}" >> ${BaseDir}/log/${FIO_IOPS_DB_FILE}
     done
 
-    sed -i "{s/^iodepth=.*/iodepth=${FIO_IOPS_IODEPTH}/g;}" fio.conf
-    info=`${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf | grep "iops="`
-    iops=`echo ${info} | awk -F ',' '{print $3}' | awk -F '=' '{print $2}'`
-
-    let iops=${iops}/1024
-    if [ ${iops} -le ${IOPS_THRESHOLD} ]
+    if [ ${max_value} -lt ${IOPS_THRESHOLD} ]
     then
-        MESSAGE="FAIL\tdriver 700k iops verify that ${iops} is lower than ${IOPS_THRESHOLD}."
+        MESSAGE="FAIL\tdriver 700k iops verify that ${max_value} is lower than ${IOPS_THRESHOLD}."
+        echo ${MESSAGE}
         return 1
     fi
+
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 

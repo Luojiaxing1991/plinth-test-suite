@@ -81,7 +81,7 @@ function xge_set_ipv6_address()
         MESSAGE="PASS"
     else
         ifconfig ${local_fibre1} inet6 del ${local_fibre1_ipv6_ip}
-        MESSAGE="FAIL\t ipv6 addresses ping packe fial "
+        MESSAGE="FAIL\t ipv6 addresses ping fail "
     fi
 }
 

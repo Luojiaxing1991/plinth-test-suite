@@ -59,6 +59,24 @@ function check_roce_drv() {
     #fi
 }
 
+function PrepareTool() {
+    Roce_perftest=("libibumad3_1.3.10.2-1_arm64.deb" "libibverbs1_1.1.8-1.1ubuntu2_arm64.deb" "librdmacm1_1.0.21-1_arm64.deb" \
+        "perftest_3.0+0.16.gb2f2e82-2_arm64.deb" "libnl-3-200_3.2.27-1ubuntu0.16.04.1_arm64.deb" "libnl-3-dev_3.2.27-1ubuntu0.16.04.1_arm64.deb" \
+        "libnl-route-3-200_3.2.27-1ubuntu0.16.04.1_arm64.deb" "libnl-route-3-dev_3.2.27-1ubuntu0.16.04.1_arm64.deb")
+
+    if [ -d "/home/junkman" ]
+    then
+        cd /home/junkman
+        for i in ${Roce_perftest[*]}
+        do
+            dpkg -i ${i}
+        done
+    else
+        echo "The prepare work is not commit"
+        exit 1
+    fi
+}
+
 function download_roce_drv() {
     cd /home/
     if [ ! -d "/home/roce_userDrv" ]
@@ -76,11 +94,14 @@ function download_roce_drv() {
     [ "${tmp}"x != ""x ] && tar -zxf ${tmp} || exit 1
     tmp=$(echo ${tmp} | awk -F "." '{print $1}')
     echo ${tmp}
+
+    PrepareTool
+    wait
     cd /home/roce_userDrv/${USER_DRV_VERSION}/plinth-roce/build/lib
-    apt-get install perftest -y
-    wait
-    apt-get install libnl-route-3-dev -y
-    wait
+    # apt-get install perftest
+    # cp ${ROCE_LIB_TOP_DIR}/config/tool/* /usr/bin
+    # wait
+    # apt-get install libnl-route-3-dev -y
     cp -a libhns-rdmav* /lib
     cp -a libibverbs.so* /lib
     cp -a libibumad.so* /lib

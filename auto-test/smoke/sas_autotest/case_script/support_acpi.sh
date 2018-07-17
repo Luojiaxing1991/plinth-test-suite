@@ -10,8 +10,12 @@ function check_acpi_start()
     Test_Case_Title="check_acpi_start"
 
     info=`cat /proc/cmdline | grep ${ACPI_KEY_INFO}`
-    [ x"${info}" == x"" ] MESSAGE="FAIL\tThe current system is not acpi way to start." && return 1
+    if [ x"${info}" == x"" ] 
+    then
+        MESSAGE="FAIL\tThe current system is not acpi way to start." && echo ${MESSAGE} && return 1
+    fi
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 function main()

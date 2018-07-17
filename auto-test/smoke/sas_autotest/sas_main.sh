@@ -79,6 +79,9 @@ InitDirectoryName
 #mkdir test path
 MkdirPath
 
+#Install tool
+InstallTool
+
 #Output CI log header
 LogHeader
 

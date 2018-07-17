@@ -202,10 +202,13 @@ init_net_export
 check_environment
 
 #check iperf/qperf/netperf is ok
-install_iperf_netperf
+# install_iperf_netperf
 
 #install qperf
-qperf_install
+# qperf_install
+
+# iperf, qperf, netperf
+Prepare_PerfTool
 
 #performance init
 perf_init

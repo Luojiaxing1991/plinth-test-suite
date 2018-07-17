@@ -9,9 +9,13 @@ function ncq_query()
     Test_Case_Title="ncq_query"
 
     info=`dmesg | grep 'NCQ'`
-    [ x"${info}" = x"" ] && MESSAGE="FAIL\tQuery keyword \"NCQ\" failed." && return 1
+    if [ x"${info}" = x"" ] 
+    then
+        MESSAGE="FAIL\tQuery keyword \"NCQ\" failed." && echo ${MESSAGE} && return 1
+    fi
 
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 function main()

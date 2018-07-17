@@ -4,25 +4,24 @@
 #OUT:N/A
 function event_counts_judge()
 {
-    :> ${PERF_TOP_DIR}/data/log/event_judge.txt
-    cat ${PERF_TOP_DIR}/data/log/counts.txt | while read mycount
+    :> ${BaseDir}/log/event_judge.txt
+    cat ${BaseDir}/log/counts.txt | while read mycount
     do
         if [ -n "$(echo $mycount | sed -n "/^[0-9]\+$/p")" ];then 
-            if [ $mycount -ge 0 -a $mycount -le 65535 ];then
-                echo "$mycount is normal"
-                echo 1 > ${PERF_TOP_DIR}/data/log/event_judge.txt
+            if [ $mycount -ge 0 -a $mycount -le 524287 ];then
+                echo 1 > ${BaseDir}/log/event_judge.txt
             else
                 echo "$mycount : the count is abmormal"
-                echo 0 > ${PERF_TOP_DIR}/data/log/event_judge.txt
+                echo 0 > ${BaseDir}/log/event_judge.txt
                 break
             fi
         else 
             echo "$mycount : the count is not number!"
-            echo 0 > ${PERF_TOP_DIR}/data/log/event_judge.txt
+            echo 0 > ${BaseDir}/log/event_judge.txt
             break
         fi
     done
-    if [ `cat ${PERF_TOP_DIR}/data/log/event_judge.txt | grep 0 | wc -l` -eq 0 ];then
+    if [ `cat ${BaseDir}/log/event_judge.txt | grep 0 | wc -l` -eq 0 ];then
         return 1
     else
         return 0
@@ -34,10 +33,10 @@ function event_counts_judge()
 function fun_perf_list()
 {
     echo "Begin to run fun_perf_list"
-    :> ${PERF_TOP_DIR}/data/log/pmu_event.txt
+    :> ${BaseDir}/log/pmu_event.txt
     mflag=0
-    perf list | grep $1| awk -F'[ \t]+' '{print $2}' > ${PERF_TOP_DIR}/data/log/pmu_event.txt
-    msum=`cat ${PERF_TOP_DIR}/data/log/pmu_event.txt | grep "hisi" | wc -l`
+    perf list | grep $1| awk -F'[ \t]+' '{print $2}' > ${BaseDir}/log/pmu_event.txt
+    msum=`cat ${BaseDir}/log/pmu_event.txt | grep "hisi" | wc -l`
     echo ${msum}
     if [ `cat /proc/cmdline | grep "acpi=force" | wc -l` -ne 1 ];then
         mflag=0
@@ -52,14 +51,13 @@ function fun_perf_list()
     fi
 
     if [ $mflag -eq 1 ];then
-        rand=$(awk 'NR==6 {print $1}' ${PERF_TOP_DIR}/data/log/pmu_event.txt)
-        rand2=$(awk 'NR==9 {print $1}' ${PERF_TOP_DIR}/data/log/pmu_event.txt)
-        perf stat -a -e $rand -e $rand2 -I 200 sleep 10s >& ${PERF_TOP_DIR}/data/log/perf_statu.log
-        cat ${PERF_TOP_DIR}/data/log/perf_statu.log | awk -F '[ \t]+'  '{print $3}' | sed 's/counts//g' | grep -v "^$" > ${PERF_TOP_DIR}/data/log/counts.txt
+        rand=$(awk 'NR==6 {print $1}' ${BaseDir}/log/pmu_event.txt)
+        rand2=$(awk 'NR==9 {print $1}' ${BaseDir}/log/pmu_event.txt)
+        perf stat -a -e $rand -e $rand2 -I 200 sleep ${SLEEP_TIME} >& ${BaseDir}/log/perf_statu.log
+        cat ${BaseDir}/log/perf_statu.log | awk -F '[ \t]+'  '{print $3}' | sed 's/counts//g' | grep -v "^$" > ${BaseDir}/log/counts.txt
         event_counts_judge
         if [ $? -eq 1 ];then
-            MESSAGE="Pass"
-            echo ${MESSAGE}
+            MESSAGE="PASS"
         else
             MESSAGE="Fail\t Run $1 Event Err!"
         fi

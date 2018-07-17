@@ -54,10 +54,11 @@ declare -a ALL_DISK_PART_NAME
 
 # FIO tools IO size
 FIO_BS=("4M" "512K" "4K" "512B")
-
 # FIO tools IO Read and write mode
 FIO_RW=("read" "write" "randrw" "randread" "randwrite" "rw" "readwrite" "randrw")
-# FIO_RW=("read" "write")
+# FIO tools mixed read and write ratio.
+IO_RATIO=("10" "50" "90")
+IO_RATIO_RW=("read" "write")
 
 #iodepth=128
 #runtime=300
@@ -70,14 +71,15 @@ ramp_time=1
 ioengine=psync
 iodepth=128
 numjobs=1
-bs=4k-4M
+bs=4k
+;size=102400m
 ;zero_buffers=1
 group_reporting=1
 ;ioscheduler=noop
 ;gtod_reduce=1
 ;iodepth_batch=2
 ;iodepth_batch_complete=2
-runtime=20
+runtime=10
 ;thread
 loops=10
 "
@@ -110,8 +112,139 @@ SAS_PHY_VALUE_LIST=("12.0 Gbit" "6.0 Gbit" "3.0 Gbit")
 
 ## 3 - support full sas function on all available phys
 #  cycle the number of all proximal phy switches, Default value is 100.
-LOOP_PHY_COUNT=1
+LOOP_PHY_COUNT=3
 #  cycle reset distal phy number, Default value is 1000.
-RESET_PHY_COUNT=1
+RESET_PHY_COUNT=3
 #  fio tool business run time.
-LOOP_PHY_TIME=20
+LOOP_PHY_TIME=10
+## 3 - stable_2GB_file_transfer
+#  Disk file data consistency test, File comparison times, Default Value is 500.
+COMPARISON_NUMBER=3
+
+## 4 - No cable unplug OOPs
+#  Long time read / write disk, Default Value is 0.
+#IS_LONG_TIME_IO_READ_WRITE=0
+#  Long time read and write disk time, Default Value is 14400ms.
+FIO_LONG_RUN_TIME=360
+#  Repeat read / write disk, Default Value is 0.
+#IS_REPEAT_IO_READ_WRITE=0
+#  Repeat read and write disks. Default value is 100 second.
+REPEAT_RW_NUMBER=3
+#  FIO tool to read the cycle time.
+REPEAT_RM_TIME=10
+
+## 5 - phy_control_through_sysfs
+#  loop Rate set up function switch,  1 - oepn test, 0 - close test, Default Value is 0.
+#IS_LOOP_RATE_SET_UP=0
+#  loop Rate set up number, Default Value is 10000.
+#LOOP_RATE_SET_UP_NUMBER=10000
+#  Maximum disk phy, Default Value is "6.0 Gbit".
+#MAXIMUM_LINK_VALUE="6.0 Gbit"
+#  Minimum disk phy, Default Value is "3.0 Gbit".
+#MINIMUM_LINK_VALUE="3.0 Gbit"
+## 6 - support_available_sas_cores
+#
+BSRANGE="4k-4M"
+#
+BSSPLIT="4k\/30:8k\/40:16k\/30"
+
+## 7 - support full sas function on all available phys
+#  cycle the number of all proximal phy switches, Default value is 100.
+#LOOP_PHY_COUNT=100
+#  cycle reset distal phy number, Default value is 1000.
+#RESET_PHY_COUNT=1000
+#  fio tool business run time.
+#LOOP_PHY_TIME=300
+
+## 8 - Support SAS Narrow and Wide Ports.
+# fio tool business run time.
+#FIO_RESET_TIME=300
+FIO_RESET_TIME=60
+#  Reset the number of Hart_rest or link_reset
+#FIO_RESET_COUNT=1000
+FIO_RESET_COUNT=2
+## 9 - support hotplug
+# fio tool business run time.
+#FIO_ENABLE_TIME=300
+FIO_ENABLE_TIME=30
+
+## 10 - support smart
+# query enable smart keyword.
+SUPPORT_SMART_KEYWORD="Enabled"
+DISABLED_SMART_KEYWORD="Disabled"
+ENABLED_SMART_KEYWORD="Enabled"
+STATUS_SMART_KEYWORD="PASSED|OK"
+
+## 12 - support Max devices
+# The number of disks.
+MAX_DEV_NUM=4
+## 13 - RAS support
+# 1bit error injection, injection CFG_ECCERR_INJECT0_EN register value.
+#ECC_1BIT_REG_INJECT0_VALUE=(
+#"0x1" "0x2" "0x4" "0x8" "0x10" "0x20" "0x40" "0x80" "0x100" "0x200" "0x400""0x800"
+#"0x1000" "0x2000" "0x4000" "0x8000" "0x10000" "0x20000" "0x40000" "0x80000" "0x100000"
+#)
+# 1bit error injection, injection CFG_ECCERR_INJECT1_EN register value.
+#ECC_1BIT_REG_INJECT1_VALUE=(
+#"0x1" "0x4" "0x10" "0x40" "0x100" "0x400" "0x1000" "0x4000" "0x10000"
+#)
+# 2bit error injection, injection CFG_ECCERR_INJECT1_EN register value.
+#ECC_3BIT_REG_INJECT1_VALUE=(
+#"0x2" "0x8" "0x20" "0x80" "0x200" "0x800" "0x2000" "0x8000" "0x20000"
+#)
+# Value of SAS_ECCERR_MASK0 register address
+MASK_REG_ADDR_VALUE="0xa20001F0"
+# Value of CFG_ECCERR_INJECT0_EN register address
+INJECT0_REG_ADDR_VALUE="0xa2000200"
+# Value of CFG_ECCERR_INJECT1_EN register address
+INJECT1_REG_ADDR_VALUE="0xa2000204"
+#
+CNT_REG_ADDR_VALUE="0xa2006014"
+#
+TRSHDC_REG_ADDR_VALUE="0xa2006018"
+#
+BIT_ECC_TIME=30
+#
+ECC_INFO_KEY_QUERIES="hgc_dqe_acc1b_intr"
+
+## 14 - support module load and uninstall.
+# Need to load the ko file name, multiple ko file format "a.ko|b.ko", default is empty, that does not load.
+MODULE_KO_FILE="hisi_sas_main.ko|hisi_sas_v1_hw.ko|hisi_sas_v3_hw.ko"
+MODULE_KO_PATH="config/ko"
+# load ko after the success of the test disk file, for example "/dev/sda1", default is empty.
+MODULE_DISK_FILE=""
+
+## 15 - the driver should support 700k iops per controller.
+#
+FIO_IOPS_IODEPTH="1024"
+#
+IOPS_THRESHOLD="700"
+#
+FIO_IODEPTH_LIST=("1" "2" "4" "8" "16" "32" "64" "128" "256" "512" "1024" "2048" "4096")
+
+## 16 - controller reset for ECC error.
+#
+CONTROLLER_ECC_RESET_ADDR="0xa2000200"
+#
+CONTROLLER_ECC_ERROR="0xa20001F0"
+#
+CONTROLLER_ECC_IO_TIME=60
+## 17 check whether or not start with acpi.
+#
+ACPI_KEY_INFO="acpi"
+## 18 reset the number of backplane (smp_discover),Default value is 1000.
+#
+SMP_DISCOVER_COUNT=3
+
+## 19 the number of controller_ecc_error_reset,Default value is 1000.
+#
+BIT_ECC_COUNT=3
+
+## 20 linux pci device,the path of device.
+#
+DEVICE_PATH=/sys/bus/pci/devices/0000:74:02.0
+
+
+
+
+

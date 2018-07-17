@@ -1,12 +1,8 @@
-ST.FUNC.001|dd_write_SATA_SAS|sas_smoke|chenxiang|chenliangfei|driver_must_support.sh|driver_supports|on
-ST.FUNC.002|SetMaxMinDiskRate_SATA_SAS|sas_smoke|chenxiang|chenliangfei|driver_must_support.sh|driver_supports|on
-ST.FUNC.027|FIO_ReadWrite_SATA_SAS|sas_smoke|chenxiang|chenliangfei|support_available_sas_cores.sh|FIO_IO_read_write|on
-ST.FUNC.045|CycleOpenClosePhy_SATA_SAS|sas_smoke|chenxiang|chenliangfei|support_full_sas_function_all_available_phys.sh|cycle_enable_phy|on
-ST.FUNC.046|CycleHardResetDisk_SATA_SAS|sas_smoke|chenxiang|chenliangfei|support_full_sas_function_all_available_phys.sh|cycle_hard_reset_phy|on
-ST.FUNC.047|CycleLinkResetDisk_SATA_SAS|sas_smoke|chenxiang|chenliangfei|support_full_sas_function_all_available_phys.sh|cycle_link_reset_phy|on
 ST.FUNC.004|dd_writeMAX_SATA_SAS|sas_function|chenxiang|chenliangfei|support_max_devices.sh|support_max_devices|on
 ST.FUNC.008|DiskNegotiated_LinkRate_SAS|sas_function|chenxiang|chenliangfei|physical_data_rate.sh|disk_negotiated_link_rate_query|on
 ST.FUNC.009|DiskNegotiated_LinkRate_SATA|sas_function|chenxiang|chenliangfei|physical_data_rate.sh|disk_negotiated_link_rate_query|on
+ST.FUNC.010|SetMaxMinLinkRate_SATA_SAS|sas_function|chenxiang|chenliangfei|phy_control_through_sysfs.sh|set_rate_link|on
+ST.FUNC.028|FIO_RWmixread10_SATA_SAS|sas_function|chenxiang|chenliangfei|support_available_sas_cores.sh|FIO_IO_RAIO_randrw|on
 ST.FUNC.029|FIO_RWmixread50_SATA_SAS|sas_function|chenxiang|chenliangfei|support_available_sas_cores.sh|FIO_IO_RAIO_randrw|on
 ST.FUNC.030|FIO_RWmixread90_SATA_SAS|sas_function|chenxiang|chenliangfei|support_available_sas_cores.sh|FIO_IO_RAIO_randrw|on
 ST.FUNC.031|FIO_ReadOnly_SATA_SAS|sas_function|chenxiang|chenliangfei|support_available_sas_cores.sh|FIO_IO_RAIO_read_write|on
@@ -20,9 +16,7 @@ ST.FUNC.059|SmartDisk_OpenClose_SATA_SAS|sas_function|chenxiang|chenliangfei|sup
 ST.FUNC.062|CheckAPI_SAS_SATA|sas_function|chenxiang|chenliangfei|support_acpi.sh|check_acpi_start|on
 ST.FUNC.063|CycleReset_Expander|sas_function|chenxiang|chenliangfei|reset_backplane.sh|smp_discover|on
 ST.FUNC.058|CatMsg_NCQ_SATA|sas_function|chenxiang|chenliangfei|support_sata_ncq.sh|ncq_query|on
-ST.FUNC.064|Device_ResetCancleScan_PCIE|sas_function|chenxiang|chenliangfei|linux_pci_device.sh|reset_device|off
-ST.FUNC.039|FioPerformance_700K_SAS_SATA|sas_performance|chenxiang|chenliangfei|support_700k_iops.sh|fio_iops_controller|off
-ST.FUNC.010|SetMaxMinLinkRate_SATA_SAS|sas_function|chenxiang|chenliangfei|phy_control_through_sysfs.sh|set_rate_link|on
-ST.FUNC.028|FIO_RWmixread10_SATA_SAS|sas_function|chenxiang|chenliangfei|support_available_sas_cores.sh|FIO_IO_RAIO_randrw|on
+
 ST.FUNC.044|ContinueOpenClosePhy_SATA_SAS|sas_function|chenxiang|chenliangfei|support_full_sas_function_all_available_phys.sh|cycle_devmem_all_switch_phy|on
-ST.FUNC.065|Device_ReadSet_register|sas_function|chenxiang|chenliangfei|linux_pci_device.sh|set_sas_register|on
+ST.FUNC.064|Device_ResetCancleScan_PCIE|sas_function|chenxiang|chenliangfei|linux_pci_device.sh|reset_device|off
+ST.FUNC.065|Device_ReadSet_register|sas_function|chenxiang|chenliangfei|linux_pci_device.sh|set_sas_register|off

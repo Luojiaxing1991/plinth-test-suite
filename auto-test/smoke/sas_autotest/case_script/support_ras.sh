@@ -86,12 +86,15 @@ function output_ecc_info()
     case "${REG_RETURN_VALUE}" in
         0)
             MESSAGE="PASS"
+            echo ${MESSAGE}
             ;;
         1)
             MESSAGE="FAIL\t${REG_ADDR_VALUE} register address setting ${reg}, no error message is reported."
+            echo ${MESSAGE}
             ;;
         2)
             MESSAGE="FAIL\t${REG_ADDR_VALUE} register address setting ${reg}, shutdown error repoted log failed."
+            echo ${MESSAGE}
             ;;
     esac
 }
@@ -99,9 +102,9 @@ function output_ecc_info()
 # 1bit ecc error register 0 injection.
 # IN  : $1 - register injection value.
 # OUT : N/A
-function 1bit_ecc_inject0_en()
+function 1bit_ecc_inject0()
 {
-    Test_Case_Title="1bit_ecc_inject0_en"
+    Test_Case_Title="1bit_ecc_inject0"
     reg_value=$1
 
     ecc_injection_process "${reg_value}" "${INJECT0_REG_ADDR_VALUE}" "0x1"
@@ -121,9 +124,9 @@ function 1bit_ecc_inject0_en()
 # 1bit ecc error register 1 injection.
 # IN  : N/A
 # OUT : N/A
-function 1bit_ecc_inject1_en()
+function 1bit_ecc_inject1()
 {
-    Test_Case_Title="1bit_ecc_inject1_en"
+    Test_Case_Title="1bit_ecc_inject1"
     reg_value=$1
 
     ecc_injection_process "${reg_value}" ${INJECT1_REG_ADDR_VALUE} "0x1"
@@ -169,7 +172,7 @@ function main()
     echo "The using function name is "${TEST_CASE_FUNCTION_NAME}
     TEST_CASE_FUNCTION_NAME="${TEST_CASE_FUNCTION_NAME} 0x${info}"
 
-    inject=`echo ${TEST_CASE_FUNCTION_NAME} | awk -F '_' '{print $(NF-1)}'`
+    inject=`echo ${TEST_CASE_FUNCTION_NAME} | awk -F '_' '{print $NF}' | awk -F ' ' '{print $1}'`
     bit=`echo ${TEST_CASE_FUNCTION_NAME} | awk -F '_' '{print $1}'`
 
 
@@ -177,6 +180,9 @@ function main()
 	if [ x"$inject" = x"inject0" ];then
     echo "check if dmesg grep info is correct or not"
     case $info in
+    "1" | "2" | "4" | "8")
+        ECC_INFO_KEY_QUERIES="corrected"
+        ;;
 	"10")
 		ECC_INFO_KEY_QUERIES="hgc_cqe_acc1b_intr"
 		;;
@@ -219,8 +225,8 @@ function main()
 
   else
 	echo "2bit ecc"
-	case $info in	
-		"2" | "8" | "20" | "80" | "200" | "800" | "2000" | "8000" | "20000")
+	case $info in
+        "2" | "8" | "20" | "80" | "200" | "800" | "2000" | "8000" | "20000")
 			ECC_INFO_KEY_QUERIES="dmac_rx_ecc_bad_err"
 			;;
 	esac
