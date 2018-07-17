@@ -112,7 +112,7 @@ else
 fi
 
 ##kill roce process running before
-roce-test -m 2 -c 0xff -r
+/${ROCE_CASE_DIR}/roce-test -m 2 -c 0xff -r
 sleep 5
 
 

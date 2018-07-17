@@ -77,7 +77,8 @@ function download_roce_drv() {
     tmp=$(echo ${tmp} | awk -F "." '{print $1}')
     echo ${tmp}
     cd /home/roce_userDrv/${USER_DRV_VERSION}/plinth-roce/build/lib
-    cp ${ROCE_LIB_TOP_DIR}/config/tool/* /usr/bin
+    apt-get install perftest
+    # cp ${ROCE_LIB_TOP_DIR}/config/tool/* /usr/bin
     wait
     apt-get install libnl-route-3-dev -y
     wait
