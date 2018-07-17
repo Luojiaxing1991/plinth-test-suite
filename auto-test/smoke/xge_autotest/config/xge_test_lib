@@ -22,30 +22,48 @@ eth_map_r=(
 
 ###### start with chenjing <-------------------
 
-function install_iperf_netperf() {
-    command=("iperf" "netperf")
-    for i in ${command[*]}
-    do
-        local_command=$(which ${i})
-        remote_command=$(ssh -o StrictHostKeyChecking=no root@${BACK_IP} "which ${i}")
-        if [ x"${local_command}" == x"" ];then
-		 apt-get install ${i} -y
-	 fi
-	 if [ x"${remote_command}" = x"" ];then
-     		 #wait
-            ssh -o StrictHostKeyChecking=no root@${BACK_IP} "apt-get update; apt-get install ${i} -y; wait"
-        fi
-    done
-
-}
-
-function qperf_install() {
+function Prepare_PerfTool() {
     which qperf
     [ $? -ne 0 ] || echo "begin to install qperf"; cp ${common_tool}/qperf /usr/bin
-   # ssh -o StrictHostKeyChecking=no root@${BACK_IP} "which qperf"
-   # [ $? -ne 0 ] || echo "begin to install remote qperf";
-   scp ${common_tool}/qperf root@${BACK_IP}:/usr/bin
+    scp ${common_tool}/qperf root@${BACK_IP}:/usr/bin
+
+    Perf_install=("iperf_2.0.5+dfsg1-2ubuntu0.1_arm64.deb" "netperf_2.6.0-2_arm64.deb")
+    if [ -d "/home/junkman" ]
+    then
+        for i in ${Perf_install[*]}
+        do
+            dpkg -i ${i}
+        done
+    else
+        echo "The prepare work is not commit"
+        exit 1
+    fi
 }
+
+# function install_iperf_netperf() {
+    # command=("iperf" "netperf")
+    # for i in ${command[*]}
+    # do
+        # local_command=$(which ${i})
+        # remote_command=$(ssh -o StrictHostKeyChecking=no root@${BACK_IP} "which ${i}")
+        # if [ x"${local_command}" == x"" ];then
+		 # apt-get install ${i} -y
+	 # fi
+	 # if [ x"${remote_command}" = x"" ];then
+              # #wait
+            # ssh -o StrictHostKeyChecking=no root@${BACK_IP} "apt-get update; apt-get install ${i} -y; wait"
+        # fi
+    # done
+
+# }
+
+# function qperf_install() {
+    # which qperf
+    # [ $? -ne 0 ] || echo "begin to install qperf"; cp ${common_tool}/qperf /usr/bin
+   # # ssh -o StrictHostKeyChecking=no root@${BACK_IP} "which qperf"
+   # # [ $? -ne 0 ] || echo "begin to install remote qperf";
+   # scp ${common_tool}/qperf root@${BACK_IP}:/usr/bin
+# }
 
 #####> end with chenjing <--------------------
 

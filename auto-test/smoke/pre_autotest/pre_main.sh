@@ -35,8 +35,9 @@ apt-get update
 echo 0 > /sys/class/sas_phy/phy-1\:0\:5/enable
 
 # install expect
-which expect
-[ $? != 0 ] && apt-get -y install expect
+Check_expect_exist
+# which expect
+# [ $? != 0 ] && apt-get -y install expect
 
 #echo -e 'export ENV_OK="TRUE"' > ~/.bashrc
 #source ~/.bashrc
