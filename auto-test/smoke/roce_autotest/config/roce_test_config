@@ -94,8 +94,8 @@ ROCE_USERDRV_BRANCH="plinth-it18"
 #***add by chenjing
 #********************
 #roce port
-fibre_name="hns_0"
-tp_name="hns_1"
+fibre_name="hns_1"
+tp_name="hns_2"
 res=$(ls /sys/class/infiniband/)
 hns_total=( ${res} )
 local_tp_ip="192.168.11.110"
