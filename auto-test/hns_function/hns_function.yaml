@@ -17,7 +17,8 @@ run:
     steps:
         - cp ./auto-test/hns_function/hns_test_case.table ./auto-test/smoke/xge_autotest/data/hns_test_case.table
         - cd ./auto-test/smoke/
-        - bash ./xge_autotest/xge_main.sh
+          #- bash ./xge_autotest/xge_main.sh
+        - bash ./xge_autotest/xge_main.sh  "192.168.50.152" "192.168.50.153" "true" "eth3"
           # - bash -x ./sas_autotest/sas_main.sh
           # - bash -x ./roce_autotest/roce_main.sh
        # - bash -x ./pcie_autotest/pcie_main.sh

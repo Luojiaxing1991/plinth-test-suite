@@ -130,14 +130,28 @@ else
 fi
 
 
+
+#-------------------------------------------------------------------#
+#Description: These code check if ENV_OK is exist.if not ,run pre_main to do some common options.
+#             then check ENV_OK again , if still not exist,it mean some thing wrong when running pre_main.
+#             test will not run but exit.
+#
+#Coder: luojiaxing 00437090 20180719
+
 check_ENV_OK_exists
 
-#check the env_ok is ok
 if [ $? -eq 1 ]
 then
     . ${HNS_TOP_DIR}/../pre_autotest/pre_main.sh
 fi
 
+check_ENV_OK_exists
+
+if [ $? -eq 1 ];then
+	echo "pre_main meet some problem,please check...."
+	exit 1
+fi
+#-------------------------------------------------------------------------#
 
 #mkdir the log path
 InitDirectoryName
@@ -148,49 +162,44 @@ MkdirPath
 #Output CI log header
 LogHeader
 
-#Xge test is only excute in 159 dash board
-#Find the local MAC
-
-#ifconfig IP
-#initLocalIP
+#------------------------------------------------------------------------#
+#Description:   these code get sip and cip from parameter. Client ip is import to xge test ,so if it
+#		is empty , this shell will exit.
+#		when cip is not empty, I will check the connect between server and client by ping. if
+#               connect is not good,this shell will exit too.
+#
+#Coder: luojiaxing 00437090 20180625
+#
 
 if [ x"$g_server_ip" == x"" ];then
-	g_get_default_sip
-    if [ $? -eq 0 ];then
-        echo "Get the default server ip!"
-    else
-        echo "MAC is not including in pre-cfg list, not get the default server ip!" 
-        exit 1
-    fi
+	echo "server ip is not set. but it may be no influence"
 fi
 
 echo "Get the server ip as $g_server_ip"
 
 LOCAL_IP=$g_server_ip
-#LOCAL_IP="192.168.50.152"
 echo ${LOCAL_IP}
 
 #init_client_ip
 if [ x"$g_client_ip" = x"" ];then
-	BACK_IP=${sip_cip[$g_server_ip]}
+	echo "client ip is not set! It mean fail...exit!"
+	exit 1
 else
         BACK_IP=$g_client_ip
 fi
 
-#BACK_IP="192.168.50.153"
 echo "The client ip is "${BACK_IP}
 
 #check connect between server and client
-ping $BACK_IP -c 5
+ping $BACK_IP -c 5 | grep " 0% packet loss"
 
 if [ $? -eq 0 ];then
 	echo "Connect between server and client is OK!"
 else
 	echo "Client is not good!"
+	exit 1
 fi
-
-#check expect exist
-#check_expect_exists
+#----------------------------------------------------------------------------------#
 
 #set passwd
 setTrustRelation

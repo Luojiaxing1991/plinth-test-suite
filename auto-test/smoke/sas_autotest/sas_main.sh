@@ -63,15 +63,27 @@ function main()
 }
 
 # close /dev/sda
+#-------------------------------------------------------------------#
+#Description: These code check if ENV_OK is exist.if not ,run pre_main to do some common options.
+#             then check ENV_OK again , if still not exist,it mean some thing wrong when running pre_main.
+#             test will not run but exit.
+#
+#Coder: luojiaxing 00437090 20180719
 
-##check the env_ok is ok
 check_ENV_OK_exists
+
 if [ $? -eq 1 ]
 then
     . ${SAS_TOP_DIR}/../pre_autotest/pre_main.sh
 fi
-#Output log file header
-# writeLogHeader
+
+check_ENV_OK_exists
+
+if [ $? -eq 1 ];then
+	echo "pre_main meet some problem,please check...."
+	exit 1
+fi
+#-------------------------------------------------------------------------#
 
 #mkdir the log path
 InitDirectoryName

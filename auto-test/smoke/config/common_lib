@@ -1,16 +1,24 @@
-#############################################################################################################
-# function list
-# new function write at end
-# 1 writeLog
-#############################################################################################################
+# Description: this shell include common function provide to all module in plinth-test-suite
+#              I prefer to let all function in this shell do not use variable include in common_cfg
+#              because this shell is a lib,it use local variable is less influence but ....
+#              My function in this shell will use this thought
+#
+# Function:    1.lava_report can report the test result to lava using API
+#              2.settrustrelation,include nopara and para version. Used to set ssh connect.
+#              3.keepNICmsg, Save dmesg of eht rename message
+#		4.checkExpectExist, install the expect cmd and clone the deb repo to local
+#              5.test_report , used for generate test report at workspace 
+#		6.modify_bootorder , used for change boot order in ubuntu sys
+#
+# Generater:  chenliangfei,luojiaxing 00437090
+#
+# Maintainer: luojiaxing,chenjing
+
+#this dir path is the path of shell which call this shell. -luojiaxing
 LIB_TOP_DIR=$(cd "`dirname $0`" ; pwd)
 
-
-#grep docker /etc/group
-
-#groupmod -g 900 docker
-
-#  Get default server ssh ip by mac
+#  Get default server ssh ip by mac,this function have been abandoned because sip nad cip can be pass by para
+#  I don't like to make logic code to be complex
 #  IN : N/A
 #  OUT: 1:  no found
 #       0:  found ip of server ssh ip
@@ -35,6 +43,7 @@ function g_get_default_sip()
 
 
 #  Output success test case log information
+#  record the fail testcase message into result.txt and result.txt will be provide to CI
 #  IN :
 #       $1:    The title of testcase
 #       $2:    The result of current testcase
@@ -43,6 +52,7 @@ function g_get_default_sip()
 #           pass:  the test is ok
 #           fail:  the test is fail
 #  OUT: N/A
+#  coder:  luojiaxing 00437090 201800306
 function lava_report()
  {
      #echo "The result of test "$1" is "$2
@@ -64,6 +74,50 @@ function lava_report()
      return 0
  }
 
+# Set trust relationship for two boards using parameter
+# IN : $1: cip
+# OUT: N/A
+# author: luojiaxing 20180719
+function setTrustRelationWithPara
+{
+    rm -f ~/.ssh/*
+    expect -c '
+        set timeout -1
+        set back_ip '$1'
+        spawn ssh-keygen -t rsa
+        expect {
+        "*save the key*id_rsa*" { send "\r"; exp_continue }
+        "*verwrite*y/n*" { send "y\r"; exp_continue }
+        "*passphrase*passphrase*" { send "\r"; exp_continue }
+        "*same passphrase*" { send "\r" }
+        }
+
+#	spawn ssh -o StrictHostKeyChecking=no root@${back_ip} [ -d /root/.ssh/authorized_keys ] && echo ok || mkdir -p /root/.ssh/authorized_keys
+#        expect "password"
+#        send "root\r"
+        expect eof
+
+        sleep 1
+
+        spawn ssh-copy-id -i root@${back_ip}
+
+
+
+#        spawn scp -r /root/.ssh/id_rsa.pub root@${back_ip}:/root/.ssh/authorized_keys
+        expect "Are you sure you want to continue connecting (yes/no)?"
+        send "yes\r"
+        sleep 10
+        expect -re ".*password:"
+        send "root\r"
+
+        expect eof
+        exit 0
+    '
+
+    return 0
+}
+
+
 ## -----------------> -start chenjing <------------------------
 #
 #
@@ -71,6 +125,7 @@ function lava_report()
 # IN : $1: sip
 #      $2: config dir
 # OUT: N/A
+# author: chenjing,luojiaxing
 function KeepNicMsg() {
     declare -A lnic_list
     declare -A rnic_list
@@ -114,6 +169,13 @@ function KeepNicMsg() {
             tmp=`echo ${tmp##* }`
             rnic_list["eth"${i}]=${tmp}
             echo "The name of "eth""${i}" is renamed as "${tmp}
+
+#-----------------------------------------------------------------------------#
+#Description: these code mead to check if remote nic name is correct by ping it. I config the ip using the nic name get before
+#             and then ping between server and client.if ping is success over 2 times. it mean dmesg collect this time is trustable
+#             then i can save it to xge/cfg
+#
+#Coder: luojiaxing 00437090 20180718
             tmp_num=`expr ${i} + 11`
             ifconfig ${lnic_list["eth"${i}]} 192.168.${tmp_num}.11 up
             ssh -o StrictHostKeyChecking=no root@${sip} "ifconfig ${rnic_list["eth"${i}]} 192.168.${tmp_num}.22 up"
@@ -122,6 +184,7 @@ function KeepNicMsg() {
             then
                 let flag++
             fi
+#--------------------------------------------------------------------------------#
         fi
     done
 
@@ -173,6 +236,20 @@ function Check_expect_exist() {
     which expect
     if [ $? -ne 0 ]
     then
+
+	#---------------------------------------------------------------#
+	#Description: These code mean to kill all apt  process in system .
+	#             one time i use dpkg -i without kill apt process ,it return "dpkg database is locked by another process!" and fail
+	#
+	#Coder: luojiaxing 00437090 20190719
+	aptlist1=`ps -e | grep apt | awk -F' ' '{print $1}'`
+	for a in ${aptlist1[@]}
+	do
+		echo $a
+		kill $a
+	done
+	#----------------------------------------------------------------#
+
         #cd /home
         cd /home/junkman
         for i in ${Common_list[*]}
@@ -182,6 +259,18 @@ function Check_expect_exist() {
     fi
 
 
+    #------------------------------------------------------------#
+    #Description: these code check if the expect cmd is install right .if not ,this function will return 1 
+    #             to tell caller that it fail to install expect.
+    #
+    #Coder: luojiaxing 00437090 20180719
+
+    which expect
+    if [ $? -eq 1 ];then
+	echo "expect cmd is not install right!"
+	return 1
+    fi
+    #----------------------------------------------------------------#
     }
 
 
@@ -375,9 +464,9 @@ function setTrustRelation
 ####
 # Set trust relationship for two boards
 # IN :
-#     $1 : Ip of target server
-      $2 : username to login  target server
-      $3 : password used for username before
+#      $1 : Ip of target server
+#      $2 : username to login  target server
+#      $3 : password used for username before
 # OUT: N/A
 function setTrustRelationUsePara
 {
@@ -431,7 +520,7 @@ function initLocalIP()
     echo "The local ip of eth0 is "${COMMON_LOCAL_IP}
 }
 
-# Get client server ip
+# Get client server i, too complex ,abandon
 # IN :
       $1 : MAC address of DHCP server
       $2 : MAC address of client server
@@ -596,6 +685,7 @@ function remoteLogin()
 #This function kill all perf progress in server and customer base on $1
 #input
 #	$1: perf type of target: iperf,netperf
+#
 function perf_killer()
 {
     typePerf=$1

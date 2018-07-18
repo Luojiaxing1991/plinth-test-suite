@@ -16,7 +16,7 @@ params:
 run:
     steps:
         - cd ./auto-test/smoke/
-        - bash -x ./pre_autotest/pre_main.sh
+        - bash -x ./pre_autotest/pre_main.sh "192.168.50.153"
           # - bash -x ./sas_autotest/sas_main.sh
           # - bash -x ./roce_autotest/roce_main.sh
        # - bash -x ./pcie_autotest/pcie_main.sh

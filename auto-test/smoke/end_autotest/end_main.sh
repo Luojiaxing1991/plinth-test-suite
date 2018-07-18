@@ -1,4 +1,18 @@
 #!/bin/bash
+# Description: this shell mean to do some options which end of test and only run once
+#
+# Function:    1.get the commit id of kernel now testing
+#              2.run apt-get update when nessary
+#              3.close sata phy when nessary
+#              4.install expect cmd
+#	       5.record dmesg of eth renamed
+#              6.new result.txt for save fail testcase message
+#               
+#
+# Generater:  luojiaxing 00437090
+#
+# Maintainer: luojiaxing,chenjing
+
 
 
 END_TOP_DIR=$(cd "`dirname $0`" ; pwd)
@@ -7,10 +21,11 @@ END_TOP_DIR=$(cd "`dirname $0`" ; pwd)
 . ${END_TOP_DIR}/../config/common_config
 #. ${END_TOP_DIR}/../config/common_lib
 
-#####
-##collect the result file ,upload to tftp server
-#####
-
+#-----------------------------------------------------------#
+#Description: collect the result file ,upload to tftp server
+#
+#Coder: luojiaxing 00437090 20180608
+#
 pushd ${END_TOP_DIR}
 
 #get the name of dir which save lava lib
@@ -72,7 +87,6 @@ expect -c '
 	expect eof
 	exit 0
 '
-#scp -r ${lava_id} ${TFTP_SERVER_IP}
-
+#---------------------------------------------------------------------------#
 popd
 # clean exit so lava-test can trust the results
