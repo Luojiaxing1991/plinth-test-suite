@@ -13,7 +13,11 @@ if [ x"$COM" = x"" ];then
 	. ${SAS_TOP_DIR}/../config/common_lib
 fi
 
-if [ x"${g_server_ip}" != x"" ]
+if [ x"$1" != x"" ];then
+	g_client_ip=$1
+fi
+
+if [ x"${g_client_ip}" != x"" ]
 then
     KeepNicMsg ${g_client_ip} $PLINTH_TEST_WORKSPACE/xge/cfg $BOARD_TYPE
 fi
