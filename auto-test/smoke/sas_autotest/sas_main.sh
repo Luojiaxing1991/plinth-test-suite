@@ -79,14 +79,12 @@ InitDirectoryName
 #mkdir test path
 MkdirPath
 
-#Install tool
-InstallTool
-
 #Output CI log header
 LogHeader
 
 get_all_disk_part
 
+cat /proc/kmsg >> /home/log.txt &
 main
 
 # clean exit so lava-test can trust the results

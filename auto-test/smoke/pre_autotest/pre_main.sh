@@ -13,8 +13,13 @@ if [ x"$COM" = x"" ];then
 	. ${SAS_TOP_DIR}/../config/common_lib
 fi
 
-#check the image commit id
+if [ x"${g_server_ip}" != x"" ]
+then
+    KeepNicMsg ${g_client_ip} $PLINTH_TEST_WORKSPACE/xge/cfg $BOARD_TYPE
+fi
 
+
+#check the image commit id
 commit_id=`cat /proc/version | awk -F' ' '{print $3}'`
 
 echo "kernel commit ID is $commit_id"

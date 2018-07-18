@@ -149,13 +149,14 @@ sip_cip=(
 ["192.168.50.152"]="192.168.50.153"
 )
 
-PLINTH_BASE_WORKSPACE="/home/plinth-test-workspace"
+PLINTH_TEST_WORKSPACE="/home/plinth-test-workspace"
 
 g_server_ip=''
 g_client_ip=''
 g_ctrlNIC='eth3'
 COM=''
 jump_apt_get='FALSE'
+BOARD_TYPE="d06"
 ####################################################################################
 
 

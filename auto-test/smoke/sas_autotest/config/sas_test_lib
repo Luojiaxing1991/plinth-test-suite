@@ -6,18 +6,6 @@
 ## Utility function
 #
 
-######## Add by chenjing <-----------------------------
-#---------------------------< > ------------------------
-#  call the implementation of the automation use cases
-#  IN : N/A
-#  OUT: N/A
-function InstallTool(){
-    #cp devmem2 to the env
-    cp ${SAS_TOP_DIR}/../config/common_lib/devmem2 /usr/bin
-}
-
-######## End add by chenjing <-----------------------------
-#---------------------------< > ------------------------
 
 #  call the implementation of the automation use cases
 #  IN : N/A
@@ -86,8 +74,9 @@ function get_all_disk_part()
 
     for name in ${dev_info}
     do
+        boot_disk=`fdisk -l | grep "$name" | grep "EFI"`
         assert=`echo ${mout_info} | grep ${name}`
-        if [ x"${assert}" == x"" ]
+        if [ x"${assert}" == x"" -a x"${boot_disk}" == x"" ]
         then
             ALL_DISK_PART_NAME[${#ALL_DISK_PART_NAME[*]}]=$name
             echo ${assert}

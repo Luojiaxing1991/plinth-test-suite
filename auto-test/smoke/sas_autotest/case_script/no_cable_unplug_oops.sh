@@ -35,7 +35,7 @@ function disk_file_data_consistency_test()
                 rm -f /opt/test.img
                 umount ${disk_name}
                 MESSAGE="FAIL\tThe test.img(${init_value}) file is not equal to the MD5 value of the /mnt/test.img.${i}(${value}) file."
-                echo ${MESSAGE} 
+                echo ${MESSAGE}
                 return 1
             fi
             rm -f /mnt/test.img.$i
@@ -57,7 +57,7 @@ function loog_time_IO_read_write()
     sed -i "{s/^runtime=.*/runtime=${FIO_LONG_RUN_TIME}/g;}" fio.conf
     echo "Begin to IO rw with runtime: "${FIO_LONG_RUN_TIME}
     IO_read_write
-    if [ $? -eq 1 ] 
+    if [ $? -eq 1 ]
     then
         MESSAGE="FAIL\tFIO tool long read and write disk failure." && echo ${MESSAGE} && return 1
     fi
@@ -76,10 +76,10 @@ function repeat_IO_read_write()
     for num in `seq ${REPEAT_RW_NUMBER}`
     do
         IO_read_write
-        if [ $? -eq 1  ] 
+        if [ $? -eq 1  ]
         then
             MESSAGE="FAIL\tFIO tool repeatedly read and write disk failure." && echo ${MESSAGE} && return 1
-        fi    
+        fi
     done
     MESSAGE="PASS"
     echo ${MESSAGE}

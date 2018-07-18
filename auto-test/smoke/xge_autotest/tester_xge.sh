@@ -13,6 +13,7 @@ T_SERVER_IP=''
 T_CLIENT_IP=''
 T_CTRL_NIC=''
 T_PICK_CASEC=''
+T_FORCE=''
 
 checklist()
 {
@@ -89,7 +90,9 @@ Options:
 		    this para is forced to be set.
     -p, --pickcase: true :pick the test case you want to run this time 
                           and save as your  default cfg 
-                    flase: do nothing
+                    false: do nothing
+    -f, --forceRecfg: true :force to run pre_main again to reconfig the env
+                      false : do nothing 
 Example:
     #***First time to use this suite or use this suite at new board***
 	bash tester_xge.sh -t luojiaxing  -s "192.168.3.152" -c "192.168.3.153" -n "eth3" -p true
@@ -99,6 +102,9 @@ Example:
 
     #***Reselect the test suite and keep other case no change
     bash tester_xge.sh -t luojiaxing -p true
+
+    #***Force to run the pre_main to reconfigt the env
+    bash tester_xge.sh -t luojiaxing -f true
 EOF
 }
 
@@ -141,6 +147,7 @@ do
 		-c | --cip) T_CLIENT_IP=$ac_optarg ;;
         	-n | --ctrlNIC) T_CTRL_NIC=$ac_optarg ;;
 		-t | --tester) T_TESTER=$ac_optarg ;;
+		-f | --forceRecfg) T_FORCE=$ac_optarg ;;
 		*) Usage ; echo "Unknown option $1"; exit 1 ;;
 	esac
 
@@ -237,6 +244,9 @@ else
 fi
 
 COM="true"
+if [ x"${T_FORCE}" = x"true" ];then
+    rm /home/plinth/ENV_OK
+fi
 source ${TESTER_HNS_TOP_DIR}/xge_main.sh
 
 #COM="true"
