@@ -67,6 +67,76 @@ function lava_report()
 ## -----------------> -start chenjing <------------------------
 #
 #
+# keep the NIC dmesg to workspace
+# IN : $1: sip
+#      $2: config dir
+# OUT: N/A
+function KeepNicMsg() {
+    declare -A lnic_list
+    declare -A rnic_list
+    flag=0
+    sip=$1
+    if [ -e "a.txt" ] | [ -e "b.txt" ]
+    then
+        rm a.txt b.txt
+    fi
+    lcount=`ifconfig -a | grep "encap" | awk '{print $1}' | wc -l`
+    lcount=`expr $lcount - 3`
+    for i in `seq 0 $lcount`
+    do
+        tmp=`dmesg | grep -i "renamed from ""eth""${i}" -w`
+        if [ x"${tmp}" == x"" ]
+        then
+            echo "The name of "eth""${i}" is not renamed,Stay as ""eth""${i}"
+        else
+            echo ${tmp} >> a.txt
+            tmp=`echo ${tmp%:*}`
+            tmp=`echo ${tmp##* }`
+            lnic_list["eth"${i}]=${tmp}
+            echo "The name of "eth""${i}" is renamed as "${tmp}
+            # echo ""eth""${i}":${tmp}" >> a.txt
+        fi
+    done
+    echo ${lnic_list[*]}
+
+    echo "--------------------------"
+    rcount=`ssh -o StrictHostKeyChecking=no root@${sip} "ifconfig -a | grep "encap" | awk '{print $1}' | wc -l"`
+    rcount=`expr $rcount - 3`
+    for i in `seq 0 $rcount`
+    do
+        tmp=`ssh -o StrictHostKeyChecking=no root@${sip} 'dmesg | grep -i "renamed from 'eth''${i}'" -w'`
+        if [ x"${tmp}" == x"" ]
+        then
+            echo "The name of "eth""${i}" is not renamed,Stay as ""eth""${i}"
+        else
+            echo ${tmp} >> b.txt
+            tmp=`echo ${tmp%:*}`
+            tmp=`echo ${tmp##* }`
+            rnic_list["eth"${i}]=${tmp}
+            echo "The name of "eth""${i}" is renamed as "${tmp}
+            tmp_num=`expr ${i} + 11`
+            ifconfig ${lnic_list["eth"${i}]} 192.168.${tmp_num}.11 up
+            ssh -o StrictHostKeyChecking=no root@${sip} "ifconfig ${rnic_list["eth"${i}]} 192.168.${tmp_num}.22 up"
+            ping 192.168.${tmp_num}.22 -c 3
+            if test $? -eq 0
+            then
+                let flag++
+            fi
+        fi
+    done
+
+    if [ ${flag} -ge 2 ]
+    then
+        mkdir -p $2
+        cp a.txt $2/lnic_$3
+        cp b.txt $2/rnic_$3
+    fi
+    rm a.txt b.txt
+}
+
+
+
+
 # Install expect use deb
 # IN : N/A
 # OUT: N/A
@@ -88,12 +158,22 @@ function Check_expect_exist() {
                  "libxpm4_1%3a3.5.11-1ubuntu0.16.04.1_arm64.deb" \
                  "libxaw7_2%3a1.0.13-1_arm64.deb" "libxcb-shape0_1.11.1-1ubuntu1_arm64.deb" "libxi6_2%3a1.7.6-1_arm64.deb" "libxrandr2_2%3a1.5.0-1_arm64.deb" \
                  "tcl8.6_8.6.5+dfsg-2_arm64.deb" "tk8.6_8.6.5-1_arm64.deb" "x11-utils_7.7+3_arm64.deb" "xbitmaps_1.1.1-2_all.deb" "xterm_322-1ubuntu1_arm64.deb")
+
+    if [ -d /home/junkman ];then
+        pushd /home/junkman
+        git pull
+    else
+        #mkdir /home/junkman
+        pushd /home
+        git clone https://github.com/luojiaxing1991/junkman.git
+        wait
+    fi
+    popd
+
     which expect
     if [ $? -ne 0 ]
     then
-        cd /home
-        git clone https://github.com/luojiaxing1991/junkman.git
-        wait
+        #cd /home
         cd /home/junkman
         for i in ${Common_list[*]}
         do

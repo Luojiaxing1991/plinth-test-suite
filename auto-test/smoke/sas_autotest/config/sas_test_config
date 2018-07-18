@@ -79,7 +79,7 @@ group_reporting=1
 ;gtod_reduce=1
 ;iodepth_batch=2
 ;iodepth_batch_complete=2
-runtime=10
+runtime=200
 ;thread
 loops=10
 "
@@ -105,6 +105,8 @@ DISK_NEGOTIATED_LINKRATE_VALUE='1.5|3.0|6.0|12.0'
 MAXIMUM_LINK_VALUE="6.0 Gbit"
 #  Minimum disk phy, Default Value is "1.5 Gbit".
 MINIMUM_LINK_VALUE="3.0 Gbit"
+#  cycle the number of phy control, Default value is 1000.
+PHY_CONTROL_COUNT=2
 #
 SATA_PHY_VALUE_LIST=("6.0 Gbit" "3.0 Gbit" "1.5 Gbit")
 #
@@ -112,24 +114,24 @@ SAS_PHY_VALUE_LIST=("12.0 Gbit" "6.0 Gbit" "3.0 Gbit")
 
 ## 3 - support full sas function on all available phys
 #  cycle the number of all proximal phy switches, Default value is 100.
-LOOP_PHY_COUNT=3
+LOOP_PHY_COUNT=1
 #  cycle reset distal phy number, Default value is 1000.
-RESET_PHY_COUNT=3
+RESET_PHY_COUNT=1
 #  fio tool business run time.
-LOOP_PHY_TIME=10
+LOOP_PHY_TIME=20
 ## 3 - stable_2GB_file_transfer
 #  Disk file data consistency test, File comparison times, Default Value is 500.
-COMPARISON_NUMBER=3
+COMPARISON_NUMBER=500
 
 ## 4 - No cable unplug OOPs
 #  Long time read / write disk, Default Value is 0.
 #IS_LONG_TIME_IO_READ_WRITE=0
 #  Long time read and write disk time, Default Value is 14400ms.
-FIO_LONG_RUN_TIME=360
+FIO_LONG_RUN_TIME=14400
 #  Repeat read / write disk, Default Value is 0.
 #IS_REPEAT_IO_READ_WRITE=0
 #  Repeat read and write disks. Default value is 100 second.
-REPEAT_RW_NUMBER=3
+REPEAT_RW_NUMBER=1
 #  FIO tool to read the cycle time.
 REPEAT_RM_TIME=10
 
@@ -158,15 +160,12 @@ BSSPLIT="4k\/30:8k\/40:16k\/30"
 
 ## 8 - Support SAS Narrow and Wide Ports.
 # fio tool business run time.
-#FIO_RESET_TIME=300
-FIO_RESET_TIME=60
-#  Reset the number of Hart_rest or link_reset
-#FIO_RESET_COUNT=1000
-FIO_RESET_COUNT=2
+FIO_RESET_TIME=300
+#  Reset the number of Hart_rest or link_reset,Default value is 1000.
+FIO_RESET_COUNT=5
 ## 9 - support hotplug
 # fio tool business run time.
-#FIO_ENABLE_TIME=300
-FIO_ENABLE_TIME=30
+FIO_ENABLE_TIME=300
 
 ## 10 - support smart
 # query enable smart keyword.
@@ -177,7 +176,8 @@ STATUS_SMART_KEYWORD="PASSED|OK"
 
 ## 12 - support Max devices
 # The number of disks.
-MAX_DEV_NUM=4
+MAX_DEV_NUM=12
+INIT_DISK_NUM=`fdisk -l | grep /dev/sd | wc -l`
 ## 13 - RAS support
 # 1bit error injection, injection CFG_ECCERR_INJECT0_EN register value.
 #ECC_1BIT_REG_INJECT0_VALUE=(
@@ -234,17 +234,25 @@ CONTROLLER_ECC_IO_TIME=60
 ACPI_KEY_INFO="acpi"
 ## 18 reset the number of backplane (smp_discover),Default value is 1000.
 #
-SMP_DISCOVER_COUNT=3
+SMP_DISCOVER_COUNT=2
 
 ## 19 the number of controller_ecc_error_reset,Default value is 1000.
 #
-BIT_ECC_COUNT=3
+BIT_ECC_COUNT=2
 
 ## 20 linux pci device,the path of device.
 #
-DEVICE_PATH=/sys/bus/pci/devices/0000:74:02.0
+DEVICE_PATH="/sys/bus/pci/devices/0000:74:02.0"
 
+## 21 the path of host_reset.
+#
+HOST_RESET_PATH="/sys/devices/pci0000\:74/0000\:74\:02.0/"
 
+## 22 the count of Code Violation/Running Disparity Error/Invalid Dword error.
+#
+PHY_ERROR_COUNT=2
 
-
-
+## 23 IOST AXI ERR
+#
+IOST_BASE_ADDRL="0xa2000008"
+IOST_BASE_ADDRU="0xa200000c"

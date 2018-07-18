@@ -10,34 +10,23 @@ function cycle_devmem_all_switch_phy()
 {
     Test_Case_Title="cycle_devmem_all_switch_phy"
 
-    begin_count=`fdisk -l | grep /dev/sd | wc -l`
     for i in `seq ${LOOP_PHY_COUNT}`
     do
         # clear the contents of the ring buffer.
         time dmesg -c > /dev/null
 
-        phy_ops close all
+        change_sas_phy_file 0 "enable"
         sleep 2
-        phydown_count=`dmesg | grep 'phydown' | wc -l`
-        if [ ${phydown_count} -eq 0 ] 
-        then
-            MESSAGE="FAIL\tclose all proximal phy, did not produce out event." && echo ${MESSAGE} && return 1
-        fi
-        phy_ops open all
+        change_sas_phy_file 1 "enable"
         sleep 2
-        phyup_count=`dmesg | grep 'phyup' | wc -l`
-        if [ ${phyup_count} -eq 0 ] 
-        then 
-            MESSAGE="FAIL\topen all proximal phy, did not produce in event." && echo ${MESSAGE} && return 1
-        fi
     done
 
     sleep 5
-    end_count=`fdisk -l | grep /dev/sd | wc -l`
-    if [ ${begin_count} -ne ${end_count} ]
+    disk_num=`fdisk -l | grep /dev/sd | wc -l`
+    if [ ${disk_num} -ne ${INIT_DISK_NUM} ]
     then
         MESSAGE="FAIL\tloop all proximal phy switches, the number of disks is missing."
-        echo ${MESSAGE} 
+        echo ${MESSAGE}
         return 1
     fi
     MESSAGE="PASS"
@@ -47,11 +36,10 @@ function cycle_devmem_all_switch_phy()
 # cycle all proximal phy switchec, query whether there is an event.
 # IN :N/A
 # OUT:N/A
-function cycle_enable_devmem_switch_all_phy()
+function cycle_enable_devmem_all_switch_phy()
 {
-    Test_Case_Title="cycle_enable_devmem_switch_all_phy"
+    Test_Case_Title="cycle_enable_devmem_all_switch_phy"
 
-    begin_count=`fdisk -l | grep /dev/sd | wc -l`
     for i in `seq ${LOOP_PHY_COUNT}`
     do
         # clear the contents of the ring buffer.
@@ -60,7 +48,7 @@ function cycle_enable_devmem_switch_all_phy()
         phy_ops close all
         sleep 2
         phydown_count=`dmesg | grep 'phydown' | wc -l`
-        if [ ${phydown_count} -eq 0 ] 
+        if [ ${phydown_count} -eq 0 ]
         then
             MESSAGE="FAIL\tclose all proximal phy, did not produce out event." && echo ${MESSAGE} && return 1
         fi
@@ -68,7 +56,7 @@ function cycle_enable_devmem_switch_all_phy()
         phy_ops open all
         sleep 2
         phyup_count=`dmesg | grep 'phyup' | wc -l`
-        if [ ${phyup_count} -eq 0 ] 
+        if [ ${phyup_count} -eq 0 ]
         then
             MESSAGE="FAIL\topen all proximal phy, did not produce in event." && echo ${MESSAGE} && return 1
         fi
@@ -80,7 +68,7 @@ function cycle_enable_devmem_switch_all_phy()
 
     sleep 5
     end_count=`fdisk -l | grep /dev/sd | wc -l`
-    if [ ${begin_count} -ne ${end_count} ]
+    if [ ${INIT_DISK_NUM} -ne ${end_count} ]
     then
         MESSAGE="FAIL\tloop all proximal phy switches, the number of disks is missing."
         echo ${MESSAGE}
@@ -167,9 +155,9 @@ function cycle_enable_phy()
 # disk running business, switch single proximal phy.
 # IN :N/A
 # OUT:N/A
-function fio_devmem_single_switch_phy()
+function devmem_single_switch_phy()
 {
-    Test_Case_Title="fio_devmem_single_phy_switch"
+    Test_Case_Title="devmem_single_switch_phy"
 
     sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
     ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
@@ -206,9 +194,9 @@ function fio_devmem_single_switch_phy()
 # disk running business, switch multiple proximal phy.
 # IN :N/A
 # OUT:N/A
-function fio_devmem_multiple_switch_phy()
+function devmem_multiple_switch_phy()
 {
-    Test_Case_Title="fio_devmem_multiple_phy_switch"
+    Test_Case_Title="devmem_multiple_phy_switch"
 
     sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
     ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
@@ -312,13 +300,13 @@ function cycle_fio_devmem_multiple_switch_phy()
     MESSAGE="PASS"
     echo ${MESSAGE}
 }
-    
+
     # when fio runs the business, polls the swtich proximal phy.
 # IN :N/A
 # OUT:N/A
-function fio_devmem_polling_switch_phy()
+function devmem_polling_switch_phy()
 {
-    Test_Case_Title="fio_devmem_polling_switch_phy"
+    Test_Case_Title="devmem_polling_switch_phy"
 
     #Judge the current environment, directly connected environment or expander environment.
     judgment_network_env
@@ -360,9 +348,9 @@ function fio_devmem_polling_switch_phy()
 # switch all near-end phys while running the business.
 # IN :N/A
 # OUT:N/A
-function fio_devmem_all_switch_phy()
+function devmem_all_switch_phy()
 {
-    Test_Case_Title="fio_devmem_all_switch_phy"
+    Test_Case_Title="devmem_all_switch_phy"
 
     #Judge the current environment, directly connected environment or expander environment.
     judgment_network_env
@@ -373,18 +361,16 @@ function fio_devmem_all_switch_phy()
         return 0
     fi
 
-    beg_count=`fdisk -l | grep /dev/sd | wc -l`
     sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
     ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    change_sas_phy_file 0 "enable"
+    sleep 5
+    change_sas_phy_file 1 "enable"
 
-    phy_ops clsoe all
-
-    wait
-    phy_ops open all
     # wait for all disks to be enabled.
     sleep 60
     end_count=`fdisk -l | grep /dev/sd | wc -l`
-    if [ ${beg_count} -ne ${end_count} ]
+    if [ ${INIT_DISK_NUM} -ne ${end_count} ]
     then
         MESSAGE="FAIL\tdisk running business, loop off all proximal phy, the number of disks is missing."
         echo ${MESSAGE}

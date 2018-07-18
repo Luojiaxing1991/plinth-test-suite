@@ -175,66 +175,95 @@ function main()
     inject=`echo ${TEST_CASE_FUNCTION_NAME} | awk -F '_' '{print $NF}' | awk -F ' ' '{print $1}'`
     bit=`echo ${TEST_CASE_FUNCTION_NAME} | awk -F '_' '{print $1}'`
 
+    if [ x"${BOARD_TYPE}" == x"D05" ];then
+        if [ x"$bit" = x"1bit" ];then
+	        if [ x"$inject" = x"inject0" ];then
+                echo "check if dmesg grep info is correct or not"
+                case $info in
+                "1" | "2" | "4" | "8")
+                    ECC_INFO_KEY_QUERIES="hgc_dqe_acc1b_intr"
+                    ;;
+	            "10")
+		            ECC_INFO_KEY_QUERIES="hgc_cqe_acc1b_intr"
+		            ;;
+	            "20" | "40" | "80"| "100")
+		            ECC_INFO_KEY_QUERIES="hgc_iost_acc1b_intr"
+		            ;;
+	            "200" | "400" | "800" | "1000")
+	            	ECC_INFO_KEY_QUERIES="hgc_itct_acc1b_intr"
+            		;;
+            	"2000")
+            		ECC_INFO_KEY_QUERIES="rxm_mem0_acc1b_intr"
+            		;;
+            	"4000")
+	            	ECC_INFO_KEY_QUERIES="rxm_mem1_acc1b_intr"
+	            	;;
+            	"8000")
+            		ECC_INFO_KEY_QUERIES="rxm_mem2_acc1b_intr"
+            		;;
+                	"10000")
+            		ECC_INFO_KEY_QUERIES="rxm_mem3_acc1b_intr"
+            		;;
+               	"20000" | "40000" | "80000" | "100000")
+            		ECC_INFO_KEY_QUERIES="hgc_itctl_acc1b_intr"
+		            ;;
+	            "200000" | "400000" | "800000" | "1000000")
+            		ECC_INFO_KEY_QUERIES="hgc_iostl_acc1b_intr"
+            		;;
+                 esac
+	        else
+		        echo "1bit inject1 ecc"
+		        case $info in
+		        "1" | "4" | "10" | "40" | "100" | "400" | "1000" | "4000" | "10000")
+			        ECC_INFO_KEY_QUERIES="dmac_tx_ecc_bad_err"
+			        ;;
+		        #"2" | "8" | "20" | "80")
+	        		#ECC_INFO_KEY_QUERIES="dmac_rx_ecc_bad_err"
+		        	#;;
+        		esac
+        	fi
 
-  if [ x"$bit" = x"1bit" ];then
-	if [ x"$inject" = x"inject0" ];then
-    echo "check if dmesg grep info is correct or not"
-    case $info in
-    "1" | "2" | "4" | "8")
-        ECC_INFO_KEY_QUERIES="corrected"
-        ;;
-	"10")
-		ECC_INFO_KEY_QUERIES="hgc_cqe_acc1b_intr"
-		;;
-	"20" | "40" | "80"| "100")
-		ECC_INFO_KEY_QUERIES="hgc_iost_acc1b_intr"
-		;;
-	"200" | "400" | "800" | "1000")
-		ECC_INFO_KEY_QUERIES="hgc_itct_acc1b_intr"
-		;;
-	"2000")
-		ECC_INFO_KEY_QUERIES="rxm_mem0_acc1b_intr"
-		;;
-	"4000")
-		ECC_INFO_KEY_QUERIES="rxm_mem1_acc1b_intr"
-		;;
-	"8000")
-		ECC_INFO_KEY_QUERIES="rxm_mem2_acc1b_intr"
-		;;
-	"10000")
-		ECC_INFO_KEY_QUERIES="rxm_mem3_acc1b_intr"
-		;;
-	"20000" | "40000" | "80000" | "100000")
-		ECC_INFO_KEY_QUERIES="hgc_itctl_acc1b_intr"
-		;;
-	"200000" | "400000" | "800000" | "1000000")
-		ECC_INFO_KEY_QUERIES="hgc_iostl_acc1b_intr"
-		;;
-    esac
-	else
-		echo "1bit inject1 ecc"
-		case $info in
-		"1" | "4" | "10" | "40" | "100" | "400" | "1000" | "4000" | "10000")
-			ECC_INFO_KEY_QUERIES="dmac_tx_ecc_bad_err"
-			;;
-		"2" | "8" | "20" | "80")
-			ECC_INFO_KEY_QUERIES="dmac_rx_ecc_bad_err"
-			;;
-		esac
-	fi
+        else
+	        echo "2bit ecc"
+	        case $info in
+            "2" | "8" | "20" | "80" | "200" | "800" | "2000" | "8000")
+			    ECC_INFO_KEY_QUERIES="dmac_rx_ecc_bad_err"
+			    ;;
+	        esac
 
-  else
-	echo "2bit ecc"
-	case $info in
-        "2" | "8" | "20" | "80" | "200" | "800" | "2000" | "8000" | "20000")
-			ECC_INFO_KEY_QUERIES="dmac_rx_ecc_bad_err"
-			;;
-	esac
+        fi
+    elif [ x"${BOARD_TYPE}" == x"D06" ];then
+        if [ x"$bit" = x"1bit" ];then
+	        if [ x"$inject" = x"inject0" ];then
+                echo "check if dmesg grep info is correct or not"
+                case $info in
+                "1" | "2" | "4" | "8" | "10" | "20" | "40" | "80" | "100" | "200" | "400" | "800" | "1000" | "2000" | "4000" | "8000" | "10000" | "20000" | "40000" | "80000" | "100000" | "200000" | "400000" | "800000" | "1000000")
+            		ECC_INFO_KEY_QUERIES="corrected"
+            		;;
+                 esac
+	        else
+		        echo "1bit inject1 ecc"
+		        case $info in
+                "1" | "4" | "10" | "40" | "100" | "400" | "1000" | "4000")
+	        		ECC_INFO_KEY_QUERIES="corrected"
+		        	;;
+        		esac
+        	fi
 
-  fi
+        else
+	        echo "2bit ecc"
+	        case $info in
+            "2" | "8" | "20" | "80" | "200" | "800" | "2000" | "8000")
+			    ECC_INFO_KEY_QUERIES="corrected"
+			    ;;
+	        esac
+
+        fi
+
+    fi
+
 
     echo "dmesg info is "${ECC_INFO_KEY_QUERIES}
-
     # call the implementation of the automation :use cases
     test_case_function_run
 }

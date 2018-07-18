@@ -54,7 +54,7 @@ function reset_device()
     end_disk_num=`fdisk -l | grep /dev/sd | wc -l`
     if [ ${init_disk_num} -ne ${end_disk_num} ]
     then
-         MESSAGE="FAIL\tthe number of disk is less than before." && echo ${MESSAGE} && return 1
+         MESSAGE="FAIL\tthe disk is missing when reset device." && echo ${MESSAGE} && return 1
     fi
     MESSAGE="PASS"
     echo ${MESSAGE}
@@ -85,7 +85,7 @@ function set_sas_register()
       end_disk_num=`fdisk -l | grep /dev/sd | wc -l`
       if [ ${init_disk_num} -ne ${end_disk_num} ]
       then
-           MESSAGE="FAIL\tthe number of disk is less than before." && echo ${MESSAGE} && return 1
+           MESSAGE="FAIL\tthe disk is missing when set sas register." && echo ${MESSAGE} && return 1
       fi
       MESSAGE="PASS"
       echo ${MESSAGE}

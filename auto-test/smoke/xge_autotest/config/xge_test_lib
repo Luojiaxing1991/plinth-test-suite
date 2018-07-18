@@ -28,7 +28,9 @@ function Prepare_PerfTool() {
     scp ${common_tool}/qperf root@${BACK_IP}:/usr/bin
 
     Perf_install=("iperf_2.0.5+dfsg1-2_arm64.deb" "netperf_2.6.0-2_arm64.deb")
-    if [ -d "/home/junkman" ]
+
+    which iperf    
+    if [ $? -ne 0 ]
     then
 	    cd /home/junkman
         for i in ${Perf_install[*]}
@@ -36,8 +38,8 @@ function Prepare_PerfTool() {
             dpkg -i ${i}
         done
     else
-        echo "The prepare work is not commit"
-        exit 1
+        echo "The perf tool is OK"
+        #exit 1
     fi
 }
 
@@ -103,6 +105,9 @@ function init_net_ip()
 
 function init_net_export()
 {
+    tmp_infol=""
+    tmp_infor=""
+
     declare -a local_tp_list
     declare -a local_fibre_list
     declare -a remote_tp_list
@@ -118,14 +123,25 @@ function init_net_export()
     #    fi
     #done
     echo "Begin to check eth rename info!"
+    if [[ `cat ${PLINTH_TEST_WORKSPACE}/xge/cfg/lnic_${BOARD_TYPE} | wc -l` -eq 0 ]];then
+        tmp_infol="dmesg"
+    else
+        tmp_infol="${PLINTH_TEST_WORKSPACE}/xge/cfg/lnic_${BOARD_TYPE}"
+        echo "use the dmesg info save by pre_main"
+    fi
 
+    if [[ `cat ${PLINTH_TEST_WORKSPACE}/xge/cfg/rnic_${BOARD_TYPE} | wc -l` -eq 0 ]];then
+        tmp_infor="dmesg"
+    else
+        tmp_infor="${PLINTH_TEST_WORKSPACE}/xge/cfg/rnic_${BOARD_TYPE}"
+    fi
 
     #we update the eth rename info to eth_map,then update TP/FIBRE info
     tmp_tp=0
     tmp_fi=0
     for i in ${!eth_map[*]}
     do
-         tmp=`dmesg | grep -i "renamed from "${i} -w`
+         tmp=`cat ${tmp_infol} | grep -i "renamed from "${i} -w`
 	 if [ x"${tmp}" == x"" ]
 	 then
 		 echo "The name of "${i}" is not renamed,Stay as "${eth_map[${i}]}
@@ -185,7 +201,7 @@ function init_net_export()
 	       if [ x"$nic" = x"$main_eth" ];then
 		       continue
 	       fi
-               
+
                ifconfig $nic | grep 192
 	       if [ $? -eq 0 ];then
                    continue
@@ -278,8 +294,14 @@ function init_net_export()
     tmp_fi=0
     for i in ${!eth_map_r[*]}
     do
-         tmp=`ssh -o StrictHostKeyChecking=no root@${BACK_IP} 'dmesg | grep -i "renamed from '${i}'" -w'`
-	 if [ x"${tmp}" = x"" ]
+        if [ x"$tmp_infor" = x"dmesg" ];then
+             tmp=`ssh -o StrictHostKeyChecking=no root@${BACK_IP} 'cat ${tmp_infor} | grep -i "renamed from '${i}'" -w'`
+        else
+            echo "fuck you"
+            tmp=`cat ${tmp_infor} | grep -i "renamed from "${i} -w`
+           # tmp=`cat ${tmp_infor} | grep -i 'renamed from ${i}'`
+        fi
+     if [ x"${tmp}" = x"" ]
 	 then
 		 echo "The name of remote "${i}" is not renamed,Stay as "${eth_map_r[${i}]}
 	 else
