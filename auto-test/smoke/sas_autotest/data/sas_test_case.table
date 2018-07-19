@@ -1,5 +1,5 @@
 ST.FUNC.001|dd_write_SAS|sas_smoke|chenxiang|fangmeixun|driver_must_support.sh|driver_supports|on
-ST.FUNC.002|dd_write_SATA|sas_smoke|chenxiang|fangmeixun|driver_must_support.sh|driver_supports|off
+ST.FUNC.002|dd_write_SATA|sas_smoke|chenxiang|fangmeixun|driver_must_support.sh|driver_supports|on
 ST.FUNC.027|FIO_ReadWrite_SATA_SAS|sas_smoke|chenxiang|fangmeixun|support_available_sas_cores.sh|FIO_IO_read_write|off
 ST.FUNC.045|CycleOpenClosePhy_SATA_SAS|sas_smoke|chenxiang|fangmeixun|support_full_sas_function_all_available_phys.sh|cycle_enable_phy|off
 ST.FUNC.046|CycleHardResetDisk_SATA_SAS|sas_smoke|chenxiang|fangmeixun|support_full_sas_function_all_available_phys.sh|cycle_hard_reset_phy|off

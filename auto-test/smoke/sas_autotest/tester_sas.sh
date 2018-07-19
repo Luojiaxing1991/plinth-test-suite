@@ -134,6 +134,8 @@ done
 #input the parameter
 ###################################################################################
 
+trap '' INT
+
 if [ x"$T_TESTER" = x"" ];then
 	echo "Tester name is not input!Please input it use -t..."
 	exit 1
@@ -183,6 +185,9 @@ if [ x"${T_CTRL_NIC}" != x"" ];then
 fi
 
 COM="true"
+
+trap - INT
+
 source ${TESTER_SAS_TOP_DIR}/sas_main.sh
 
 #COM="true"
