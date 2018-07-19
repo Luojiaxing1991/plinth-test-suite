@@ -9,10 +9,11 @@ function module_load_uninstall()
     Test_Case_Title="module_load_uninstall"
 
     local ko_info
-    ko_info=`echo ${MODULE_KO_FILE} | sed 's/|/ /g'`
+    ko_info=`echo ${D05_INSMOD_MODULE_KO_FILE} | sed 's/|/ /g'`
     for ko in ${ko_info}
     do
         insmod ${SAS_TOP_DIR}/${MODULE_KO_PATH}/${ko}
+        sleep 10
         return_num=$?
         info=`lsmod | grep ${ko%.*}`
 
@@ -42,14 +43,13 @@ function module_load_uninstall()
         fi
         umount ${dev}
     done
-
+    ko_info=`echo ${D05_RMMOD_MODULE_KO_FILE} | sed 's/|/ /g'`
     for ko in ${ko_info}
     do
         rmmod ${SAS_TOP_DIR}/${MODULE_KO_PATH}/${ko}
-        return_num=$?
-        info=`lsmod | grep ${ko%.*}`
-
-        if [ ${return_num} -ne 0 -o x"${info}" == x"" ]
+        sleep 10
+        info=`lsmod | grep ${ko}`
+        if [ x"${info}" != x"" ]
         then
             MESSAGE="FAIL\trmmod uninstall  ${ko} fail."
             echo ${MESSAGE}

@@ -66,18 +66,19 @@ function FIO_IO_RAIO_read_write()
     fio_config
 
     sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
-    sed -i '/bsrange/a\bssplit=' fio.conf
-    sed -i "{s/^bssplit=.*/bssplit=${BSSPLIT}/g;}" fio.conf
 
-    for rw in read write
-#   for rw in "${IO_RATIO_RW[@]}"
-    do
-        echo "Begin FIO IO RAIO rw cycle: "${rw}
-        sed -i "{s/^rw=.*/rw=${rw}/g;}" fio.conf
-        ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
-        [ $? -ne 0 ] && MESSAGE="FAIL\tfio tool ${rw} io read and write failed." && echo "Fail fio tool "${rw} && return 1
-        echo "Success fio tool "${rw}
-    done
+    rw=$(echo ${TEST_CASE_TITLE} | awk -F "_" '{print $2}')
+    [ $rw == "ReadOnly" -o $rw == "ReadDeep512" ] && rw="read"
+    [ $rw == "WriteOnly" -o $rw == "WriteDeep512" ] && rw="write"
+    if [ $rw == "ReadDeep512" -o $rw == "WriteDeep512" ];then
+        sed -i '/bsrange/a\bssplit=' fio.conf
+        sed -i "{s/^bssplit=.*/bssplit=${BSSPLIT}/g;}" fio.conf
+    fi
+    echo "Begin FIO IO RAIO rw cycle: "${rw}
+    sed -i "{s/^rw=.*/rw=${rw}/g;}" fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
+    [ $? -ne 0 ] && MESSAGE="FAIL\tfio tool ${rw} io read and write failed." && echo "Fail fio tool "${rw} && return 1
+    echo "Success fio tool "${rw}
 
     MESSAGE="PASS"
     echo ${MESSAGE}

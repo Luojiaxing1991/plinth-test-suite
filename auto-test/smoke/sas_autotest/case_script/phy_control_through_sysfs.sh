@@ -13,7 +13,6 @@ function modify_phy_rate()
     local rate=$2
     local name=$3
 
-    init_num=`fdisk -l | grep /dev/sd | wc -l`
     echo "${rate}" > ${PHY_FILE_PATH}/${path}/${name}
     sleep 5
     maxminrate=`cat ${PHY_FILE_PATH}/${path}/${name} | awk -F ' ' '{print $1}'`
@@ -45,12 +44,12 @@ function modify_phy_rate()
     esac
     sleep 10
     end_num=`fdisk -l | grep /dev/sd | wc -l`
-#    if [ "${init_num}" -ne "${end_num}" ]
-#    then
-#        MESSAGE="FAIL\tDisk missing when setting ${name} rate."
-#        echo ${MESSAGE}
-#        return 1
-#    fi
+    if [ "${INIT_DISK_NUM}" -ne "${end_num}" ]
+    then
+        MESSAGE="FAIL\tDisk missing when setting ${name} rate."
+        echo ${MESSAGE}
+        return 1
+    fi
 
     return 0
 }
@@ -118,9 +117,9 @@ function fio_set_rate_link()
 {
     Test_Case_Title="fio_set_rate_link"
     disk_num=`fdisk -l | grep /dev/sd | wc -l`
+    init_time=`date | awk -F ' ' '{print $4}' | awk -F ':' '{print $2}'`
     while true
     do
-        init_time=`date | awk -F ' ' '{print $4}' | awk -F ':' '{print $2}'`
         if [ ${INIT_DISK_NUM} -eq ${disk_num} ];then
             echo "The Disk Num is OK,Now run IO..."
             sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
@@ -182,9 +181,9 @@ function fio_set_rate_host_reset()
 {
     Test_Case_Title="fio_set_rate_host_reset"
     disk_num=`fdisk -l | grep /dev/sd | wc -l`
+    init_time=`date | awk -F ' ' '{print $4}' | awk -F ':' '{print $2}'`
     while true
     do
-        init_time=`date | awk -F ' ' '{print $4}' | awk -F ':' '{print $2}'`
         if [ ${INIT_DISK_NUM} -eq ${disk_num} ];then
             echo "The Disk Num is OK,Now run IO..."
             sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf

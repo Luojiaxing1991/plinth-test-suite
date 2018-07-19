@@ -67,7 +67,6 @@ function reset_device()
 
 function set_sas_register()
 {
-    init_disk_num=`fdisk -l | grep /dev/sd | wc -l`
     #read sas register
      ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/lspci -s 74:02.0 -vvv
      if [ $? -ne 0 ]
@@ -83,7 +82,7 @@ function set_sas_register()
       fi
 
       end_disk_num=`fdisk -l | grep /dev/sd | wc -l`
-      if [ ${init_disk_num} -ne ${end_disk_num} ]
+      if [ ${INIT_DISK_NUM} -ne ${end_disk_num} ]
       then
            MESSAGE="FAIL\tthe disk is missing when set sas register." && echo ${MESSAGE} && return 1
       fi

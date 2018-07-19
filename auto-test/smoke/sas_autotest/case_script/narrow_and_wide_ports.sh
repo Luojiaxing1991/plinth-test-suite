@@ -11,7 +11,6 @@ function fio_reset()
     RESET_TYPE=$(echo ${TEST_CASE_TITLE} | awk -F "_" '{print $2}')
     FIO_RESET_COUNT=$(echo ${TEST_CASE_TITLE} | awk -F "_" '{print $4}')
 
-    beg_count=`fdisk -l | grep /dev/sd | wc -l`
     sed -i "{s/^runtime=.*/runtime=${FIO_RESET_TIME}/g;}" fio.conf
     ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
     for i in `seq ${FIO_RESET_COUNT}`
@@ -22,7 +21,7 @@ function fio_reset()
 
     wait
     end_count=`fdisk -l | grep /dev/sd | wc -l`
-    if [ ${beg_count} -ne ${end_count}  ]
+    if [ ${INIT_DISK_NUM} -ne ${end_count}  ]
     then
         MESSAGE="FAIL\tdisk running business, cycle hard_reset remote phy, the number of disks is missing."
         echo ${MESSAGE}
@@ -39,7 +38,6 @@ function fio_cycle_hard_link_reset_phy()
 {
     Test_Case_Title="fio_cycle_hard_link_reset_phy"
 
-     beg_count=`fdisk -l | grep /dev/sd | wc -l`
     sed -i "{s/^runtime=.*/runtime=${FIO_RESET_TIME}/g;}" fio.conf
     ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
 
@@ -53,7 +51,7 @@ function fio_cycle_hard_link_reset_phy()
 
     wait
     end_count=`fdisk -l | grep /dev/sd | wc -l`
-    if [ ${beg_count} -ne ${end_count}  ]
+    if [ ${INIT_DISK_NUM} -ne ${end_count}  ]
     then
         MESSAGE="FAIL\tdisk running business, cycle link_reset remote phy, the number of disks is missing."
         echo ${MESSAGE}
