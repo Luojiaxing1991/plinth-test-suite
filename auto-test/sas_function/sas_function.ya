@@ -17,7 +17,7 @@ run:
     steps:
         - cp ./auto-test/sas_function/sas_test_case.table ./auto-test/smoke/sas_autotest/data/sas_test_case.table
         - cd ./auto-test/smoke/
-        - bash -x ./sas_autotest/sas_main.sh
+        - bash  ./sas_autotest/sas_main.sh
           # - bash -x ./sas_autotest/sas_main.sh
           # - bash -x ./roce_autotest/roce_main.sh
        # - bash -x ./pcie_autotest/pcie_main.sh

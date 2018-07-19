@@ -118,8 +118,8 @@ fi
 if [ x"$3" = x"" ];then
     echo "No $3 para pass to xge_main.sh"
 else
-    jump_apt_get=$2
-    echo "Set jump_apt_get used $2 to jump the apt-get action"
+    jump_apt_get=$3
+    echo "Set jump_apt_get used $3 to jump the apt-get action"
 fi
 
 if [ x"$4" = x"" ];then

@@ -18,7 +18,7 @@ run:
         - cp ./auto-test/sas_smoke/sas_test_case.table ./auto-test/smoke/sas_autotest/data/sas_test_case.table
         - cd ./auto-test/smoke/
           # - bash -x ./xge_autotest/xge_main.sh
-        - bash ./sas_autotest/sas_main.sh
+        - bash ./sas_autotest/sas_main.sh 
           # - bash -x ./roce_autotest/roce_main.sh
        # - bash -x ./pcie_autotest/pcie_main.sh
         - cd -
