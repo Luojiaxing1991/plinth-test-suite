@@ -17,6 +17,8 @@ if [ x"$1" != x"" ];then
 	g_client_ip=$1
 fi
 
+setTrustRelationWithPara ${g_client_ip}
+
 if [ x"${g_client_ip}" != x"" ]
 then
     KeepNicMsg ${g_client_ip} $PLINTH_TEST_WORKSPACE/xge/cfg $BOARD_TYPE
