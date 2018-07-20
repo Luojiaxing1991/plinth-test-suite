@@ -222,13 +222,13 @@ function Check_expect_exist() {
                  "libxaw7_2%3a1.0.13-1_arm64.deb" "libxcb-shape0_1.11.1-1ubuntu1_arm64.deb" "libxi6_2%3a1.7.6-1_arm64.deb" "libxrandr2_2%3a1.5.0-1_arm64.deb" \
                  "tcl8.6_8.6.5+dfsg-2_arm64.deb" "tk8.6_8.6.5-1_arm64.deb" "x11-utils_7.7+3_arm64.deb" "xbitmaps_1.1.1-2_all.deb" "xterm_322-1ubuntu1_arm64.deb")
 
-    if [ -d /home/junkman ];then
-        pushd /home/junkman
+    if [ -d /home/tool ];then
+        pushd /home/tool
         git pull
     else
         #mkdir /home/junkman
         pushd /home
-        git clone https://github.com/luojiaxing1991/junkman.git
+        git clone https://github.com/luojiaxing1991/tool.git
         wait
     fi
     popd
@@ -251,7 +251,9 @@ function Check_expect_exist() {
 	#----------------------------------------------------------------#
 
         #cd /home
+        cp /home/tool/tool.tar.gz /home/junkman
         cd /home/junkman
+        tar zxvf tool.tar.gz
         for i in ${Common_list[*]}
         do
             dpkg -i ${i}
