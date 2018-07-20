@@ -109,12 +109,11 @@ function mount_disk()
 function fio_config()
 {
     local count=1
-    echo "$FIO_PARAMETER_LIST" > ${FIO_CONFG}
+    echo "$FIO_PARAMETER_LIST" > ${FIO_CONFIG_PATH}/${FIO_CONFG}
     for dev in "${ALL_DISK_PART_NAME[@]}"
     do
-        echo "[job${count}]" >> ${FIO_CONFG}
-        echo "filename=$dev" >> ${FIO_CONFG}
-        let count+=1
+        echo "[job${count}]" >> ${FIO_CONFIG_PATH}/${FIO_CONFG}
+        echo "filename=$dev" >> ${FIO_CONFIG_PATH}/${FIO_CONFG}
     done
 }
 
@@ -125,11 +124,11 @@ function IO_read_write()
 {
     for bs in "${FIO_BS[@]}"
     do
-        sed -i "{s/^bs=.*/bs=${bs}/g;}" fio.conf
+        sed -i "{s/^bs=.*/bs=${bs}/g;}" ${FIO_CONFIG_PATH}/fio.conf
         for rw in "${FIO_RW[@]}"
         do
-            sed -i "{s/^rw=.*/rw=${rw}/g;}" fio.conf
-            ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
+            sed -i "{s/^rw=.*/rw=${rw}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+            ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf
             if [ $? -ne 0 ]
             then
                 MESSAGE="FAIL\tFIO tool in \"${bs}\" disk operation, error."
