@@ -251,6 +251,7 @@ function Check_expect_exist() {
 	#----------------------------------------------------------------#
 
         #cd /home
+        mkdir -p /home/junkman
         cp /home/tool/tool.tar.gz /home/junkman
         cd /home/junkman
         tar zxvf tool.tar.gz
