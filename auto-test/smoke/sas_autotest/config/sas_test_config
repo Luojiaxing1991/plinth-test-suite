@@ -23,7 +23,7 @@ TEST_CASE_FUNCTION_NAME=""
 #Test case execution result.
 MESSAGE=""
 #FIO config path
-FIO_CONFIG_PATH=${PLINTH_TEST_WORKSPACE}/sas/cfg
+FIO_CONFIG_PATH=/home/plinth-test-workspace/sas/cfg
 # Expander backplane support phy number
 EFFECTIVE_PHY_NUM=11
 
@@ -83,7 +83,7 @@ group_reporting=1
 ;gtod_reduce=1
 ;iodepth_batch=2
 ;iodepth_batch_complete=2
-runtime=200
+runtime=300
 ;thread
 loops=10
 "

@@ -185,6 +185,7 @@ if [ x"${T_CTRL_NIC}" != x"" ];then
 fi
 
 COM="true"
+DEBUG="true"
 
 trap - INT
 
