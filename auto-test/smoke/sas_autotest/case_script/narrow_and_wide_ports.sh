@@ -11,8 +11,8 @@ function fio_reset()
     RESET_TYPE=$(echo ${TEST_CASE_TITLE} | awk -F "_" '{print $2}')
     FIO_RESET_COUNT=$(echo ${TEST_CASE_TITLE} | awk -F "_" '{print $4}')
 
-    sed -i "{s/^runtime=.*/runtime=${FIO_RESET_TIME}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    sed -i "{s/^runtime=.*/runtime=${FIO_RESET_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
     for i in `seq ${FIO_RESET_COUNT}`
     do
         change_sas_phy_file 1 "${RESET_TYPE}_reset"
@@ -38,8 +38,8 @@ function fio_cycle_hard_link_reset_phy()
 {
     Test_Case_Title="fio_cycle_hard_link_reset_phy"
 
-    sed -i "{s/^runtime=.*/runtime=${FIO_RESET_TIME}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    sed -i "{s/^runtime=.*/runtime=${FIO_RESET_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
     for i in `seq ${FIO_RESET_COUNT}`
     do

@@ -9,10 +9,10 @@ function cycle_fio_multiple_enable()
     Test_Case_Title="cycle_fio_multiple_enable"
 
     beg_count=`fdisk -l | grep /dev/sd | wc -l`
-    sed -i "{s/^runtime=.*/runtime=${FIO_ENABLE_TIME}/g;}" fio.conf
+    sed -i "{s/^runtime=.*/runtime=${FIO_ENABLE_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
     for i in `seq ${RESET_PHY_COUNT}`
     do
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
     change_sas_phy_file 0 "enable"
 
@@ -38,8 +38,8 @@ function fio_multiple_enable()
     Test_Case_Title="fio_multiple_enable"
 
     beg_count=`fdisk -l | grep /dev/sd | wc -l`
-    sed -i "{s/^runtime=.*/runtime=${FIO_ENABLE_TIME}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    sed -i "{s/^runtime=.*/runtime=${FIO_ENABLE_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
     change_sas_phy_file 0 "enable"
 
@@ -62,8 +62,8 @@ function fio_single_enable()
 {
     Test_Case_Title="fio_single_enable"
 
-    sed -i "{s/^runtime=.*/runtime=${FIO_ENABLE_TIME}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    sed -i "{s/^runtime=.*/runtime=${FIO_ENABLE_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
     phy_dir_list=`ls ${PHY_FILE_PATH}`
     for dir in ${phy_dir_list}

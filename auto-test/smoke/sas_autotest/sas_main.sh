@@ -62,7 +62,8 @@ function main()
     echo -e "\033[32mThe test report path locate at \033[0m\033[35m${PLINTH_TEST_WORKSPACE}/${Module}/${Date}/${NowTime}/ \033[0m"
 }
 
-# close /dev/sda
+# mkdir the fio.conf path
+mkdir -p ${FIO_CONFIG_PATH}
 
 ##check the env_ok is ok
 check_ENV_OK_exists

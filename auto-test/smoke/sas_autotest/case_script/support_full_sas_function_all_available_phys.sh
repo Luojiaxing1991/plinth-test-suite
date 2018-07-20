@@ -127,8 +127,8 @@ function fio_devmem_single_switch_phy()
 {
     Test_Case_Title="fio_devmem_single_switch_phy"
 
-    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
     beg_count=`fdisk -l | grep /dev/sd | wc -l`
     judgment_network_env
@@ -166,8 +166,8 @@ function fio_devmem_multiple_switch_phy()
 {
     Test_Case_Title="fio_devmem_multiple_phy_switch"
 
-    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
     beg_count=`fdisk -l | grep /dev/sd | wc -l`
     judgment_network_env
@@ -229,8 +229,8 @@ function fio_devmem_polling_switch_phy()
     fi
 
     beg_count=`fdisk -l | grep /dev/sd | wc -l`
-    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
     for i in `seq ${LOOP_PHY_COUNT}`
     do
@@ -270,7 +270,7 @@ function fio_devmem_all_switch_phy()
         echo ${MESSAGE}
         return 0
     fi
-    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
+    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
     type=$(echo ${TEST_CASE_TITLE} | awk -F "_" '{print $1}')
     if [ $type == "single" ];then
         count=1
@@ -279,7 +279,7 @@ function fio_devmem_all_switch_phy()
     fi
     for i in `seq ${count}`
     do
-        ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+        ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
         phy_ops close all
         wait
         phy_ops open all
@@ -308,8 +308,8 @@ function cycle_fio_enable_devmem_all_switch_phy()
         # clear the contents of the ring buffer.
         time dmesg -c > /dev/null
 
-        sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
-        ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+        sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+        ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
         sleep 5
         phy_ops close all
         sleep 2
@@ -351,10 +351,10 @@ function cycle_fio_enable_devmem_all_switch_phy()
 function cycle_fio_devmem_multiple_switch_phy()
 {
     Test_Case_Title="cycle_fio_devmem_multiple_phy_switch"
-    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
+    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
     for i in `seq ${RESET_PHY_COUNT}`
     do
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
     beg_count=`fdisk -l | grep /dev/sd | wc -l`
     judgment_network_env
@@ -419,8 +419,8 @@ function devmem_all_switch_phy()
         return 0
     fi
 
-    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
     change_sas_phy_file 0 "enable"
     sleep 5
     change_sas_phy_file 1 "enable"

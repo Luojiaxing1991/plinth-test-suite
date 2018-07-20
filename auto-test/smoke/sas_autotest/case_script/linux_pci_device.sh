@@ -14,7 +14,7 @@ function MSI_enable()
 
     cat /proc/interrupts | grep "hisi_sas_v3_hw" > ${BaseDir}/log/init_interrupts.txt
     sleep 1
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf
     sleep 1
     cat /proc/interrupts | grep "hisi_sas_v3_hw" > ${BaseDir}/log/end_interrupts.txt
     different=`diff ${BaseDir}/log/init_interrupts.txt ${BaseDir}/log/end_interrupts.txt`

@@ -54,7 +54,7 @@ function loog_time_IO_read_write()
 {
     Test_Case_Title="loog_time_IO_read_write"
 
-    sed -i "{s/^runtime=.*/runtime=${FIO_LONG_RUN_TIME}/g;}" fio.conf
+    sed -i "{s/^runtime=.*/runtime=${FIO_LONG_RUN_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
     echo "Begin to IO rw with runtime: "${FIO_LONG_RUN_TIME}
     IO_read_write
     if [ $? -eq 1 ]
@@ -72,7 +72,7 @@ function repeat_IO_read_write()
 {
     Test_Case_Title="repeat_IO_read_write"
 
-    sed -i "{s/^runtime=.*/runtime=${REPEAT_RM_TIME}/g;}" fio.conf
+    sed -i "{s/^runtime=.*/runtime=${REPEAT_RM_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
     for num in `seq ${REPEAT_RW_NUMBER}`
     do
         IO_read_write

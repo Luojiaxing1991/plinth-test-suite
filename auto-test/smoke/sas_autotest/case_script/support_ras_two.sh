@@ -20,9 +20,9 @@ function iost_itct_axi_err()
         ${DEVMEM} ${ITCT_BASE_ADDRU} 32 0xf0
     fi
     RW=$(echo ${TEST_CASE_TITLE} | awk -F "_" '{print $5}')
-    sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
-    sed -i "{s/^rw=.*/rw=${RW}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
+    sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    sed -i "{s/^rw=.*/rw=${RW}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf
     sleep 5
     end_bit_count=`dmesg | grep ${ECC_INFO_KEY_QUERIES} | wc -l`
     if [ ${init_bit_count} -ne ${end_bit_count} ];then

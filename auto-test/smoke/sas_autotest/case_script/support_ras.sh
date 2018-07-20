@@ -18,7 +18,7 @@ function ecc_injection_process()
     # Generate FIO configuration file
     fio_config
 
-    sed -i "{s/^runtime=.*/runtime=${BIT_ECC_TIME}/g;}" fio.conf
+    sed -i "{s/^runtime=.*/runtime=${BIT_ECC_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
     ${DEVMEM} ${MASK_REG_ADDR_VALUE} w ${INJECT_BIT_VALUE}
     if [ x"${BOARD_TYPE}" == x"D06" ]
     then
@@ -30,7 +30,7 @@ function ecc_injection_process()
 
     begin_bit_count=`dmesg | grep ${ECC_INFO_KEY_QUERIES} | wc -l`
     ${DEVMEM} ${INJECT_REG_ADDR_VALUE} w ${ECC_BIT_REG_INJECT_VALUE}
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
     sleep 10
     ${DEVMEM} ${INJECT_REG_ADDR_VALUE} w 0x0
     sleep 2

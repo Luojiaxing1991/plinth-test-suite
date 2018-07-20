@@ -14,8 +14,8 @@ function fio_phy_reset_bit()
    do
        if [ ${INIT_DISK_NUM} -eq ${disk_num} ];then
            echo "The Disk Num is OK,Now run IO..."
-           sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
-           ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+           sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+           ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
            sleep 5
            break
        else
@@ -65,8 +65,8 @@ function fio_phy_reset()
    do
        if [ ${INIT_DISK_NUM} -eq ${disk_num} ];then
            echo "The Disk Num is OK,Now run IO..."
-           sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
-           ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+           sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+           ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
            sleep 5
            break
        else
@@ -109,8 +109,8 @@ function fio_hard_link_host_ecc()
    do
        if [ ${INIT_DISK_NUM} -eq ${disk_num} ];then
            echo "The Disk Num is OK,Now run IO..."
-           sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
-           ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+           sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+           ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
            sleep 5
            break
        else
