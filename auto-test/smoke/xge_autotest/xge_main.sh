@@ -208,7 +208,7 @@ setTrustRelation
 init_net_export
 
 #check mac
-check_environment
+#check_environment
 
 #check iperf/qperf/netperf is ok
 # install_iperf_netperf

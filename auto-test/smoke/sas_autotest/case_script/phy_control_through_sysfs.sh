@@ -78,11 +78,18 @@ function set_rate_link()
                 modify_phy_rate ${dir} "${rate}" "minimum_linkrate"
                 if [ $? -eq 1 ]
                 then
+                     echo "12.0 Gbit" > ${PHY_FILE_PATH}/${dir}/maximum_linkrate
+                     echo "1.5 Gbit" > ${PHY_FILE_PATH}/${dir}/minimum_linkrate
+
                     return 1
                 fi
                 modify_phy_rate ${dir} "${rate}" "maximum_linkrate"
                 if [ $? -eq 1 ]
                 then
+                     echo "12.0 Gbit" > ${PHY_FILE_PATH}/${dir}/maximum_linkrate
+                     echo "1.5 Gbit" > ${PHY_FILE_PATH}/${dir}/minimum_linkrate
+
+
                     return 1
                 fi
             done
@@ -93,11 +100,19 @@ function set_rate_link()
                 modify_phy_rate ${dir} "${rate}" "minimum_linkrate"
                 if [ $? -eq 1 ]
                 then
+                     echo "12.0 Gbit" > ${PHY_FILE_PATH}/${dir}/maximum_linkrate
+                     echo "1.5 Gbit" > ${PHY_FILE_PATH}/${dir}/minimum_linkrate
+
+
                     return 1
                 fi
                 modify_phy_rate ${dir} "${rate}" "maximum_linkrate"
                 if [ $? -eq 1 ]
                 then
+                     echo "12.0 Gbit" > ${PHY_FILE_PATH}/${dir}/maximum_linkrate
+                     echo "1.5 Gbit" > ${PHY_FILE_PATH}/${dir}/minimum_linkrate
+
+
                     return 1
                 fi
             done
@@ -265,6 +280,8 @@ function main()
 
     # call the implementation of the automation use cases
     test_case_function_run
+
+    sleep 20
 }
 
 main
