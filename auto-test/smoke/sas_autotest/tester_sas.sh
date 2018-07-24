@@ -146,6 +146,8 @@ fi
 ##################################################################################
 #Get latest cfg pass to empty patameter
 ###################################################################################
+mkdir -p ${PLINTH_BASE_WORKSPACE}
+
 if [ x"$T_PICK_CASE" = x"true" ];then
     checklist
 fi
