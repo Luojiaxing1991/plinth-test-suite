@@ -250,11 +250,11 @@ BIT_ECC_COUNT=2
 
 ## 20 linux pci device,the path of device.
 #
-DEVICE_PATH="/sys/bus/pci/devices/0000:74:02.0"
+DEVICE_PATH="/sys/bus/pci/devices/0000:74:03.0"
 
 ## 21 the path of host_reset.
 #
-HOST_RESET_PATH="/sys/devices/pci0000\:74/0000\:74\:02.0/"
+HOST_RESET_PATH="/sys/devices/pci0000\:74/0000\:74\:03.0/"
 
 ## 22 the count of Code Violation/Running Disparity Error/Invalid Dword error.
 #
