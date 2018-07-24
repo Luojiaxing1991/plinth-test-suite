@@ -33,7 +33,7 @@ checklist()
   done < ${TESTER_SAS_TOP_DIR}/data/sas_test_case.table
   #echo $list
   TABLE_LIST=$( whiptail --nocancel --title "Test Case List" --checklist \
-  "Choose test case you want to run this time:" 15 80 8 $list 3>&1 1>&2 2>&3)
+  "Choose test case you want to run this time:" 15 120 8 $list 3>&1 1>&2 2>&3)
 
   if [ $? -eq 0 ];then
 	  echo "The choosen list is $TABLE_LIST"
@@ -74,13 +74,12 @@ cat <<EOF
 Usage: ./sas_autotest/tester_sas.sh [options]
 Options:
 	-h, --help: Display this information
-	-n, --ctrlNIC: the network card used to control client
 	-t, --test: the tester name .if other cfg is not set,
 		    tester name can help to get latest cfg you used
 		    this para is forced to be set.
     -p, --pickcase: true :pick the case using UI 
 Example:
-	bash tester_sas.sh -t luojiaxing -n "eth3"
+	bash tester_sas.sh -t luojiaxing -p true
 
 	bash tester_sas.sh -t luojiaxing # if no other para,scripts will use the latest user cfg
 
@@ -122,7 +121,7 @@ do
 	case $ac_option in
         	-h | --help) Usage ; exit 0 ;;
         -p | --pickcase) T_PICK_CASE=$ac_optarg ;;
-        	-n | --ctrlNIC) T_CTRL_NIC=$ac_optarg ;;
+     #   	-n | --ctrlNIC) T_CTRL_NIC=$ac_optarg ;;
 		-t | --tester) T_TESTER=$ac_optarg ;;
 		*) Usage ; echo "Unknown option $1"; exit 1 ;;
 	esac
@@ -134,6 +133,8 @@ done
 ##################################################################################
 #input the parameter
 ###################################################################################
+
+trap '' INT
 
 if [ x"$T_TESTER" = x"" ];then
 	echo "Tester name is not input!Please input it use -t..."
@@ -183,20 +184,10 @@ if [ x"${T_CTRL_NIC}" != x"" ];then
     echo "T_CTRL_NIC:${T_CTRL_NIC}" >> ${PLINTH_BASE_WORKSPACE}/user/${T_TESTER}/sas/cfg
 fi
 
-if [ x"${T_CTRL_NIC}" = x"" ];then
-	echo ">--------------------------------------------------------------------------------<"
-    echo -e "\033[31m Lose some cfg .Please input full parameter to recover the latest cfg! \033[0m"
-    echo ">--------------------------------------------------------------------------------<"
-
-	exit 1
-else
-
-	echo ">--------------------------------------------------------------------------------<"
-    echo -e "\033[32m This time Run the test with the cfg as: NIC=${T_CTRL_NIC} \033[0m"
-	echo ">--------------------------------------------------------------------------------<"
-fi
-
 COM="true"
+
+trap - INT
+
 source ${TESTER_SAS_TOP_DIR}/sas_main.sh
 
 #COM="true"

@@ -13,6 +13,7 @@ function fio_iops_controller()
     for iodepth in "${FIO_IODEPTH_LIST[@]}"
     do
         sed -i "{s/^iodepth=.*/iodepth=${iodepth}/g;}" fio.conf
+        echo "Running fio at background , please wait for a while...."
         info=`${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf | grep "iops="`
         iops=`echo ${info} | awk -F ',' '{print $3}' | awk -F '=' '{print $2}'`
         let iops=${iops}/1024
