@@ -86,6 +86,9 @@ LogHeader
 get_all_disk_part
 
 cat /proc/kmsg >> /home/log.txt &
+
+cp ${SAS_TOP_DIR}/../common_tool/libsmputils1.so.1 /usr/lib
+
 main
 
 # clean exit so lava-test can trust the results
