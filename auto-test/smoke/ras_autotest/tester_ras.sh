@@ -33,7 +33,7 @@ checklist()
   done < ${TESTER_RAS_TOP_DIR}/data/ras_test_case.table
   #echo $list
   TABLE_LIST=$( whiptail --nocancel --title "Test Case List" --checklist \
-  "Choose test case you want to run this time:" 15 80 8 $list 3>&1 1>&2 2>&3)
+  "Choose test case you want to run this time:" 15 120 8 $list 3>&1 1>&2 2>&3)
 
 
   if [ $? -eq 0 ];then
@@ -117,7 +117,7 @@ echo -e "\033[33m Luojiaxing \033[0m  \033[32m Chenjing \033[0m "
 echo "  "
 echo ">---------------------------------------------------------<"
 echo "Thank you to ALL tester for providing high quality scripts!"
-echo -e "Tester: \033[34m tanxiaofei\033[0m \033[35m  huangweijian\033[0m "
+echo -e "Tester: \033[34m hehui\033[0m \033[35m  wanghaifeng\033[0m "
 echo ">---------------------------------------------------------< "  
 echo "  "
 
@@ -151,6 +151,8 @@ done
 ##################################################################################
 #input the parameter
 ###################################################################################
+
+trap '' INT
 
 if [ x"$T_TESTER" = x"" ];then
 	echo "Tester name is not input!Please input it use -t..."
@@ -237,6 +239,9 @@ else
 fi
 
 COM="true"
+
+trap - INT
+
 source ${TESTER_RAS_TOP_DIR}/ras_main.sh
 
 #COM="true"

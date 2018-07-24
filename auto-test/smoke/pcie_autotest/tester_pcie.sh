@@ -33,7 +33,7 @@ checklist()
   done < ${TESTER_PCIE_TOP_DIR}/data/pcie_test_case.table
   #echo $list
   TABLE_LIST=$( whiptail --nocancel --title "Test Case List" --checklist \
-  "Choose test case you want to run this time:" 15 80 8 $list 3>&1 1>&2 2>&3)
+  "Choose test case you want to run this time:" 15 120 8 $list 3>&1 1>&2 2>&3)
 
   if [ $? -eq 0 ];then
 	  echo "The choosen list is $TABLE_LIST"
@@ -143,6 +143,8 @@ done
 #input the parameter
 ###################################################################################
 
+trap '' INT
+
 if [ x"$T_TESTER" = x"" ];then
 	echo "Tester name is not input!Please input it use -t..."
 	exit 1
@@ -229,6 +231,9 @@ fi
 
 COM="true"
 PCIE_LOCAL="True"
+
+trap - INT
+
 source ${TESTER_PCIE_TOP_DIR}/pcie_main.sh
 
 #COM="true"

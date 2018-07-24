@@ -12,8 +12,8 @@ function controller_2bit_ecc_reset()
     ${DEVMEM} ${CONTROLLER_ECC_RESET_ADDR} w 0x1
     ${DEVMEM} ${CONTROLLER_ECC_ERROR} w 0x11
 
-    sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf
+    sed -i "{s/^bs=.*/bsrange=${BSRANGE}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf
 
     sleep 5
 
@@ -40,7 +40,7 @@ function controller_1bit_ecc_reset()
     local key_count=0
     time dmesg -c >> /dev/null
     # you must first run business io, then injected ecc error.
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio fio.conf &
+    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
     ${DEVMEM} ${CONTROLLER_ECC_RESET_ADDR} w 0x1
     ${DEVMEM} ${CONTROLLER_ECC_ERROR} w 0x1
@@ -63,7 +63,7 @@ function controller_1bit_ecc_reset()
 function main()
 {
     #get system disk partition information.
-    fio_config
+    fio.config
 
     # call the implementation of the automation use cases
     test_case_function_run

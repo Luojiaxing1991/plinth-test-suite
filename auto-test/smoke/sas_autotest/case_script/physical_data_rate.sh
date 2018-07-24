@@ -11,21 +11,24 @@ function disk_negotiated_link_rate_query()
 
     local dir_info
     dir_info=`ls ${PHY_FILE_PATH}`
-
+    disk_type=$(echo ${TEST_CASE_TITLE} | awk -F "_" '{print $3}')
     for dir in ${dir_info}
     do
         type=`cat ${PHY_FILE_PATH}/${dir}/target_port_protocols`
-        [ x"${type}" = x"none" ] && continue
-
+        [ x"${type}" != x"${disk_type}" ] && continue
         rate_value=`cat ${PHY_FILE_PATH}/${dir}/negotiated_linkrate | awk -F '.' '{print $1}'`
         BRate=1
         rate_info=`echo $DISK_NEGOTIATED_LINKRATE_VALUE | sed 's/|/ /g'`
+        max_rate=`cat ${PHY_FILE_PATH}/${dir}/maximum_linkrate`
+        min_rate=`cat ${PHY_FILE_PATH}/${dir}/minimum_linkrate`
         for rate in ${rate_info}
         do
             if [ $(echo "${rate_value} ${rate}"|awk '{if($1=$2){print 0}else{print 1}}') -eq 0 ]
             then
-                BRate=0
-                break
+                if [ ${rate_value} -le ${max_rate} ] && [ ${rate_value} -ge ${min_rate} ];then
+                    BRate=0
+                    break
+                fi
             fi
         done
 

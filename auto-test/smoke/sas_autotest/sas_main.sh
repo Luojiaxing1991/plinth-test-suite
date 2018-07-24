@@ -62,28 +62,17 @@ function main()
     echo -e "\033[32mThe test report path locate at \033[0m\033[35m${PLINTH_TEST_WORKSPACE}/${Module}/${Date}/${NowTime}/ \033[0m"
 }
 
-# close /dev/sda
-#-------------------------------------------------------------------#
-#Description: These code check if ENV_OK is exist.if not ,run pre_main to do some common options.
-#             then check ENV_OK again , if still not exist,it mean some thing wrong when running pre_main.
-#             test will not run but exit.
-#
-#Coder: luojiaxing 00437090 20180719
+# mkdir the fio.conf path
+mkdir -p ${FIO_CONFIG_PATH}
 
+##check the env_ok is ok
 check_ENV_OK_exists
-
 if [ $? -eq 1 ]
 then
     . ${SAS_TOP_DIR}/../pre_autotest/pre_main.sh
 fi
-
-check_ENV_OK_exists
-
-if [ $? -eq 1 ];then
-	echo "pre_main meet some problem,please check...."
-	exit 1
-fi
-#-------------------------------------------------------------------------#
+#Output log file header
+# writeLogHeader
 
 #mkdir the log path
 InitDirectoryName
