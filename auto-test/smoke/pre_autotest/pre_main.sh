@@ -12,7 +12,7 @@
 #              4.install expect cmd
 #	       5.record dmesg of eth renamed
 #              6.new result.txt for save fail testcase message
-#               
+#
 #
 # Generater:  luojiaxing 00437090
 #
@@ -25,6 +25,8 @@ fi
 
 
 SAS_TOP_DIR=$(cd "`dirname $0`" ; pwd)
+:> /home/dmesg.log
+dmesg > /home/dmesg.log
 
 # Load the public configuration library
 if [ x"$COM" = x"" ];then
@@ -37,7 +39,7 @@ if [ x"$1" != x"" ];then
 fi
 
 #--------------------------------------------------#
-# Description: get the commit id of kernel now testing 
+# Description: get the commit id of kernel now testing
 #
 # Coder: luojiaxing 20180520
 
@@ -51,7 +53,7 @@ echo "kernel commit ID is $commit_id"
 
 #--------------------------------------------------#
 # Description: these code mean to do apt-get update. I don't like apt because it depend on network
-#              connect.huawei don't have convenient network for using apt.so i use jump_apt_get to 
+#              connect.huawei don't have convenient network for using apt.so i use jump_apt_get to
 #              control it's using.if you wang to use apt to install cmd.set jump_apt_get as TRUE
 #              I also kill apt thread before apt-get update because in influence it's running
 #
@@ -122,7 +124,7 @@ fi
 #---------------------------------------------------#
 
 #---------------------------------------------------#
-# Description: these code new a file: result.txt to save fail testcase and it's message for CI 
+# Description: these code new a file: result.txt to save fail testcase and it's message for CI
 #              to pick up some informance of fail testcase.but it's only a temporarily option
 #              for plinth-test-suite now can generate report including these fail message, but
 #              I don't have time to recode the CI code so keep it for a while.

@@ -23,7 +23,7 @@ TEST_CASE_FUNCTION_NAME=""
 #Test case execution result.
 MESSAGE=""
 #FIO config path
-FIO_CONFIG_PATH=/home/plinth-test-workspace/sas/cfg
+FIO_CONFIG_PATH="/home/plinth-test-workspace/sas/cfg"
 # Expander backplane support phy number
 EFFECTIVE_PHY_NUM=11
 
