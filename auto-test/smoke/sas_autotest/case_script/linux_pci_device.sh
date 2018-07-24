@@ -46,7 +46,7 @@ function reset_device()
         MESSAGE="FAIL\tremove device fail." && echo ${MESSAGE} && return 1
     fi
     #rescan
-    echo 1 > ${DEVICE_PATH}/rescan
+    echo 1 > /sys/bus/pci/rescan
     if [ $? -ne 0 ]
     then
         MESSAGE="FAIL\trescan fail." && echo ${MESSAGE} && return 1
