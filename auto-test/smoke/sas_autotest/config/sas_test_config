@@ -119,9 +119,9 @@ SAS_PHY_VALUE_LIST=("6.0 Gbit" "3.0 Gbit")
 
 ## 3 - support full sas function on all available phys
 #  cycle the number of all proximal phy switches, Default value is 100.
-LOOP_PHY_COUNT=1
+LOOP_PHY_COUNT=5
 #  cycle reset distal phy number, Default value is 1000.
-RESET_PHY_COUNT=1
+RESET_PHY_COUNT=5
 #  fio tool business run time.
 LOOP_PHY_TIME=20
 ## 3 - stable_2GB_file_transfer
@@ -136,7 +136,7 @@ FIO_LONG_RUN_TIME=200
 #  Repeat read / write disk, Default Value is 0.
 #IS_REPEAT_IO_READ_WRITE=0
 #  Repeat read and write disks. Default value is 100 second.
-REPEAT_RW_NUMBER=1
+REPEAT_RW_NUMBER=5
 #  FIO tool to read the cycle time.
 REPEAT_RM_TIME=10
 
