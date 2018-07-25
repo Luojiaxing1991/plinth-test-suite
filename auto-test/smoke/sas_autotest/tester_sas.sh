@@ -13,7 +13,7 @@ T_SERVER_IP=''
 T_CLIENT_IP=''
 T_CTRL_NIC=''
 T_PICK_CASEC=''
-
+T_CIP=''
 
 checklist()
 {
@@ -123,6 +123,7 @@ do
         -p | --pickcase) T_PICK_CASE=$ac_optarg ;;
      #   	-n | --ctrlNIC) T_CTRL_NIC=$ac_optarg ;;
 		-t | --tester) T_TESTER=$ac_optarg ;;
+		-c | --clientip) T_CIP=${ac_optarg};;
 		*) Usage ; echo "Unknown option $1"; exit 1 ;;
 	esac
 
@@ -174,7 +175,7 @@ if [ x"${T_CTRL_NIC}" = x"" ];then
 fi
 
 g_ctrlNIC=$T_CTRL_NIC
-
+g_client_ip=${T_CIP}
 
 ##################################################################################
 #Update the cfg
