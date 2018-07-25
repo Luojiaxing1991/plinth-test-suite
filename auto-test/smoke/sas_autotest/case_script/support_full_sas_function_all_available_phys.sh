@@ -320,7 +320,7 @@ function cycle_fio_enable_devmem_all_switch_phy()
         fi
 
         phy_ops open all
-        sleep 2
+        sleep 320
         phyup_count=`dmesg | grep 'phyup' | wc -l`
         if [ ${phyup_count} -eq 0 ]
         then

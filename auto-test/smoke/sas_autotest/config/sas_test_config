@@ -119,7 +119,7 @@ SAS_PHY_VALUE_LIST=("6.0 Gbit" "3.0 Gbit")
 
 ## 3 - support full sas function on all available phys
 #  cycle the number of all proximal phy switches, Default value is 100.
-LOOP_PHY_COUNT=100
+LOOP_PHY_COUNT=5
 #  cycle reset distal phy number, Default value is 1000.
 RESET_PHY_COUNT=1000
 #  fio tool business run time.
