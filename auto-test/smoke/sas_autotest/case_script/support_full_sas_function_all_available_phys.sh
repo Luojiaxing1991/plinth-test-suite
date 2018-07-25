@@ -137,13 +137,16 @@ function fio_devmem_single_switch_phy()
         phy_ops close 0
         sleep 2
         phy_ops open 0
+	echo "sleep for 120s wait for disk recover from error..."
+	sleep 120
     else
         for i in `seq ${LOOP_PHY_COUNT}`
         do
             phy_ops close 0
             sleep 2
             phy_ops open 0
-            sleep 2
+	    echo "sleep for 120s wait for disk recover from error..."
+            sleep 120
         done
     fi
 
@@ -180,6 +183,9 @@ function fio_devmem_multiple_switch_phy()
         phy_ops open 0
         phy_ops open 1
         phy_ops open 2
+	
+	echo "sleep for 120s wait for disk recover from error..."
+	sleep 120
     else
         for i in `seq ${LOOP_PHY_COUNT}`
         do
@@ -197,7 +203,8 @@ function fio_devmem_multiple_switch_phy()
             phy_ops open 3
             phy_ops open 4
             phy_ops open 5
-            sleep 2
+            echo "sleep for 120s wait for disk recover from error..."
+	    sleep 120
         done
     fi
 
@@ -239,7 +246,9 @@ function fio_devmem_polling_switch_phy()
             ${DEVMEM} ${phy} w 0x6
             sleep 2
             ${DEVMEM} ${phy} w 0x7
-            sleep 2
+            sleep 120
+
+            echo "sleep for 120s wait for disk recover from error..."
         done
     done
 
@@ -283,6 +292,8 @@ function fio_devmem_all_switch_phy()
         phy_ops close all
         wait
         phy_ops open all
+	sleep 120
+        echo "sleep for 120s wait for disk recover from error..."
         end_count=`fdisk -l | grep /dev/sd | wc -l`
         if [ ${INIT_DISK_NUM} -ne ${end_count} ]
         then
@@ -320,7 +331,7 @@ function cycle_fio_enable_devmem_all_switch_phy()
         fi
 
         phy_ops open all
-        sleep 320
+        sleep 120
         phyup_count=`dmesg | grep 'phyup' | wc -l`
         if [ ${phyup_count} -eq 0 ]
         then
@@ -367,6 +378,8 @@ function cycle_fio_devmem_multiple_switch_phy()
         phy_ops open 0
         phy_ops open 1
         phy_ops open 2
+	sleep 120
+        echo "sleep for 120s wait for disk recover from error..."
     else
         for i in `seq ${LOOP_PHY_COUNT}`
         do
@@ -384,7 +397,9 @@ function cycle_fio_devmem_multiple_switch_phy()
             phy_ops open 3
             phy_ops open 4
             phy_ops open 5
-            sleep 2
+            sleep 120
+	
+            echo "sleep for 120s wait for disk recover from error..."
         done
     fi
 
