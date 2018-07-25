@@ -6,6 +6,7 @@
 
 function MSI_enable()
 {
+    Test_Case_Title="MSI_enable" 
     msi=`${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/lspci -s 74:02.0 -vvv | grep "MSI: Enable+"`
     if [ x"${msi}" == x"" ]
     then
@@ -32,6 +33,7 @@ function MSI_enable()
 
 function reset_device()
 {
+    Test_Case_Title="reset_device"
     init_disk_num=`fdisk -l | grep /dev/sd | wc -l`
     #reset device
     echo 1 > ${DEVICE_PATH}/reset
@@ -67,6 +69,8 @@ function reset_device()
 
 function set_sas_register()
 {
+    Test_Case_Title="set_sas_register"
+    init_disk_num=`fdisk -l | grep /dev/sd | wc -l`
     #read sas register
      ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/lspci -s 74:02.0 -vvv
      if [ $? -ne 0 ]
@@ -82,7 +86,7 @@ function set_sas_register()
       fi
 
       end_disk_num=`fdisk -l | grep /dev/sd | wc -l`
-      if [ ${INIT_DISK_NUM} -ne ${end_disk_num} ]
+      if [ ${init_disk_num} -ne ${end_disk_num} ]
       then
            MESSAGE="FAIL\tthe disk is missing when set sas register." && echo ${MESSAGE} && return 1
       fi
@@ -93,6 +97,17 @@ function set_sas_register()
 
 function main()
 {
+    #Judge the current environment, directly connected environment or expander environment.
+    judgment_network_env
+    if [ $? -ne 0 ]
+    then
+        MESSAGE="BLOCK\tthe current environment direct connection network, do not execute test cases."
+        echo "the current environment direct connection network, do not execute test cases."
+        return 0
+    fi
+
+    fio.config
+
     # call the implementation of the automation use cases
     test_case_function_run
 }

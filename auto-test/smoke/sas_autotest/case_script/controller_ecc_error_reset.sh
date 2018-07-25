@@ -9,6 +9,8 @@ function controller_2bit_ecc_reset()
 {
     Test_Case_Title="controller_2bit_ecc_reset"
 
+    for i in `seq ${CONTROLLER_ECC_COUNT}`
+    do
     ${DEVMEM} ${CONTROLLER_ECC_RESET_ADDR} w 0x1
     ${DEVMEM} ${CONTROLLER_ECC_ERROR} w 0x11
 
@@ -26,6 +28,7 @@ function controller_2bit_ecc_reset()
         echo ${MESSAGE}
         return 1
     fi
+    done
     MESSAGE="PASS"
     echo ${MESSAGE}
 }
@@ -37,7 +40,9 @@ function controller_1bit_ecc_reset()
 {
     Test_Case_Title="controller_1bit_ecc_reset"
 
-    local key_count=0
+    #local key_count=0
+    [ ${BOARD_TYPE} == "D06" ] && init_key_count=`dmesg | grep "corrected" | wc -l`
+    [ ${BOARD_TYPE} == "D05" ] && init_key_count=`dmesg | grep "hgc_dqe_acc1b_intr" | wc -l`
     time dmesg -c >> /dev/null
     # you must first run business io, then injected ecc error.
     ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
@@ -46,8 +51,9 @@ function controller_1bit_ecc_reset()
     ${DEVMEM} ${CONTROLLER_ECC_ERROR} w 0x1
 
     sleep 35
-    key_count=`dmesg | grep "corrected" | wc -l`
-    if [  ${key_count} -eq 0 ]
+    [ ${BOARD_TYPE} == "D06" ] && key_count=`dmesg | grep "corrected" | wc -l`
+    [ ${BOARD_TYPE} == "D05" ] && key_count=`dmesg | grep "hgc_dqe_acc1b_intr" | wc -l`
+    if [  ${key_count} -eq ${init_key_count} ]
     then
         MESSAGE="FAIL\tcontoller reset for 1ecc error failed, no error message reported."
         echo ${MESSAGE}
@@ -63,7 +69,7 @@ function controller_1bit_ecc_reset()
 function main()
 {
     #get system disk partition information.
-    fio.config
+    fio_config
 
     # call the implementation of the automation use cases
     test_case_function_run

@@ -62,7 +62,7 @@ function main()
     echo -e "\033[32mThe test report path locate at \033[0m\033[35m${PLINTH_TEST_WORKSPACE}/${Module}/${Date}/${NowTime}/ \033[0m"
 }
 
-# mkdir the fio.conf path
+# mkdir the fio path
 mkdir -p ${FIO_CONFIG_PATH}
 
 ##check the env_ok is ok
@@ -84,6 +84,7 @@ MkdirPath
 LogHeader
 
 get_all_disk_part
+
 
 cat /proc/kmsg >> /home/log.txt &
 

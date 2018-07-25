@@ -25,7 +25,10 @@ function ncq_query()
     info=`dmesg | grep 'NCQ'`
     if [ x"${info}" = x"" ]
     then
+        info=`cat /home/dmesg.log | grep 'NCQ'`
+        if [ x"${info}" = x"" ];then
         MESSAGE="FAIL\tQuery keyword \"NCQ\" failed." && echo ${MESSAGE} && return 1
+        fi
     fi
 
     MESSAGE="PASS"

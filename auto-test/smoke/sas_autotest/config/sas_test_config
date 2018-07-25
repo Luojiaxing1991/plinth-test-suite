@@ -22,7 +22,6 @@ TEST_CASE_FUNCTION_SWITCH=""
 TEST_CASE_FUNCTION_NAME=""
 #Test case execution result.
 MESSAGE=""
-#FIO config path
 FIO_CONFIG_PATH="/home/plinth-test-workspace/sas/cfg"
 # Expander backplane support phy number
 EFFECTIVE_PHY_NUM=11
@@ -83,7 +82,7 @@ group_reporting=1
 ;gtod_reduce=1
 ;iodepth_batch=2
 ;iodepth_batch_complete=2
-runtime=300
+runtime=20
 ;thread
 loops=10
 "
@@ -102,7 +101,8 @@ CURR_ENV_REG_ADDR="0xa2000028"
 ###1 - Test case parameter configuration.
 ## 2 - physical_data_rate
 #  negotiated link rate value, Multiple please use the symbol "|" split, Default Value is '1.5|3.0|6.0|12.0', Unit: Gbit.
-DISK_NEGOTIATED_LINKRATE_VALUE='1.5|3.0|6.0|12.0'
+SAS_DISK_NEGOTIATED_LINKRATE_VALUE='1.5|3.0|6.0|12.0'
+SATA_DISK_NEGOTIATED_LINKRATE_VALUE='1.5|3.0|6.0'
 
 ## 2 - phy_control_through_sysfs
 #  Maximum disk phy, Default Value is "12.0 Gbit".
@@ -237,6 +237,9 @@ CONTROLLER_ECC_RESET_ADDR="0xa2000200"
 CONTROLLER_ECC_ERROR="0xa20001F0"
 #
 CONTROLLER_ECC_IO_TIME=60
+#
+##the number of controller ecc,Default value is 1000.
+CONTROLLER_ECC_COUNT=2
 ## 17 check whether or not start with acpi.
 #
 ACPI_KEY_INFO="acpi"
@@ -250,11 +253,11 @@ BIT_ECC_COUNT=2
 
 ## 20 linux pci device,the path of device.
 #
-DEVICE_PATH="/sys/bus/pci/devices/0000:74:03.0"
+DEVICE_PATH="/sys/bus/pci/devices/0000:74:02.0"
 
 ## 21 the path of host_reset.
 #
-HOST_RESET_PATH="/sys/devices/pci0000\:74/0000\:74\:03.0/"
+HOST_RESET_PATH="/sys/devices/pci0000\:74/0000\:74\:02.0/"
 
 ## 22 the count of Code Violation/Running Disparity Error/Invalid Dword error.
 #

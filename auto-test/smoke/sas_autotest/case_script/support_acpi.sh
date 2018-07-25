@@ -20,6 +20,15 @@ function check_acpi_start()
 
 function main()
 {
+    #Judge the current environment, directly connected environment or expander environment.
+    judgment_network_env
+    if [ $? -ne 0 ]
+    then
+        MESSAGE="BLOCK\tthe current environment direct connection network, do not execute test cases."
+        echo "the current environment direct connection network, do not execute test cases."
+        return 0
+    fi
+
     # call the implementation of the automation use cases
     test_case_function_run
 }

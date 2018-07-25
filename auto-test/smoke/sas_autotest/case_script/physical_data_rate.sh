@@ -18,7 +18,12 @@ function disk_negotiated_link_rate_query()
         [ x"${type}" != x"${disk_type}" ] && continue
         rate_value=`cat ${PHY_FILE_PATH}/${dir}/negotiated_linkrate | awk -F '.' '{print $1}'`
         BRate=1
-        rate_info=`echo $DISK_NEGOTIATED_LINKRATE_VALUE | sed 's/|/ /g'`
+        if [ $disk_type == "ssp" ];then
+        rate_info=`echo ${SAS_DISK_NEGOTIATED_LINKRATE_VALUE} | sed 's/|/ /g'`
+        fi
+        if [ $disk_type == "sata" ];then
+        rate_info=`echo ${SATA_DISK_NEGOTIATED_LINKRATE_VALUE} | sed 's/|/ /g'`
+        fi
         max_rate=`cat ${PHY_FILE_PATH}/${dir}/maximum_linkrate`
         min_rate=`cat ${PHY_FILE_PATH}/${dir}/minimum_linkrate`
         for rate in ${rate_info}
