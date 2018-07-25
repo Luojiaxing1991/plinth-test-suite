@@ -15,6 +15,7 @@ function iozne_file_transfer_stability_test()
         then
             umount ${disk_name}
             MESSAGE="FAIL\tMount "${disk_name}" disk failure."
+            echo ${MESSAGE}
             return 1
         fi
 
@@ -24,6 +25,7 @@ function iozne_file_transfer_stability_test()
         then
             umount ${disk_name}
             MESSAGE="FAIL\tFile transfer stability test,IO read and write exception."
+            echo ${MESSAGE}
             return 1
         fi
 
@@ -32,6 +34,7 @@ function iozne_file_transfer_stability_test()
 
     done
     MESSAGE="PASS"
+    echo ${MESSAGE}
 }
 
 

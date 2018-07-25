@@ -110,17 +110,17 @@ function fio_config()
 {
     local count=1
     echo "$FIO_PARAMETER_LIST" > ${FIO_CONFIG_PATH}/${FIO_CONFG}
-    if [ x"${DEBUG}" == x"true" ]
-    then
-        sed -i "s/^runtime=.*/runtime=20/g" ${FIO_CONFIG_PATH}/${FIO_CONFG}
-        sed -i "s/^loops=.*/loops=2/g" ${FIO_CONFIG_PATH}/${FIO_CONFG}
-        sed -i "s/^iodepth=.*/iodepth=64/g" ${FIO_CONFIG_PATH}/${FIO_CONFG}
-    fi
+    if [ x"${DEBUG}" == x"true" ];then
 
+        sed -i "{s/^runtime=.*/runtime=20/g;}" ${FIO_CONFIG_PATH}/${FIO_CONFG}
+        sed -i "{s/^loops=.*/loops=2/g;}" ${FIO_CONFIG_PATH}/${FIO_CONFG}
+        sed -i "{s/^iodepth=.*/iodepth=64/g;}" ${FIO_CONFIG_PATH}/${FIO_CONFG}
+    fi
     for dev in "${ALL_DISK_PART_NAME[@]}"
     do
         echo "[job${count}]" >> ${FIO_CONFIG_PATH}/${FIO_CONFG}
         echo "filename=$dev" >> ${FIO_CONFIG_PATH}/${FIO_CONFG}
+        let count+=1
     done
 }
 

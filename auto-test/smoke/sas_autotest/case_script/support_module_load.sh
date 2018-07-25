@@ -9,11 +9,15 @@ function module_load_uninstall()
     Test_Case_Title="module_load_uninstall"
 
     local ko_info
-    ko_info=`echo ${D05_INSMOD_MODULE_KO_FILE} | sed 's/|/ /g'`
+    if [ ${BOARD_TYPE} == "D05" ];then
+        ko_info=`echo ${D05_INSMOD_MODULE_KO_FILE} | sed 's/|/ /g'`
+    elif [ ${BOARD_TYPE} == "D06" ];then
+        ko_info=`echo ${D06_INSMOD_MODULE_KO_FILE} | sed 's/|/ /g'`
+    fi
     for ko in ${ko_info}
     do
         insmod ${SAS_TOP_DIR}/${MODULE_KO_PATH}/${ko}
-        sleep 10
+        sleep 2
         return_num=$?
         info=`lsmod | grep ${ko%.*}`
 
@@ -43,11 +47,15 @@ function module_load_uninstall()
         fi
         umount ${dev}
     done
-    ko_info=`echo ${D05_RMMOD_MODULE_KO_FILE} | sed 's/|/ /g'`
+    if [ ${BOARD_TYPE} == "D05" ];then
+        ko_info=`echo ${D05_RMMOD_MODULE_KO_FILE} | sed 's/|/ /g'`
+    elif [ ${BOARD_TYPE} == "D06" ];then
+        ko_info=`echo ${D06_RMMOD_MODULE_KO_FILE} | sed 's/|/ /g'`
+    fi
     for ko in ${ko_info}
     do
-        rmmod ${SAS_TOP_DIR}/${MODULE_KO_PATH}/${ko}
-        sleep 10
+        rmmod ${ko}
+        sleep 2 
         info=`lsmod | grep ${ko}`
         if [ x"${info}" != x"" ]
         then

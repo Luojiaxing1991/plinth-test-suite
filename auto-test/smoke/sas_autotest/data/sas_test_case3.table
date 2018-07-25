@@ -1,9 +1,0 @@
-ST.FUNC.024|24|sas_smoke|chenxiang|chenliangfei|support_module_load.sh|module_load_uninstall|on
-ST.FUNC.063|63|sas_smoke|chenxiang|chenliangfei|phy_control_through_sysfs.sh|fio_set_rate_link|off
-ST.FUNC.070|70|sas_smoke|chenxiang|chenliangfei|phy_control_through_sysfs.sh|fio_set_rate_host_reset|off
-ST.FUNC.064|64|sas_smoke|chenxiang|chenliangfei|driver_must_cause_no_oops.sh|fio_phy_reset|off
-ST.FUNC.065|FIO_hard_link_enable_bit_1_SAS_SATA|sas_smoke|chenxiang|chenliangfei|driver_must_cause_no_oops.sh|fio_phy_reset_bit|off
-ST.FUNC.066|FIO_hard_link_enable_bit_2_SAS_SATA|sas_smoke|chenxiang|chenliangfei|driver_must_cause_no_oops.sh|fio_phy_reset_bit|off
-ST.FUNC.067|FIO_hard_link_ecc_0_SAS_SATA|sas_smoke|chenxiang|chenliangfei|driver_must_cause_no_oops.sh|fio_hard_link_host_ecc|off
-ST.FUNC.068|FIO_hard_link_ecc_4_SAS_SATA|sas_smoke|chenxiang|chenliangfei|driver_must_cause_no_oops.sh|fio_hard_link_host_ecc|off
-ST.FUNC.069|FIO_hard_link_ecc_host_SAS_SATA|sas_smoke|chenxiang|chenliangfei|driver_must_cause_no_oops.sh|fio_hard_link_host_ecc|off

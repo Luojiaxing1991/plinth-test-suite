@@ -2,7 +2,7 @@
 
 
 
-# Supports full disk read and write simultaneously 
+# Supports full disk read and write simultaneously
 # IN :N/A
 # OUT:N/A
 function support_max_devices()
@@ -10,7 +10,7 @@ function support_max_devices()
     Test_Case_Title="support_max_devices"
 
     num=${#ALL_DISK_PART_NAME[@]}
-    if [ ${num} -ne ${MAX_DEV_NUM} ] 
+    if [ ${num} -ne ${MAX_DEV_NUM} ]
     then
         MESSAGE="FAIL\texpander not fully loaded." && echo ${MESSAGE} && return 1
     fi
@@ -23,17 +23,12 @@ function support_max_devices()
         mount -t ext4 ${disk_name} /mnt/${count} 1>/dev/null
 
         info=`mount | grep -w "^${disk_name}"`
-        if [ "${info}" = x"" ] 
+        if [ "${info}" = x"" ]
         then
             MESSAGE="FAIL\tMount "${disk_name}" disk failure." && echo ${MESSAGE} && return 1
         fi
 
-        time dd if=${disk_name} of=/mnt/${count}/test.img bs=1M count=1000 conv=fsync 1>/dev/null &
-        if [ $? -ne 0 ] 
-        then 
-            umount ${disk_name} 
-            MESSAGE="FAIL\tdd tools read ${disk_name} error." && echo ${MESSAGE} && return 1
-        fi
+        time dd if=${disk_name} of=/mnt/${count}/test.img bs=1M count=1000 conv=fsync &
         let count+=1
     done
 
@@ -49,6 +44,15 @@ function support_max_devices()
 
 function main()
 {
+    #Judge the current environment, directly connected environment or expander environment.
+    judgment_network_env
+    if [ $? -ne 0 ]
+    then
+        MESSAGE="BLOCK\tthe current environment direct connection network, do not execute test cases."
+        echo "the current environment direct connection network, do not execute test cases."
+        return 0
+    fi
+
     # call the implementation of the automation use cases
     test_case_function_run
 }
