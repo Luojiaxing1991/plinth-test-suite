@@ -127,30 +127,33 @@ function fio_devmem_single_switch_phy()
 {
     Test_Case_Title="fio_devmem_single_switch_phy"
 
-    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
-
-    beg_count=`fdisk -l | grep /dev/sd | wc -l`
+        beg_count=`fdisk -l | grep /dev/sd | wc -l`
     judgment_network_env
     if [ $? -eq 1 ]
     then
+	sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+        ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
+
         phy_ops close 0
-        sleep 2
+        wait
         phy_ops open 0
-	echo "sleep for 120s wait for disk recover from error..."
-	sleep 120
+	echo "sleep for 30s wait for disk recover from fault..."
+	sleep 30
     else
         for i in `seq ${LOOP_PHY_COUNT}`
         do
+	    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    	    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
+
             phy_ops close 0
-            sleep 2
+            wait
             phy_ops open 0
-	    echo "sleep for 120s wait for disk recover from error..."
-            sleep 120
+	    echo "sleep for 120s wait for disk recover from fault..."
+            sleep 30
         done
     fi
 
-    wait
+   
     end_count=`fdisk -l | grep /dev/sd | wc -l`
     if [ ${beg_count} -ne ${end_count} ]
     then
@@ -169,33 +172,35 @@ function fio_devmem_multiple_switch_phy()
 {
     Test_Case_Title="fio_devmem_multiple_phy_switch"
 
-    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
-
-    beg_count=`fdisk -l | grep /dev/sd | wc -l`
+        beg_count=`fdisk -l | grep /dev/sd | wc -l`
     judgment_network_env
     if [ $? -eq 1 ]
     then
+	sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+        ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
         phy_ops close 0
         phy_ops close 1
         phy_ops close 2
-        sleep 2
+        wait
         phy_ops open 0
         phy_ops open 1
         phy_ops open 2
 	
-	echo "sleep for 120s wait for disk recover from error..."
-	sleep 120
+	echo "sleep for 90s wait for disk recover from error..."
+	sleep 90
     else
         for i in `seq ${LOOP_PHY_COUNT}`
         do
+            sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    	    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
+
             phy_ops close 0
             phy_ops close 1
             phy_ops close 2
             phy_ops close 3
             phy_ops close 4
             phy_ops close 5
-            sleep 2
+            wait
 
             phy_ops open 0
             phy_ops open 1
@@ -207,8 +212,6 @@ function fio_devmem_multiple_switch_phy()
 	    sleep 120
         done
     fi
-
-    wait
     end_count=`fdisk -l | grep /dev/sd | wc -l`
     if [ ${beg_count} -ne ${end_count} ]
     then
@@ -236,23 +239,22 @@ function fio_devmem_polling_switch_phy()
     fi
 
     beg_count=`fdisk -l | grep /dev/sd | wc -l`
-    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
-    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
-
     for i in `seq ${LOOP_PHY_COUNT}`
     do
         for phy in ${PHY_ADDR_VALUE[@]}
         do
-            ${DEVMEM} ${phy} w 0x6
-            sleep 2
-            ${DEVMEM} ${phy} w 0x7
-            sleep 120
+     	    sed -i "{s/^runtime=.*/runtime=${LOOP_PHY_TIME}/g;}" ${FIO_CONFIG_PATH}/fio.conf
+    	    ${SAS_TOP_DIR}/../${COMMON_TOOL_PATH}/fio ${FIO_CONFIG_PATH}/fio.conf &
 
-            echo "sleep for 120s wait for disk recover from error..."
+            ${DEVMEM} ${phy} w 0x6
+            wait
+            ${DEVMEM} ${phy} w 0x7
+            sleep 30
+
+            echo "sleep for 30s wait for disk recover from error..."
         done
     done
 
-    wait
     end_count=`fdisk -l | grep /dev/sd | wc -l`
     if [ ${beg_count} -ne ${end_count} ]
     then
