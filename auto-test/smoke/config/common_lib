@@ -7,7 +7,7 @@
 #              2.settrustrelation,include nopara and para version. Used to set ssh connect.
 #              3.keepNICmsg, Save dmesg of eht rename message
 #		4.checkExpectExist, install the expect cmd and clone the deb repo to local
-#              5.test_report , used for generate test report at workspace 
+#              5.test_report , used for generate test report at workspace
 #		6.modify_bootorder , used for change boot order in ubuntu sys
 #
 # Generater:  chenliangfei,luojiaxing 00437090
@@ -154,7 +154,6 @@ function KeepNicMsg() {
     done
     echo ${lnic_list[*]}
 
-    echo "--------------------------"
     rcount=`ssh -o StrictHostKeyChecking=no root@${sip} "ifconfig -a | grep "encap" | awk '{print $1}' | wc -l"`
     rcount=`expr $rcount - 3`
     for i in `seq 0 $rcount`
@@ -193,6 +192,9 @@ function KeepNicMsg() {
         mkdir -p $2
         cp a.txt $2/lnic_$3
         cp b.txt $2/rnic_$3
+    else
+        echo "The NIC is not PASS, check the env is ok?"
+        exit 1
     fi
     rm a.txt b.txt
 }
@@ -233,28 +235,29 @@ function Check_expect_exist() {
     fi
     popd
 
+    mkdir -p /home/junkman
+    cp /home/tool/tool.tar.gz /home/junkman
+    cd /home/junkman
+    tar zxvf tool.tar.gz
+
     which expect
     if [ $? -ne 0 ]
     then
-
 	#---------------------------------------------------------------#
 	#Description: These code mean to kill all apt  process in system .
 	#             one time i use dpkg -i without kill apt process ,it return "dpkg database is locked by another process!" and fail
 	#
 	#Coder: luojiaxing 00437090 20190719
-	aptlist1=`ps -e | grep apt | awk -F' ' '{print $1}'`
-	for a in ${aptlist1[@]}
-	do
-		echo $a
-		kill $a
+    aptlist1=`ps -e | grep apt | awk -F' ' '{print $1}'`
+    for a in ${aptlist1[@]}
+    do
+        echo $a
+        kill $a
 	done
 	#----------------------------------------------------------------#
 
         #cd /home
-        mkdir -p /home/junkman
-        cp /home/tool/tool.tar.gz /home/junkman
         cd /home/junkman
-        tar zxvf tool.tar.gz
         for i in ${Common_list[*]}
         do
             dpkg -i ${i}
@@ -263,15 +266,15 @@ function Check_expect_exist() {
 
 
     #------------------------------------------------------------#
-    #Description: these code check if the expect cmd is install right .if not ,this function will return 1 
+    #Description: these code check if the expect cmd is install right .if not ,this function will return 1
     #             to tell caller that it fail to install expect.
     #
     #Coder: luojiaxing 00437090 20180719
 
     which expect
     if [ $? -eq 1 ];then
-	echo "expect cmd is not install right!"
-	return 1
+        echo "expect cmd is not install right!"
+        return 1
     fi
     #----------------------------------------------------------------#
     }
@@ -351,13 +354,12 @@ function InitDirectoryName(){
 function MkdirPath(){
     mkdir -p ${BaseDir}/log
     tmp_num=$(ls ${PLINTH_TEST_WORKSPACE}/${Module} | wc -l )
-    tmp=$(ls ${PLINTH_TEST_WORKSPACE}/${Module})
-    tmp=($tmp)
-    flag=1
-    min=${tmp[0]}
     # keep the date
     while test ${tmp_num} -gt 5
     do
+        tmp=$(ls ${PLINTH_TEST_WORKSPACE}/${Module})
+        tmp=($tmp)
+        min=${tmp[0]}
         for i in $(seq 0 $[tmp_num-1])
         do
             if [ ${min} -gt ${tmp[i]} ]
