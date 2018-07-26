@@ -8,9 +8,10 @@ function hac_smmu_axi_error()
 	local set mNicSmmuReg=0x140000EA0
 	local set mGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	output=`dmesg -c`
+	sleep 10s
 	busybox devmem ${mNicSmmuReg} 32 0x10010
 	fdisk -l 
-	sleep 2s
+	sleep 20s
 	local set newGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	if [ "${mGpioInter}" = "${newGpioInter}" -a `cat /etc/issue |wc -l` -eq 0 ];then
 		MESSAGE="FAIL\t No HAC SMMU AXI ERROR GPIO interrupts produce!"
@@ -36,10 +37,11 @@ function hac_smmu_tbu_error()
 	local set mNicSmmuReg=0x140000EA0
 	local set mGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	output=`dmesg -c`
+	sleep 10s
 	busybox devmem ${mNicSmmuReg} 32 0x20011
 	fdisk -l 
 	busybox devmem ${mNicSmmuReg} 32 0x0
-	sleep 2s
+	sleep 20s
 	local set newGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	if [ "${mGpioInter}" = "${newGpioInter}" -a `cat /etc/issue |wc -l` -eq 0 ];then
 		MESSAGE="FAIL\t No HAC SMMU TBU ERROR GPIO interrupts produce!"

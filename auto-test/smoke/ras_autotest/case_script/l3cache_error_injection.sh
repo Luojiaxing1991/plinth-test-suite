@@ -1,17 +1,33 @@
 #!/bin/bash
 
+# L3cache REG clear
+# IN :N/A
+# OUT:N/A
+function RegClear()
+{
+        for i in {1..50}
+        do
+                mL3tVal=`busybox devmem 0x90142010`
+                mL3dVal=`busybox devmem 0x90182010`
+                busybox devmem 0x90142010 32 ${mL3tVal}
+                busybox devmem 0x90182010 32 ${mL3dVal}
+                sleep 5s
+        done
+}
+
 # L3t Error Injection
 # IN : the injection value
 # OUT:N/A
 
 function l3t_error_injection()
 {
+	RegClear
 	local set mL3TReg=0x90180408
 	local set mGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	output=`dmesg -c`
-	sleep 1s
+	sleep 10s
 	busybox devmem ${mL3TReg} 32 $1
-	sleep 2s
+	sleep 20s
 	local set newGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	if [ "${mGpioInter}" = "${newGpioInter}" -a `cat /etc/issue |wc -l` -eq 0 ];then
 		MESSAGE="FAIL\t No L3T ERROR GPIO interrupts produce!"
@@ -34,18 +50,10 @@ function l3t_error_injection()
 # OUT:N/A
 function l3d_error_injection()
 {
-	for i in {1..50}
-	do
-		mL3tVal=`busybox devmem 0x90142010`
-		mL3dVal=`busybox devmem 0x90182010`
-		busybox devmem 0x90142010 32 ${mL3tVal}
-		busybox devmem 0x90182010 32 ${mL3dVal}
-		sleep 1s
-	done
-	sleep 10s
+	RegClear
 	local set mGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	output=`dmesg -c`
-	sleep 1s
+	sleep 10s
 	busybox devmem $1 32 $2
 	sleep 20s
 	local set newGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
@@ -84,7 +92,7 @@ function l3t_std_memory_ecc()
 # L3cache Report
 # IN :N/A
 # OUT:N/A
-function l3cache_reprot()
+function l3cache_report()
 {
 	l3t_error_injection 0x8000000
 }
