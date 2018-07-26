@@ -156,7 +156,7 @@ g_client_ip=''
 g_ctrlNIC='eth3'
 COM=''
 jump_apt_get='TRUE'
-BOARD_TYPE="d06"
+G_BOARD_TYPE="d06"
 ####################################################################################
 
 

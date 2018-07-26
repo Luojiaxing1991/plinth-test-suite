@@ -87,7 +87,7 @@ get_all_disk_part
 
 
 cat /proc/kmsg >> /home/log.txt &
-
+phy_ops open all
 #-----------------------------------------------------------#
 #Description: this libsmputils need by smp_decover ,and it need to be placed in usr/lib
 #Coder:  luojiaxing 00437090 20180724
