@@ -1,1 +1,2 @@
 ST.FUNC.039|FioPerformance_700K_SAS_SATA|sas_performance|chenxiang|chenliangfei|support_700k_iops.sh|fio_iops_controller|off
+ST.FUNC.035|LongFIO_ReadWrite_SATA_SAS|sas_performance|chenxiang|fangmeixun|no_cable_unplug_oops.sh|loog_time_IO_read_write|off

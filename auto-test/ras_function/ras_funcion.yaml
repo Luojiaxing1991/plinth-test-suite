@@ -1,0 +1,29 @@
+metadata:
+    format: Lava-Test Test Definition 1.0
+    name: RAS-function-test
+    description: "Run basic smoke tests."
+    maintainer: "linyunsheng"
+    os:
+        - ubuntu
+    scope:
+        - functional
+    devices:
+        - d06
+
+params:
+    SKIP_INSTALL: "False"
+
+run:
+    steps:
+        - cp ./auto-test/ras_function/ras_test_case.table ./auto-test/smoke/ras_autotest/data/ras_test_case.table
+        - cd ./auto-test/smoke/
+        - bash  ./ras_autotest/ras_main.sh
+          # - bash -x ./sas_autotest/sas_main.sh
+          # - bash -x ./roce_autotest/roce_main.sh
+       # - bash -x ./pcie_autotest/pcie_main.sh
+        - cd -
+parse:
+    pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"
+    fixupdict:
+        FAIL: fail
+        PASS: pass

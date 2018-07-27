@@ -8,8 +8,9 @@ function nic_smmu_axi_error()
 	local set mNicSmmuReg=0x100000EA0
 	local set mGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	output=`dmesg -c`
+	sleep 10s
 	busybox devmem ${mNicSmmuReg} 32 0x10010
-	sleep 2s
+	sleep 20s
 	local set newGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	if [ "${mGpioInter}" = "${newGpioInter}" -a `cat /etc/issue |wc -l` -eq 0 ];then
 		MESSAGE="FAIL\t No NIC SMMU AXI error GPIO interrupts produce!"
@@ -35,10 +36,12 @@ function nic_smmu_tbu_error()
 	local set mNicSmmuReg=0x100000EA0
 	local set mGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	output=`dmesg -c`
+	sleep 10s
 	busybox devmem ${mNicSmmuReg} 32 0x20011
 	ifconfig -a
+	sleep 1s
 	busybox devmem ${mNicSmmuReg} 32 0x0
-	sleep 2s
+	sleep 20s
 	local set newGpioInter=`cat /proc/interrupts | grep "GICv3  122"|awk -F'[ \t]+' '{print $3}'`
 	if [ "${mGpioInter}" = "${newGpioInter}" -a `cat /etc/issue |wc -l` -eq 0 ];then
 		MESSAGE="FAIL\t No NIC SMMU TBU error GPIO interrupts produce!"

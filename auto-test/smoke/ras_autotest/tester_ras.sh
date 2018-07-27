@@ -33,7 +33,7 @@ checklist()
   done < ${TESTER_RAS_TOP_DIR}/data/ras_test_case.table
   #echo $list
   TABLE_LIST=$( whiptail --nocancel --title "Test Case List" --checklist \
-  "Choose test case you want to run this time:" 15 120 8 $list 3>&1 1>&2 2>&3)
+  "Choose test case you want to run this time:" 15 80 8 $list 3>&1 1>&2 2>&3)
 
 
   if [ $? -eq 0 ];then
@@ -152,8 +152,6 @@ done
 #input the parameter
 ###################################################################################
 
-trap '' INT
-
 if [ x"$T_TESTER" = x"" ];then
 	echo "Tester name is not input!Please input it use -t..."
 	exit 1
@@ -239,9 +237,6 @@ else
 fi
 
 COM="true"
-
-trap - INT
-
 source ${TESTER_RAS_TOP_DIR}/ras_main.sh
 
 #COM="true"
