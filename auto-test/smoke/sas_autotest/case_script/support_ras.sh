@@ -15,6 +15,7 @@ function ecc_injection_process()
     INJECT_REG_ADDR_VALUE=$2
     INJECT_BIT_VALUE=$3
 
+    time dmesg -c > /dev/null
     # Generate FIO configuration file
     fio_config
 
@@ -29,7 +30,6 @@ function ecc_injection_process()
     fi
 
     # clear the contents of the ring buffer.
-    time dmesg -c > /dev/null
     #cat whether exist UE or CE error.
     [ x"${BOARD_TYPE}" == x"D05" ] && begin_bit_count=`dmesg | grep ${ECC_INFO_KEY_QUERIES} | wc -l`
     [ x"${BOARD_TYPE}" == x"D06" ] && begin_bit_count=`dmesg | grep -e ${ECC_INFO_KEY1_QUERIES} -e ${ECC_INFO_KEY2_QUERIES} | wc -l`

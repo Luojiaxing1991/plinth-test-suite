@@ -118,7 +118,7 @@ then
 		exit 1
 	fi
 
-	KeepNicMsg ${g_client_ip} $PLINTH_TEST_WORKSPACE/xge/cfg $BOARD_TYPE
+	KeepNicMsg ${g_client_ip} $PLINTH_TEST_WORKSPACE/xge/cfg $G_BOARD_TYPE
 fi
 
 #---------------------------------------------------#

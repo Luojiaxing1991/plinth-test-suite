@@ -25,16 +25,17 @@ function cycle_devmem_all_switch_phy()
         fi
 
         phy_ops open all
-        sleep 2
+        sleep 10
         phyup_count=`dmesg | grep 'phyup' | wc -l`
         if [ ${phyup_count} -eq 0 ]
         then
             MESSAGE="FAIL\topen all proximal phy, did not produce in event." && echo ${MESSAGE} && return 1
         fi
-        sleep 5
+        sleep 10
     done
 
-    sleep 5
+    echo "Sleep 10s to wait for disk recover ...."
+    sleep 10
     end_disk_num=`fdisk -l | grep /dev/sd | wc -l`
     if [ ${init_disk_num} -ne ${end_disk_num} ]
     then

@@ -123,17 +123,17 @@ function init_net_export()
     #    fi
     #done
     echo "Begin to check eth rename info!"
-    if [[ `cat ${PLINTH_TEST_WORKSPACE}/xge/cfg/lnic_${BOARD_TYPE} | wc -l` -eq 0 ]];then
+    if [[ `cat ${PLINTH_TEST_WORKSPACE}/xge/cfg/lnic_${G_BOARD_TYPE} | wc -l` -eq 0 ]];then
         tmp_infol="dmesg"
     else
-        tmp_infol="${PLINTH_TEST_WORKSPACE}/xge/cfg/lnic_${BOARD_TYPE}"
+        tmp_infol="${PLINTH_TEST_WORKSPACE}/xge/cfg/lnic_${G_BOARD_TYPE}"
         echo "use the dmesg info save by pre_main"
     fi
 
-    if [[ `cat ${PLINTH_TEST_WORKSPACE}/xge/cfg/rnic_${BOARD_TYPE} | wc -l` -eq 0 ]];then
+    if [[ `cat ${PLINTH_TEST_WORKSPACE}/xge/cfg/rnic_${G_BOARD_TYPE} | wc -l` -eq 0 ]];then
         tmp_infor="dmesg"
     else
-        tmp_infor="${PLINTH_TEST_WORKSPACE}/xge/cfg/rnic_${BOARD_TYPE}"
+        tmp_infor="${PLINTH_TEST_WORKSPACE}/xge/cfg/rnic_${G_BOARD_TYPE}"
     fi
 
     #we update the eth rename info to eth_map,then update TP/FIBRE info

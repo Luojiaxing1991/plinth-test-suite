@@ -87,11 +87,12 @@ get_all_disk_part
 
 
 cat /proc/kmsg >> /home/log.txt &
-
+phy_ops open all
 #-----------------------------------------------------------#
 #Description: this libsmputils need by smp_decover ,and it need to be placed in usr/lib
 #Coder:  luojiaxing 00437090 20180724
 cp ${SAS_TOP_DIR}/../common_tool/libsmputils1.so.1 /usr/lib
+cp ${SAS_TOP_DIR}/../common_tool/devmem2 /usr/bin
 #-----------------------------------------------------------#
 
 
