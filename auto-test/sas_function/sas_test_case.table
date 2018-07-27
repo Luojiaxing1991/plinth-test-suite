@@ -1,9 +1,3 @@
-ST.FUNC.001|dd_write_SAS|sas_smoke|chenxiang|fangmeixun|driver_must_support.sh|driver_supports|on
-ST.FUNC.002|dd_write_SATA|sas_smoke|chenxiang|fangmeixun|driver_must_support.sh|driver_supports|on
-ST.FUNC.027|FIO_ReadWrite_SATA_SAS|sas_smoke|chenxiang|fangmeixun|support_available_sas_cores.sh|FIO_IO_read_write|on
-ST.FUNC.045|CycleOpenClosePhy_SATA_SAS|sas_smoke|chenxiang|fangmeixun|support_full_sas_function_all_available_phys.sh|cycle_enable_phy|on
-ST.FUNC.046|CycleHardResetDisk_SATA_SAS|sas_smoke|chenxiang|fangmeixun|support_full_sas_function_all_available_phys.sh|cycle_hard_reset_phy|on
-ST.FUNC.047|CycleLinkResetDisk_SATA_SAS|sas_smoke|chenxiang|fangmeixun|support_full_sas_function_all_available_phys.sh|cycle_link_reset_phy|on
 ST.FUNC.004|dd_writeMAX_SATA_SAS|sas_function|chenxiang|fangmeixun|support_max_devices.sh|support_max_devices|on
 ST.FUNC.008|DiskNegotiated_LinkRate_SAS|sas_function|chenxiang|fangmeixun|physical_data_rate.sh|disk_negotiated_link_rate_query|on
 ST.FUNC.009|DiskNegotiated_LinkRate_SATA|sas_function|chenxiang|fangmeixun|physical_data_rate.sh|disk_negotiated_link_rate_query|on
@@ -15,10 +9,8 @@ ST.FUNC.031|FIO_ReadOnly_SATA_SAS|sas_function|chenxiang|fangmeixun|support_avai
 ST.FUNC.032|FIO_WriteOnly_SATA_SAS|sas_function|chenxiang|fangmeixun|support_available_sas_cores.sh|FIO_IO_RAIO_read_write|on
 ST.FUNC.033|FIO_WriteDeep512_SATA_SAS|sas_function|chenxiang|fangmeixun|support_available_sas_cores.sh|FIO_IO_RAIO_read_write|on
 ST.FUNC.034|FIO_ReadDeep512_SATA_SAS|sas_function|chenxiang|fangmeixun|support_available_sas_cores.sh|FIO_IO_RAIO_read_write|on
-ST.FUNC.035|LongFIO_ReadWrite_SATA_SAS|sas_function|chenxiang|fangmeixun|no_cable_unplug_oops.sh|loog_time_IO_read_write|off
 ST.FUNC.036|RepeatFIO_ReadWrite_SATA_SAS|sas_function|chenxiang|fangmeixun|no_cable_unplug_oops.sh|repeat_IO_read_write|off
 ST.FUNC.037|DataConsistency_SAS_SATA|sas_function|chenxiang|fangmeixun|no_cable_unplug_oops.sh|disk_file_data_consistency_test|off
-ST.FUNC.039|FioPerformance_700K_SAS_SATA|sas_performance|chenxiang|fangmeixun|support_700k_iops.sh|fio_iops_controller|off
 ST.FUNC.044|ContinueOpenClosePhy_SATA_SAS|sas_function|chenxiang|fangmeixun|support_full_sas_function_all_available_phys.sh|cycle_devmem_all_switch_phy|off
 ST.FUNC.058|CatMsg_NCQ_SATA|sas_function|chenxiang|fangmeixun|support_sata_ncq.sh|ncq_query|on
 ST.FUNC.059|SmartDisk_OpenClose_SATA_SAS|sas_function|chenxiang|fangmeixun|support_smart.sh|smart_disk_check|on
