@@ -2,7 +2,7 @@ metadata:
     format: Lava-Test Test Definition 1.0
     name: RAS-function-test
     description: "Run basic smoke tests."
-    maintainer: "linyunsheng"
+    maintainer: "Tanxiaofei"
     os:
         - ubuntu
     scope:
