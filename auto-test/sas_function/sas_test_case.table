@@ -25,7 +25,7 @@ ST.FUNC.058|CatMsg_NCQ_SATA|sas_function|chenxiang|fangmeixun|support_sata_ncq.s
 ST.FUNC.059|SmartDisk_OpenClose_SATA_SAS|sas_function|chenxiang|fangmeixun|support_smart.sh|smart_disk_check|on
 ST.FUNC.062|CheckAPI_SAS_SATA|sas_function|chenxiang|fangmeixun|support_acpi.sh|check_acpi_start|on
 ST.FUNC.063|CycleReset_Expander|sas_function|chenxiang|fangmeixun|reset_backplane.sh|smp_discover|on
-ST.FUNC.064|Device_ResetCancleScan_PCIE|sas_function|chenxiang|fangmeixun|linux_pci_device.sh|reset_device|on
+ST.FUNC.064|Device_ResetCancleScan_PCIE|sas_function|chenxiang|fangmeixun|linux_pci_device.sh|reset_device|off
 ST.FUNC.065|Device_ReadSet_register|sas_function|chenxiang|fangmeixun|linux_pci_device.sh|set_sas_register|on
 ST.FUNC.038|ReadWrite_iozone_SAS_SATA|sas_performance|chenxiang|fangmeixun|stable_2GB_file_transfer.sh|iozne_file_transfer_stability_test|off
 ST.FUNC.097|EnableMSI_fio_SATA_SAS|sas_function|chenxiang|fangmeixun|linux_pci_device.sh|MSI_enable|on
