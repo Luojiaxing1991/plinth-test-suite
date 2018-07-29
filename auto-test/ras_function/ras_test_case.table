@@ -4,7 +4,7 @@ ST.RAS.F032.A.1620|HacSmmu_ErrorInjection_AXI|ras_function|tanxiaofei|huangweiji
 ST.RAS.F033.A.1620|HacSmmu_ErrorInjection_TBU|ras_function|tanxiaofei|huangweijian|hac_smmu.sh|hac_smmu_tbu_error|off
 ST.RAS.F011.A.1620|L3tStd_ErrorInjection_BIT1|ras_function|tanxiaofei|huangweijian|l3cache_error_injection.sh|l3t_std_memory_ecc|on
 ST.RAS.F013.A.1620|L3tDir_ErrorInjection_BIT1|ras_function|tanxiaofei|huangweijian|l3cache_error_injection.sh|l3t_dir_memory_ecc|on
-ST.RAS.F014.A.1620|L3Cache_report|ras_function|tanxiaofei|huangweijian|l3cache_error_injection.sh|l3cache_reprot|on
+ST.RAS.F014.A.1620|L3Cache_report|ras_function|tanxiaofei|huangweijian|l3cache_error_injection.sh|l3cache_reprot|off
 ST.RAS.F004.A.1620|LeftL3D_ErrorInjection_BIT1|ras_function|tanxiaofei|huangweijian|l3cache_error_injection.sh|l3d_left_bit1|on
 ST.RAS.F008.A.1620|RightL3D_ErrorInjection_BIT2|ras_function|tanxiaofei|huangweijian|l3cache_error_injection.sh|l3d_rigth_bit2|on
 ST.RAS.F007.A.1620|RightL3D_ErrorInjection_BIT1|ras_function|tanxiaofei|huangweijian|l3cache_error_injection.sh|l3d_rigth_bit1|on

@@ -8,7 +8,7 @@ ST.FUNC.047|CycleLinkResetDisk_SATA_SAS|sas_smoke|chenxiang|fangmeixun|support_f
 ST.FUNC.004|dd_writeMAX_SATA_SAS|sas_function|chenxiang|fangmeixun|support_max_devices.sh|support_max_devices|on
 ST.FUNC.008|DiskNegotiated_LinkRate_SAS|sas_function|chenxiang|fangmeixun|physical_data_rate.sh|disk_negotiated_link_rate_query|on
 ST.FUNC.009|DiskNegotiated_LinkRate_SATA|sas_function|chenxiang|fangmeixun|physical_data_rate.sh|disk_negotiated_link_rate_query|on
-ST.FUNC.010|SetMaxMinLinkRate_SATA_SAS|sas_function|chenxiang|fangmeixun|phy_control_through_sysfs.sh|set_rate_link|on
+ST.FUNC.010|SetMaxMinLinkRate_SATA_SAS|sas_function|chenxiang|fangmeixun|phy_control_through_sysfs.sh|set_rate_link|off
 ST.FUNC.028|FIO_RWmixread10_SATA_SAS|sas_function|chenxiang|fangmeixun|support_available_sas_cores.sh|FIO_IO_RAIO_randrw|on
 ST.FUNC.029|FIO_RWmixread50_SATA_SAS|sas_function|chenxiang|fangmeixun|support_available_sas_cores.sh|FIO_IO_RAIO_randrw|on
 ST.FUNC.030|FIO_RWmixread90_SATA_SAS|sas_function|chenxiang|fangmeixun|support_available_sas_cores.sh|FIO_IO_RAIO_randrw|on
@@ -51,7 +51,7 @@ ST.ABORT.136|FIO_hard_link_enable_doublebit_SAS_SATA|sas_function|chenxiang|fang
 ST.ABORT.137|FIO_hard_link_ecc_RX_SAS_SATA|sas_function|chenxiang|fangmeixun|driver_must_cause_no_oops.sh|fio_hard_link_host_ecc|on
 ST.ABORT.138|FIO_hard_link_ecc_TX_SAS_SATA|sas_function|chenxiang|fangmeixun|driver_must_cause_no_oops.sh|fio_hard_link_host_ecc|on
 ST.ABORT.139|FIO_hard_link_ecc_host_SAS_SATA|sas_function|chenxiang|fangmeixun|driver_must_cause_no_oops.sh|fio_hard_link_host_ecc|on
-ST.ABORT.003|1bit_ecc_inject0_1|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_1|on
+ST.ABORT.003|1bit_ecc_inject0_1|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_1|off
 ST.ABORT.004|1bit_ecc_inject0_2|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_2|on
 ST.ABORT.005|1bit_ecc_inject0_4|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_4|on
 ST.ABORT.006|1bit_ecc_inject0_8|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_8|on
@@ -71,7 +71,7 @@ ST.ABORT.019|1bit_ecc_inject0_10000|sas_function|chenxiang|fangmeixun|support_ra
 ST.ABORT.020|1bit_ecc_inject0_20000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_20000|on
 ST.ABORT.021|1bit_ecc_inject0_40000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_40000|on
 ST.ABORT.022|1bit_ecc_inject0_8000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_8000|on
-ST.ABORT.023|1bit_ecc_inject0_100000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_100000|on
+ST.ABORT.023|1bit_ecc_inject0_100000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_100000|off
 ST.ABORT.024|1bit_ecc_inject0_200000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_200000|on
 ST.ABORT.025|1bit_ecc_inject0_400000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_400000|on
 ST.ABORT.026|1bit_ecc_inject0_800000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_800000|on
@@ -85,7 +85,7 @@ ST.ABORT.033|1bit_ecc_inject1_400|sas_function|chenxiang|fangmeixun|support_ras.
 ST.ABORT.034|1bit_ecc_inject1_1000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject1_1000|on
 ST.ABORT.035|1bit_ecc_inject1_4000|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject1_4000|on
 ST.ABORT.037|2bit_ecc_injection_2|sas_function|chenxiang|fangmeixun|support_ras.sh|2bit_ecc_injection_2|on
-ST.ABORT.038|2bit_ecc_injection_8|sas_function|chenxiang|fangmeixun|support_ras.sh|2bit_ecc_injection_8|on
+ST.ABORT.038|2bit_ecc_injection_8|sas_function|chenxiang|fangmeixun|support_ras.sh|2bit_ecc_injection_8|off
 ST.ABORT.039|2bit_ecc_injection_20|sas_function|chenxiang|fangmeixun|support_ras.sh|2bit_ecc_injection_20|on
 ST.ABORT.040|2bit_ecc_injection_80|sas_function|chenxiang|fangmeixun|support_ras.sh|2bit_ecc_injection_80|on
 ST.ABORT.041|2bit_ecc_injection_200|sas_function|chenxiang|fangmeixun|support_ras.sh|2bit_ecc_injection_200|on
