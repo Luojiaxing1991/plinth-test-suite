@@ -52,7 +52,7 @@ ST.ABORT.137|FIO_hard_link_ecc_RX_SAS_SATA|sas_function|chenxiang|fangmeixun|dri
 ST.ABORT.138|FIO_hard_link_ecc_TX_SAS_SATA|sas_function|chenxiang|fangmeixun|driver_must_cause_no_oops.sh|fio_hard_link_host_ecc|on
 ST.ABORT.139|FIO_hard_link_ecc_host_SAS_SATA|sas_function|chenxiang|fangmeixun|driver_must_cause_no_oops.sh|fio_hard_link_host_ecc|on
 ST.ABORT.003|1bit_ecc_inject0_1|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_1|off
-ST.ABORT.004|1bit_ecc_inject0_2|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_2|on
+ST.ABORT.004|1bit_ecc_inject0_2|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_2|off
 ST.ABORT.005|1bit_ecc_inject0_4|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_4|on
 ST.ABORT.006|1bit_ecc_inject0_8|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_8|on
 ST.ABORT.007|1bit_ecc_inject0_10|sas_function|chenxiang|fangmeixun|support_ras.sh|1bit_ecc_inject0_10|on
